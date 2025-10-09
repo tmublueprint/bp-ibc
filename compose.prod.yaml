@@ -1,0 +1,17 @@
+services:
+  backend:
+    image: ghcr.io/tmublueprint/bp-ibc-backend:latest
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    restart: unless-stopped
+
+  frontend:
+    image: ghcr.io/tmublueprint/bp-ibc-frontend:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
