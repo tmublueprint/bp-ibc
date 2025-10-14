@@ -1,5 +1,5 @@
 # 🔍 Related Issue
-Fixes ticket # <!-- Ticket # -->
+Fixes ticket #[ <!-- Ticket # -->](https://tree.taiga.io/project/vicroo-blueprint/us/<!-- Ticket # -->)
 
 # 📝 Description
 <!-- Describe your changes and the purpose of this PR -->
