@@ -7,9 +7,9 @@ function App() {
   return (
     <>
       <TextSettingPopupUIComponent />
-      <EditableTextBox value={"hello world"}/>
+      <EditableTextBox initialText={"hello world"}/>
       <br />
-      <EditableTextBox value={"goodbye"} />
+      <EditableTextBox initialText={"goodbye"} />
     </>
   )
 }
