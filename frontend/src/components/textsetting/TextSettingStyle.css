@@ -1,0 +1,36 @@
+#text-setting-popup-ui-component {
+    max-width: fit-content;
+    height: 100%;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 2px;
+    padding: 10px;
+
+    hr {
+        margin-left: -10px;
+        margin-right: -10px;
+        width: calc(100% + 20px);
+    }
+}
+
+.text-setting-popup-ui-component-section {
+    font-size: 18px;
+    list-style: none;
+    ul{
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 10px;
+    }
+    button{
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    button:hover{
+        background-color: lightblue;
+        border-radius: 5px;
+    }
+}

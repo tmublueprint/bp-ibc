@@ -1,6 +1,8 @@
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
     ports:
       - "3001:3001"
     environment:
@@ -10,9 +12,11 @@ services:
       - ./backend/src:/app/src
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
     ports:
-      - "3002:80"
+      - "3002:3000"
     depends_on:
       - backend
     volumes:
