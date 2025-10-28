@@ -1,33 +1,51 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type EditableTextBoxProps = {
   value: string;
 }
 
-
 function EditableTextBox({
   value
 }: EditableTextBoxProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-  function handleMouseEnter() {
-    setIsHovered(true);
-  }
+  const rootRef = useRef<HTMLSpanElement>(null);
 
-  function handleMouseLeave() {
-    setIsHovered(false);
-  }
+  function handleMouseEnter() { setIsHovered(true); }
+  function handleMouseLeave() { setIsHovered(false); }
+  function handleMouseClick() { setIsEditing(true); }
 
-  // TODO: span has no semantic meaning but it is in-line. review tradeoffs or
-  // implement a mechanism to return different HTML elements epending on the 
-  // content (i.e. p, span, etc.)
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      if (!rootRef.current) return;
+      if (!rootRef.current.contains(event.target as Node)) {
+        setIsEditing(false);
+      }
+    }
+
+    function cleanup() {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    }
+
+    if (isEditing) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    }
+
+    return cleanup;
+  }, [isEditing]);
+
   return (
     <span
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      style={isHovered ? { border: "2px solid red" } : {}}
+      onMouseDown={handleMouseClick}
+      style={ 
+        isHovered ? { border: '2px solid red' } : {}
+      }
+      ref={rootRef}
     >
-      {value}
+      {(isEditing ? "editing" : "") + value}
     </span>
   );
 };

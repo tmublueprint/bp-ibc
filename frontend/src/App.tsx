@@ -8,6 +8,8 @@ function App() {
     <>
       <TextSettingPopupUIComponent />
       <EditableTextBox value={"hello world"}/>
+      <br />
+      <EditableTextBox value={"goodbye"} />
     </>
   )
 }
