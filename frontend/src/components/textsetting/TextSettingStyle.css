@@ -1,6 +1,6 @@
 #text-setting-popup-ui-component {
     max-width: fit-content;
-    height: 100%;
+    height: fit-content;
     background-color: #fff;
     border: 1px solid #000;
     border-radius: 2px;

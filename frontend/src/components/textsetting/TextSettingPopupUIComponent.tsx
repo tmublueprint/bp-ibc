@@ -1,8 +1,35 @@
+import { useEffect, useRef } from "react";
 import './TextSettingStyle.css'
 
-function TextSettingPopupUIComponent() {
+interface TextSettingPopupUIProps {
+  content: string;
+  position: { x: number; y: number } | null;
+  onClose: () => void;
+}
+
+function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIProps) {
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [onClose]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [onClose]);
+
   return (
-    <div id="text-setting-popup-ui-component" className="text-setting-popup-ui-component">
+    <div ref={popupRef} id="text-setting-popup-ui-component" className="text-setting-popup-ui-component" style={{ position: 'absolute', top: position?.y ?? 100, left: position?.x ?? 100 }}>
         <div>
             <h2>Text Settings</h2>
             <hr></hr>
