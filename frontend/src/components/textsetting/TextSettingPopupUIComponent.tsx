@@ -10,6 +10,12 @@ interface TextSettingPopupUIProps {
 function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIProps) {
   const popupRef = useRef<HTMLDivElement>(null);
 
+  // Styling implementation goes here:
+  // read the selected element from UIContext and apply styles.
+  // Example:
+  // const element = uiContext?.state.selectedElement;
+  // element?.style.setProperty(property, value);
+
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();

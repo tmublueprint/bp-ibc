@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useContext } from 'react'
+import { UIContext } from '../../context/UIContext';
 
 type EditableTextBoxProps = {
   initialText: string;
@@ -10,12 +11,28 @@ function EditableTextBox({
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(initialText);
-
+  const uiContext = useContext(UIContext);
+  const spanRef = useRef<HTMLSpanElement>(null);
   const rootRef = useRef<HTMLSpanElement>(null);
 
   function handleMouseEnter() { setIsHovered(true); }
   function handleMouseLeave() { setIsHovered(false); }
-  function handleMouseClick() { setIsEditing(true); }
+  function handleMouseClick(e: React.MouseEvent) {
+    e.stopPropagation();
+    setIsEditing(true);
+    
+    if (spanRef.current && uiContext?.dispatch) {
+      const rect = spanRef.current.getBoundingClientRect();
+      uiContext.dispatch({
+        type: "SHOW_POPUP",
+        payload: {
+          content: text,
+          element: spanRef.current,
+          position: { x: rect.left + window.scrollX, y: rect.bottom + window.scrollY },
+        },
+      });
+    }
+  }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
@@ -26,7 +43,13 @@ function EditableTextBox({
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
       if (!rootRef.current) return;
-      if (!rootRef.current.contains(event.target as Node)) {
+      const target = event.target as HTMLElement;
+      
+      if (target.closest('#text-setting-popup-ui-component')) {
+        return;
+      }
+      
+      if (!rootRef.current.contains(target)) {
         setIsEditing(false);
       }
     }
@@ -58,9 +81,11 @@ function EditableTextBox({
       // implement a mechanism to return different HTML elements epending on the 
       // content (i.e. p, span, etc.)
       <span
+        ref={spanRef}
+        data-editable="true"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onClick={handleMouseClick}
+        onDoubleClick={handleMouseClick}
         style={isHovered ? { border: '2px solid red' } : {}}
       >
         {text}

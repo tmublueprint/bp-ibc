@@ -29,7 +29,7 @@ function uiReducer(state: UIState, action: UIAction): UIState {
     }
 }
 
-const UIContext = createContext<{
+export const UIContext = createContext<{
   state: UIState;
   dispatch: React.Dispatch<UIAction>;
 } | null>(null);
@@ -38,23 +38,56 @@ function UIContextProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(uiReducer, initialState);
 
     useEffect(() => {
-        const handleClick = (e: MouseEvent) => {
-        const target = e.target as HTMLElement;
-        if (target.dataset.editable === "true") {
-            const rect = target.getBoundingClientRect();
+        function showPopupFor(element: HTMLElement) {
+            const rect = element.getBoundingClientRect();
             dispatch({
-            type: "SHOW_POPUP",
-            payload: {
-                content: target.innerText,
-                element: target,
-                position: { x: rect.left + window.scrollX, y: rect.bottom + window.scrollY },
-            },
+                type: "SHOW_POPUP",
+                payload: {
+                    content: element.innerText,
+                    element,
+                    position: { x: rect.left + window.scrollX, y: rect.bottom + window.scrollY },
+                },
             });
         }
+
+        function makeEditable(element: HTMLElement) {
+            element.contentEditable = 'true';
+            element.style.outline = 'none';
+            element.style.border = '2px solid blue';
+            element.focus();
+
+            const handleBlur = () => {
+                element.contentEditable = 'false';
+                element.style.border = '';
+                element.removeEventListener('blur', handleBlur);
+            };
+            element.addEventListener('blur', handleBlur);
+        }
+
+        const handleClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            const editable = target.closest('[data-editable="true"]') as HTMLElement | null;
+            if (!editable) return;
+            showPopupFor(editable);
         };
 
-        document.addEventListener("click", handleClick);
-        return () => document.removeEventListener("click", handleClick);
+        const handleDblClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (target.closest('#text-setting-popup-ui-component')) return;
+            const editable = target.closest('[data-editable="true"]') as HTMLElement | null;
+            if (!editable) return;
+            e.stopPropagation();
+            e.preventDefault();
+            makeEditable(editable);
+            showPopupFor(editable);
+        };
+
+        document.addEventListener('click', handleClick);
+        document.addEventListener('dblclick', handleDblClick);
+        return () => {
+            document.removeEventListener('click', handleClick);
+            document.removeEventListener('dblclick', handleDblClick);
+        };
     }, []);
 
     return (

@@ -6,9 +6,8 @@ function App() {
 
   return (
     <UIContextProvider>
-      <div>
-        <h1 data-editable="true">Click me!</h1>
-      </div>
+      <span data-editable="true">Click me! then double-click me!</span>
+      <br></br>
       <EditableTextBox initialText={"hello world"}/>
       <br />
       <EditableTextBox initialText={"goodbye"} />
