@@ -10,6 +10,7 @@ function EditableTextBox({
 }: EditableTextBoxProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
   const [text, setText] = useState(initialText);
   const uiContext = useContext(UIContext);
   const spanRef = useRef<HTMLSpanElement>(null);
@@ -66,6 +67,10 @@ function EditableTextBox({
     return cleanup;
   }, [isEditing]);
 
+  useEffect(() => {
+    text.trim() === "" ? setIsEmpty(true) : setIsEmpty(false)
+  }, [text]);
+
   return (
   <span ref={rootRef}>
     {isEditing ? (
@@ -86,8 +91,27 @@ function EditableTextBox({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onDoubleClick={handleMouseClick}
-        style={isHovered ? { border: '2px solid red' } : {}}
+        style={{
+          display: 'inline-flex',
+          minHeight: '1.2em',
+          minWidth: 10,
+          padding: '0 2px',
+          border: isHovered ? '2px solid red' : ''
+        }}
       >
+        {isEmpty && (
+          <span
+            aria-hidden="true"
+            style={{
+              display: 'inline-block',
+              width: 2,
+              height: '1em',
+              background: 'red',
+              borderRadius: 1,
+              flex: '0 0 auto'
+            }}
+          />
+        )}
         {text}
       </span>
     )}
