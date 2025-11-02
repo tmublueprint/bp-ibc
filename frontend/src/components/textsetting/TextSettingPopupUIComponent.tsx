@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useContext } from "react";
 import './TextSettingStyle.css'
+import { UIContext } from "../../context/UIContext";
 
 interface TextSettingPopupUIProps {
   content: string;
@@ -15,6 +16,42 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
   // Example:
   // const element = uiContext?.state.selectedElement;
   // element?.style.setProperty(property, value);
+
+  const uiContext = useContext(UIContext);
+  const element = uiContext?.state.selectedElement;
+  
+  function toggleBold() {
+
+    if (!element) return;
+
+    const computed = window.getComputedStyle(element);
+    const fontWeight = computed.fontWeight ?? '';
+    const isBold = fontWeight === 'bold' || Number(fontWeight) >= 700;
+
+    element.style.setProperty('font-weight', isBold ? 'normal' : 'bold');
+
+  }
+
+  function toggleItalic() {
+    if (!element) return;
+
+    const computed = window.getComputedStyle(element);
+    const isItalic = computed.fontStyle === 'italic';
+
+    element.style.setProperty('font-style', isItalic ? 'normal' : 'italic');
+  }
+
+  function toggleUnderlined() {
+    if (!element) return;
+
+    const computed = window.getComputedStyle(element);
+    const textDecLine = computed.textDecoration ?? '';
+    const isUnderline = textDecLine.includes('underline');
+
+    element.style.setProperty('text-decoration', isUnderline ? 'none' : 'underline');
+  }
+  
+  console.log(element);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -56,13 +93,13 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
             <div>
               <ul>
                 <li>
-                  <button>B</button>
+                  <button onClick={toggleBold}>B</button>
                 </li>
                 <li>
-                  <button>I</button>
+                  <button onClick={toggleItalic}>I</button>
                 </li>
                 <li>
-                  <button>U</button>
+                  <button onClick={toggleUnderlined}>U</button>
                 </li>
               </ul>
             </div>
