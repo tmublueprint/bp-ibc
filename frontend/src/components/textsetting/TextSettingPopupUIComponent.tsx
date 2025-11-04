@@ -54,12 +54,12 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
   console.log(element);
 
   // gets font from element, if it doesn't exist set default font to be 12
-  const [fontSize, setFont] = useState(element ? parseFloat(window.getComputedStyle(element).fontSize) : 12); 
+  const [fontSize, setFont] = useState(element ? parseFloat(window.getComputedStyle(element).fontSize) : Number(12)); 
 
     // using buttons to increment/decrement 
   function incrementFont(type : String) {
     const amount = (type == 'dec') ? -0.1 : 0.1;
-    const newFont = Number((Number(fontSize) + amount).toFixed(1));
+    const newFont = Number((fontSize + amount).toFixed(1));
     if (newFont >= 1 && newFont <= 100) {
       setFont(newFont);
       if (!element) return;
@@ -68,13 +68,11 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
   }
 
   // when font size changes (ex. user changes)
-  const changeFont = (e: KeyboardEvent) => {
+  const changeFont = (e : React.ChangeEvent<HTMLInputElement>) => {
       if (e.key == "Enter") {
-        const currentFont = Number(fontSize);
-        if (currentFont >= 1 && currentFont <= 100) {
-          setFont(currentFont);
+        if (fontSize >= 1 && fontSize <= 100) {
           if (!element) return;
-          element.style.setProperty('font-size', `${currentFont}px`);
+          element.style.setProperty('font-size', `${fontSize}px`);
         }
       }
     };
@@ -115,7 +113,7 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
             <hr></hr>
             <div style={{display: 'flex'}}>
               <button onClick={() => incrementFont('dec')}>-</button>
-              <input type="number" value={fontSize} min="1" max="100" step="0.1" onChange={(e) => setFont(e.target.value)} onKeyDown={changeFont} style={{display: 'flex', textAlign: 'center'}}/>
+              <input type="number" value={fontSize} min="1" max="100" step="0.1" onChange={(e) => setFont(Number(e.target.value))} onKeyDown={(e) => changeFont(e)} style={{display: 'flex', textAlign: 'center'}}/>
               <button onClick={() => incrementFont('inc')}>+</button>
             </div>
             <hr></hr>
