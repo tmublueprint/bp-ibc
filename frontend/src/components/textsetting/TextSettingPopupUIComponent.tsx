@@ -68,7 +68,7 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
   }
 
   // when font size changes (ex. user changes)
-  const changeFont = (e : React.ChangeEvent<HTMLInputElement>) => {
+  const changeFont = (e : React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key == "Enter") {
         if (fontSize >= 1 && fontSize <= 100) {
           if (!element) return;
