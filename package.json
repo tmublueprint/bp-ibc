@@ -17,7 +17,13 @@
     "lint:frontend": "cd frontend && npm run lint",
     "lint:backend": "cd backend && npm run lint"
   },
-  "keywords": ["website-builder", "non-profit", "react", "nodejs", "express"],
+  "keywords": [
+    "website-builder",
+    "non-profit",
+    "react",
+    "nodejs",
+    "express"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
