@@ -20,16 +20,39 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
   const uiContext = useContext(UIContext);
   const element = uiContext?.state.selectedElement;
   
+  const [fontWeight, setFontWeight] = useState(element ? Number(window.getComputedStyle(element).fontWeight) : 400);
+  
   function toggleBold() {
 
     if (!element) return;
-
-    const computed = window.getComputedStyle(element);
-    const fontWeight = computed.fontWeight ?? '';
     const isBold = fontWeight === 'bold' || Number(fontWeight) >= 700;
+    const newFontWeight = isBold ? 400 : 700;
 
-    element.style.setProperty('font-weight', isBold ? 'normal' : 'bold');
+    element.style.setProperty('font-weight', isBold ? 400 : 'bold');
+    setFontWeight(newFontWeight);
+  }
 
+  const changeFontWeight = (e : React.KeyboardEvent<HTMLInputElement>) => {
+    //get current fontweight, if null, set to default fontWeight (400)
+    
+    if (e.key == "Enter") {
+      if (fontWeight >= 100 && fontWeight <=900) {
+        if (!element) return;
+        else {
+          element.style.setProperty('font-weight', fontWeight);
+        }
+      }
+    }
+  }
+  
+  function incrementFontWeight(type : String) {
+    const incAmt = (type == "dec") ? -100 : 100;
+    const newFontWeight = Number(fontWeight) + incAmt; //local scope, if out of range of conditional, will not affect fontWeight
+    if (newFontWeight >= 100 && newFontWeight <= 900) {
+      if (!element) return;
+      setFontWeight(newFontWeight);
+      element.style.setProperty('font-weight', newFontWeight);
+    }
   }
 
   function toggleItalic() {
@@ -51,7 +74,6 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
     element.style.setProperty('text-decoration', isUnderline ? 'none' : 'underline');
   }
   
-  console.log(element);
 
   // gets font from element, if it doesn't exist set default font to be 12
   const [fontSize, setFont] = useState(element ? parseFloat(window.getComputedStyle(element).fontSize) : Number(12)); 
@@ -119,8 +141,19 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
             <hr></hr>
             <div>
               <ul>
-                <li>
+                <li
+                  style={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
                   <button onClick={toggleBold}>B</button>
+
+                  <div>
+                    <button onClick={() => incrementFontWeight('dec')}>-</button>
+                    <input 
+                      type="number" value={fontWeight} min="100" max="900" step="100" style={{width: "40px", textAlign: "center"}}
+                      onChange={(e) => setFontWeight(Number(e.target.value))}
+                      onKeyDown={(e) => changeFontWeight(e)}
+                      />
+                    <button onClick={() => incrementFontWeight('inc')}>+</button>
+                  </div>
                 </li>
                 <li>
                   <button onClick={toggleItalic}>I</button>
@@ -129,6 +162,10 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
                   <button onClick={toggleUnderlined}>U</button>
                 </li>
               </ul>
+            </div>
+            <hr></hr>
+            <div>
+              <input type="text" size="1"/>
             </div>
             <hr></hr>
             <div>Alignment</div>
