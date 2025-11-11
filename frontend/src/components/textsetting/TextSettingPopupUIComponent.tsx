@@ -164,10 +164,6 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
               </ul>
             </div>
             <hr></hr>
-            <div>
-              <input type="text" size="1"/>
-            </div>
-            <hr></hr>
             <div>Alignment</div>
         </div>
     </div>
