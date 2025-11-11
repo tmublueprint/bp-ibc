@@ -51,7 +51,7 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
     element.style.setProperty('text-decoration', isUnderline ? 'none' : 'underline');
   }
   
-  console.log(element);
+  // console.log(element);
 
   // gets font from element, if it doesn't exist set default font to be 12
   const [fontSize, setFont] = useState(element ? parseFloat(window.getComputedStyle(element).fontSize) : Number(12)); 
