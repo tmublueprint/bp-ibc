@@ -58,6 +58,14 @@ function UIContextProvider({ children }: { children: ReactNode }) {
             element.style.border = '2px solid blue';
             element.focus();
 
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            const selection = window.getSelection();
+            if (selection) {
+                selection.removeAllRanges();
+                selection.addRange(range);
+            } 
+
             const handleBlur = () => {
                 element.contentEditable = 'false';
                 element.style.border = '';
