@@ -58,6 +58,7 @@ function UIContextProvider({ children }: { children: ReactNode }) {
             element.style.border = '2px solid blue';
             element.focus();
 
+            // highlight all text in the textbox on edit
             const range = document.createRange();
             range.selectNodeContents(element);
             const selection = window.getSelection();
