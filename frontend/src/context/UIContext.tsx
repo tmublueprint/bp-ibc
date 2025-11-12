@@ -34,6 +34,8 @@ export const UIContext = createContext<{
   dispatch: React.Dispatch<UIAction>;
 } | null>(null);
 
+const DOUBLE_CLICK_INTERVAL = 300; // milliseconds
+
 function UIContextProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(uiReducer, initialState);
 
@@ -56,6 +58,15 @@ function UIContextProvider({ children }: { children: ReactNode }) {
             element.style.border = '2px solid blue';
             element.focus();
 
+            // highlight all text in the textbox on edit
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            const selection = window.getSelection();
+            if (selection) {
+                selection.removeAllRanges();
+                selection.addRange(range);
+            } 
+
             const handleBlur = () => {
                 element.contentEditable = 'false';
                 element.style.border = '';
@@ -63,6 +74,17 @@ function UIContextProvider({ children }: { children: ReactNode }) {
             };
             element.addEventListener('blur', handleBlur);
         }
+
+        let lastMouseDownTime = 0;
+        const handleMouseDown = (e: MouseEvent) => {
+            const now = Date.now();
+            if (now - lastMouseDownTime < DOUBLE_CLICK_INTERVAL) {
+                handleDblClick(e);
+            } else {
+                handleClick(e);
+            }
+            lastMouseDownTime = now;
+        };
 
         const handleClick = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
@@ -82,11 +104,9 @@ function UIContextProvider({ children }: { children: ReactNode }) {
             showPopupFor(editable);
         };
 
-        document.addEventListener('click', handleClick);
-        document.addEventListener('dblclick', handleDblClick);
+        document.addEventListener('mousedown', handleMouseDown);
         return () => {
-            document.removeEventListener('click', handleClick);
-            document.removeEventListener('dblclick', handleDblClick);
+            document.removeEventListener('mousedown', handleMouseDown);
         };
     }, []);
 
