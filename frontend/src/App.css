@@ -1,0 +1,12 @@
+[data-editable="true"] {
+  display: inline-block;
+  min-width: 12px;
+  min-height: 1em;
+  cursor: pointer;
+}
+[data-editable="true"]:hover {
+    border: 1px solid blue;
+}
+span[data-editable="true"]:empty {
+  background: #0080ff;
+}

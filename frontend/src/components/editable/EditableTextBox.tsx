@@ -5,6 +5,7 @@ type EditableTextBoxProps = {
   initialText: string;
 }
 
+/**@deprecated logic is handled by `UIContext.tsx` */
 function EditableTextBox({
   initialText
 }: EditableTextBoxProps) {
