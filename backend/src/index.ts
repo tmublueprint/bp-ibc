@@ -21,13 +21,7 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-app.get('/api/data', async (req, res) => {
-  try {
-    const snapshot = await db.collection('pages').get();
-    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    res.json(data);
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+app.get('/api/list-collections', async (req, res) => {
+  const collections = await db.listCollections();
+  res.json(collections.map(c => c.id));
 });

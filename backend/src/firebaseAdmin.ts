@@ -1,25 +1,18 @@
+
 import admin from 'firebase-admin';
-import dotenv from 'dotenv';
 
-dotenv.config();
+const PROJECT_ID = 'demo-project';
+const EMULATOR_HOST = 'firebase-emulator:3003'; 
 
-const projectId   = process.env.FIREBASE_PROJECT_ID;
-const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
-const privateKey  = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
-
-if (!projectId || !clientEmail || !privateKey) {
-  throw new Error('Missing Firebase Admin env vars.');
-}
 
 if (!admin.apps.length) {
+  process.env.GOOGLE_CLOUD_PROJECT = PROJECT_ID;       
+  process.env.FIRESTORE_EMULATOR_HOST = EMULATOR_HOST; 
+
   admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId,
-      clientEmail,
-      privateKey,
-    }),
-  });
+    projectId: PROJECT_ID,
+  } as any);
 }
 
 export const db = admin.firestore();
-export const auth = admin.auth();
+
