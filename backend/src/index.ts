@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import { db } from './firebaseAdmin';
 
 dotenv.config();
 
@@ -18,4 +19,9 @@ app.get('/api/health', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+app.get('/api/list-collections', async (req, res) => {
+  const collections = await db.listCollections();
+  res.json(collections.map(c => c.id));
 });

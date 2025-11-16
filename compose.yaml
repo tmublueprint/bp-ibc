@@ -1,4 +1,14 @@
 services:
+
+  firebase-emulator:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.emulator
+    ports:
+      - "3003:3003"  # Firestore
+      - "3004:3004"  # Emulator UI
+      - "9150:9150"  # UI websocket
+
   backend:
     build:
       context: ./backend
@@ -8,6 +18,10 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=3001
+      - USE_FIRESTORE_EMULATOR=true # Enable Firestore emulator remove for real Firestore
+      - FIRESTORE_EMULATOR_HOST=firebase-emulator:3003 # Enable Firestore emulator remove for real Firestore
+    env_file:
+      - ./backend/.env
     volumes:
       - ./backend/src:/app/src
 

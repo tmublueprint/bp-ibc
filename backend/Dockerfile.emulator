@@ -1,0 +1,15 @@
+FROM node:20-alpine
+
+
+RUN apk add --no-cache openjdk21-jdk
+
+RUN npm install -g firebase-tools
+
+WORKDIR /app
+
+COPY firebase.json ./
+COPY .firebaserc ./
+
+EXPOSE 3003 3004 9150
+
+CMD ["firebase", "emulators:start", "--only", "firestore", "--project", "demo-project"]
