@@ -25,10 +25,10 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
   function toggleBold() {
 
     if (!element) return;
-    const isBold = fontWeight === 'bold' || Number(fontWeight) >= 700;
+    const isBold = fontWeight >= 700;
     const newFontWeight = isBold ? 400 : 700;
 
-    element.style.setProperty('font-weight', isBold ? 400 : 'bold');
+    element.style.setProperty('font-weight', isBold ? 'normal' : 'bold');
     setFontWeight(newFontWeight);
   }
 
@@ -39,7 +39,7 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
       if (fontWeight >= 100 && fontWeight <=900) {
         if (!element) return;
         else {
-          element.style.setProperty('font-weight', fontWeight);
+          element.style.setProperty('font-weight', fontWeight + "");
         }
       }
     }
@@ -47,11 +47,11 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
   
   function incrementFontWeight(type : String) {
     const incAmt = (type == "dec") ? -100 : 100;
-    const newFontWeight = Number(fontWeight) + incAmt; //local scope, if out of range of conditional, will not affect fontWeight
+    const newFontWeight = fontWeight + incAmt; //local scope, if out of range of conditional, will not affect fontWeight
     if (newFontWeight >= 100 && newFontWeight <= 900) {
       if (!element) return;
       setFontWeight(newFontWeight);
-      element.style.setProperty('font-weight', newFontWeight);
+      element.style.setProperty('font-weight', newFontWeight + "");
     }
   }
 
