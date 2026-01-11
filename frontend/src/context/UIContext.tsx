@@ -3,6 +3,9 @@ import type { ReactNode } from "react";
 import TextSettingPopupUIComponent from "../components/textsetting/TextSettingPopupUIComponent";
 import type { UIAction } from "../model/uiActionModel";
 import type { UIState } from "../model/uiStateModel";
+import { SetUnsaved } from "../features/siteStatus/siteStatus.slices";
+import { store } from "../store/store";
+import { AutoSave } from "../features/autoSave/autosave";
 
 const initialState: UIState = {
     popupContent: null,
@@ -29,6 +32,7 @@ export const UIContext = createContext<{
 
 function UIContextProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(uiReducer, initialState);
+    AutoSave();
 
     useEffect(() => {
         function showPopupFor(element: HTMLElement) {
@@ -37,7 +41,7 @@ function UIContextProvider({ children }: { children: ReactNode }) {
                 type: "SHOW_POPUP",
                 payload: {
                     content: element.innerText,
-                    selectedElement: element,
+                    element,
                     position: { x: rect.left + window.scrollX, y: rect.bottom + window.scrollY },
                 },
             });
@@ -61,11 +65,20 @@ function UIContextProvider({ children }: { children: ReactNode }) {
                 selection.addRange(range);
             }
 
+            let unsavedLock = false;
+
             // event handler for changes to text 
             const handleTextChanges = () => {
                 // change border if text has been edited, otherwise keep original color (blue)
                 if (element.innerText !== initialText) {
                     element.style.border = '5px solid #FFD700';
+
+                    // prevent multiple setunsaved calls per edit session
+                    if (!unsavedLock) {
+                        store.dispatch(SetUnsaved());
+                        unsavedLock = true;
+                    }
+
                 } else {
                     element.style.border = '2 px solid blue';
                 }
