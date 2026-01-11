@@ -13,6 +13,7 @@ function EditableTextBox({
   const [isEditing, setIsEditing] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [text, setText] = useState(initialText);
+  const [newTextChanges, updateChanges] = useState(false);
   const uiContext = useContext(UIContext);
   const spanRef = useRef<HTMLSpanElement>(null);
   const rootRef = useRef<HTMLSpanElement>(null);
@@ -72,6 +73,10 @@ function EditableTextBox({
     text.trim() === "" ? setIsEmpty(true) : setIsEmpty(false)
   }, [text]);
 
+  useEffect(() => {
+    text !== initialText ? updateChanges(true) : updateChanges(false)
+  }, [text]);
+
   return (
   <span ref={rootRef}>
     {isEditing ? (
@@ -80,7 +85,7 @@ function EditableTextBox({
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
         autoFocus
-        style={{ border: '2px solid blue' }}
+        style={{ border: 2px solid green'}}
       />
     ) : (
       // TODO: span has no semantic meaning but it is in-line. review tradeoffs or

@@ -37,7 +37,7 @@ function UIContextProvider({ children }: { children: ReactNode }) {
                 type: "SHOW_POPUP",
                 payload: {
                     content: element.innerText,
-                    element,
+                    selectedElement: element,
                     position: { x: rect.left + window.scrollX, y: rect.bottom + window.scrollY },
                 },
             });
