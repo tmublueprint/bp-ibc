@@ -1,40 +1,67 @@
-function SaveButton(){
-  const savePage = async () => {
-    console.log("Save button clicked.");
+import React from "react";
 
-    const pageElements = Array.from(document.body.querySelectorAll(
-      '[data-editable][data-editable-leaf="true"]'
-    ));
+type SaveButtonProps = {
+  selectedElement: HTMLElement | null | undefined;
+};
 
-    const pageName = window.location.pathname.split("/").pop() ?? "";
-    const payload = pageElements.map((element, index) => ({
-      Content: element.textContent ?? "",
-      Styling: "",  //TO DO: ADD STYLE GETTING FUNCTION
-      Section_number: index + 1,
-      Page: pageName
-    }));
+function SaveButton({ selectedElement }: SaveButtonProps) {
+  const saveCurrentSection = async () => {
+    console.log("🟢 Save clicked (current section only)");
+
+    if (!selectedElement) {
+      console.log("❌ No selected element to save");
+      return;
+    }
+
+    const page_id = window.location.pathname.split("/").pop() ?? "";
+
+    // Determine section_num:
+    // If you already store a section number on the element, use that.
+    // Otherwise we compute it by its position among editable leaves.
+    const all = Array.from(
+      document.body.querySelectorAll<HTMLElement>(
+        '[data-editable][data-editable-leaf="true"]',
+      ),
+    );
+    const section_num = all.indexOf(selectedElement) + 1; // 1-based
+    if (section_num <= 0) {
+      console.log("❌ Selected element is not in editable leaf list");
+      return;
+    }
+
+    const sectionData = {
+      page_id,
+      section_num,
+      styling: selectedElement.getAttribute("data-styling-updates") ?? "",
+      content: {
+        text: selectedElement.textContent ?? "",
+        html: selectedElement.innerHTML ?? "",
+      },
+    };
+
+    // 🔹 PRINT what we are about to post
+    console.log("📦 Posting ONLY this section:", sectionData);
 
     try {
-      const response = await fetch('https://localhost:3001/api/sections', {
-        method: "POST", 
-        headers: { 'Content-type': 'application/json' }, 
-        body: JSON.stringify(payload),  
+      const res = await fetch("http://localhost:3001/api/sections", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sectionData),
       });
 
-      if (!response.ok)throw new Error("error: failed to create");
+      if (!res.ok) {
+        const errText = await res.text().catch(() => "");
+        throw new Error(`POST failed: ${res.status} ${errText}`);
+      }
 
-      const result = await response.json();
-      console.log("created: ", result);
-      
-    } catch (error) {
-      console.error("error: ", error);
+      const created = await res.json();
+      console.log("✅ Created section response:", created);
+    } catch (err) {
+      console.error("❌ Save failed:", err);
     }
-    
-    console.log("All sections saved.");
-    console.log(pageElements)
-  }
+  };
 
-  return <button onClick={savePage}>Save</button>;
+  return <button onClick={saveCurrentSection}>Save</button>;
 }
 
 export default SaveButton;

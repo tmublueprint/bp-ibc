@@ -17,6 +17,7 @@ export async function createSection(sectionData: SectionPostModel): Promise<Sect
     return {
         id: documentRef.id,
         page_id: documentSnapshot.data()!.page_id,
+        styling: documentSnapshot.data()!.styling,
         section_num: documentSnapshot.data()!.section_num,
         created_at: documentSnapshot.data()!.created_at.toDate(),
         content: documentSnapshot.data()!.content,
@@ -35,6 +36,7 @@ export async function getSectionById(sectionId: string): Promise<SectionGetModel
     return {
         id: documentRef.id,
         page_id: documentSnapshot.data()!.page_id,
+        styling: documentSnapshot.data()!.styling,
         section_num: documentSnapshot.data()!.section_num,
         created_at: documentSnapshot.data()!.created_at.toDate(),
         content: documentSnapshot.data()!.content,
@@ -53,6 +55,7 @@ export async function getSections(): Promise<SectionGetModel[]> {
         sections.push({
         id: doc.id,
         page_id: data.page_id,
+        styling: data.styling,
         section_num: data.section_num,
         created_at: data.created_at,
         content: data.content,
