@@ -1,5 +1,3 @@
-import { getAuth } from "firebase/auth";
-
 type SaveButtonProps = {
   selectedElement: HTMLElement | null | undefined;
 };
@@ -35,25 +33,13 @@ function SaveButton({ selectedElement }: SaveButtonProps) {
       },
     };
 
+    // 🔹 PRINT what we are about to post
     console.log("Posting section:", sectionData);
 
     try {
-      const auth = getAuth();
-      const user = auth.currentUser;
-
-      if (!user) {
-        console.log("Not logged in");
-        return;
-      }
-
-      const idToken = await user.getIdToken();
-
       const res = await fetch("http://localhost:3001/api/sections", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`,
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sectionData),
       });
 
