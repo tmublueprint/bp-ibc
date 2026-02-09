@@ -1,5 +1,3 @@
-import React from "react";
-
 type SaveButtonProps = {
   selectedElement: HTMLElement | null | undefined;
 };

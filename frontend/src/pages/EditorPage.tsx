@@ -1,19 +1,22 @@
-import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import './Page.css';
-import '../App.css';
-import LoadFromLocalAutoSave from '../components/save/LoadFromLocalAutoSave';
-import { PageDropdown } from '../components/retrieve/RetrievePages';
-import { getPageOption } from '../components/retrieve/pageOptions';
-import useLocalAutoSave from '../components/save/useLocalAutoSave';
-import SaveButton from '../components/save/SaveButton';
-import { applyEditableTags, disableEditorLinks } from '../utils/applyEditableTags';
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import "./Page.css";
+import "../App.css";
+import LoadFromLocalAutoSave from "../components/save/LoadFromLocalAutoSave";
+import { PageDropdown } from "../components/retrieve/RetrievePages";
+import { getPageOption } from "../components/retrieve/pageOptions";
+import useLocalAutoSave from "../components/save/useLocalAutoSave";
+import SaveButton from "../components/save/SaveButton";
+import {
+  applyEditableTags,
+  disableEditorLinks,
+} from "../utils/applyEditableTags";
 
 function EditorPage() {
   const { id } = useParams();
   const pageOption = getPageOption(id);
   const storageKey = `bp-ibc:autosave:${pageOption.id}`;
-  const sharedStorageKey = 'bp-ibc:autosave:shared';
+  const sharedStorageKey = "bp-ibc:autosave:shared";
   const [editableReady, setEditableReady] = useState(false);
   const frameRef = useRef<HTMLDivElement | null>(null);
 
@@ -113,7 +116,6 @@ function EditorPage() {
             >
               Clear shared draft
             </button>
-            <SaveButton />
           </div>
         </div>
         <div className="editor-canvas">
