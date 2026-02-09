@@ -1,8 +1,8 @@
-import Navbar from '../components/site/Navbar'
-import Footer from '../components/site/Footer'
-import AboutIBCSection from '../components/site/AboutIBCSection'
-import MissionSection from '../components/site/MissionSection'
-import EducationSection from '../components/site/EducationSection'
+import Navbar from '../components/site/navigation/Navbar'
+import Footer from '../components/site/navigation/Footer'
+import AboutIBCSection from '../components/site/about_page/AboutIBCSection'
+import MissionSection from '../components/site/about_page/MissionSection'
+import EducationSection from '../components/site/about_page/EducationSection'
 
 function AboutPage() {
     return (

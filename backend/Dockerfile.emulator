@@ -10,6 +10,6 @@ WORKDIR /app
 COPY firebase.json ./
 COPY .firebaserc ./
 
-EXPOSE 3003 3004 9150
+EXPOSE 3003 3004 9150 9099
 
-CMD ["firebase", "emulators:start", "--only", "firestore", "--project", "demo-project"]
+CMD ["firebase", "emulators:start", "--only", "firestore,auth", "--project", "demo-project"]

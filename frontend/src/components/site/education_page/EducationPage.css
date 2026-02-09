@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+.education_questions {
+    font-family: 'DM Sans', 'sans-serif';
+    background-color: #F5EDEA;
+    padding: 16px 8px;
+    text-align: center;
+}
+
+.education_questions h1 {
+    padding-top: 4.36vw;
+    padding-bottom: 2.15vw;
+}
+
+.education_grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    gap: 20px;
+}
+
+.education_questions h1 {
+    font-size: 60px; 
+    font-weight: 500;
+    color: #324436;
+}
+
+@media (max-width: 1600px) {
+    .education_grid {
+        grid-template-columns: auto;
+    }
+}
+
+.education_item {
+    box-sizing: border-box;
+    width: 533.1px;
+    height: 432.38px;
+    padding-top: 50px;
+    border: 1px solid #B3B3B3;
+    box-shadow: 7px 7px 10px 0px #231F201A;
+    border-radius: 30px;
+}
+
+.education_item h2 {
+    font-size: 37px; 
+    font-weight: 600px;
+}
+
+.education_item p {
+    font-size: 30px;
+    font-weight: 400px;
+}
+
+.education_warnings {
+    display: flex;
+    margin-bottom: 100px;
+    justify-content: center;
+    gap: 50px;
+}
+
+.education_warnings ul {
+    text-align: left;
+    max-width: 750px;
+}
+
+.education_warnings ul li {
+    font-size: 36px;
+    font-weight: 400px;
+    margin: 50px;
+}
+
+#not-every-animal * {
+    margin: 0;
+    padding: 0;
+    font-family: "DM Sans", sans-serif;
+}
+
+#not-every-animal {
+    background-image: url("../../assets/green_background.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    
+    height: 33.68vw;
+    background-color: #3b4d3f;
+    position: relative;
+}
+
+#not-every-animal h2 {
+    color: #ffffff;
+    font-size: 3.7vw;
+    font-weight: 500;
+    position: absolute;
+    top: 7.14vw;
+    left: 8.42vw;
+}
+
+#not-every-animal p {
+    width: 67.9vw;
+    color: #DCDACD;
+    font-size: 1.57vw;
+    font-weight: 400;
+    position: absolute;
+    top: 14.66vw;
+    left: 8.51vw;
+}
+
+#wildlife-guide * {
+    margin: 0;
+    padding: 0;
+    font-family: "DM Sans", sans-serif;
+}
+
+#wildlife-guide {
+    height: 28.89vw;
+    background-color: #f5edea;
+    position: relative;
+}
+
+#wildlife-guide h2 {
+    color: #324436;
+    font-size: 4.7vw;
+    font-weight: 700;
+    position: absolute;
+    top: 6.2vw;
+    left: 8.27vw;
+}
+
+#wildlife-guide p {
+    width: 64vw;
+    color: #324436;
+    font-size: 1.57vw;
+    font-weight: 400;
+    position: absolute;
+    top: 14.19vw;
+    left: 8.57vw;
+}

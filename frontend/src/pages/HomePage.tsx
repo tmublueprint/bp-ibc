@@ -1,8 +1,8 @@
-import Navbar from '../components/site/Navbar'
-import Footer from '../components/site/Footer'
-import FoundAnimal from '../components/site/home_page/foundAnimalSection'
-import DoNot from '../components/site/home_page/doNotSection'
-import Help from '../components/site/home_page/helpSection'
+import Navbar from '../components/site/navigation/Navbar'
+import Footer from '../components/site/navigation/Footer'
+import FoundAnimal from '../components/site/home_page/FoundAnimalSection'
+import DoNot from '../components/site/home_page/DoNotSection'
+import Help from '../components/site/home_page/HelpSection'
 
 function HomePage() {
     return (

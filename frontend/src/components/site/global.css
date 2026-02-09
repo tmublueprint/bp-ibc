@@ -1,0 +1,38 @@
+/* Styles implemented according to Figma */
+
+h1 {
+    color: #324436;
+    font-family: 'DM Sans', sans-serif; 
+    font-size: 90px;
+    font-weight: 700;
+}
+
+h2 {
+    font-family: 'DM Sans', sans-serif; 
+    font-size: 70px;
+    font-weight: 500;
+}
+
+h3 {
+    font-family: 'DM Sans', sans-serif; 
+    font-size: 60px;
+    font-weight: 500;
+}
+
+.body_text {
+    font-family: 'DM Sans', sans-serif; 
+    font-size: 38px;
+    font-weight: 400;
+}
+
+.card_title_text {
+    font-family: 'DM Sans', sans-serif; 
+    font-size: 37px;
+    font-weight: 600;
+}
+
+.header_text {
+    font-family: 'DM Sans', sans-serif; 
+    font-size: 30px;
+    font-weight: 500;
+}
