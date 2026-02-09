@@ -1,21 +1,19 @@
+import { getAuth } from "firebase/auth";
+
 type SaveButtonProps = {
   selectedElement: HTMLElement | null | undefined;
 };
 
 function SaveButton({ selectedElement }: SaveButtonProps) {
   const saveCurrentSection = async () => {
-    console.log("🟢 Save clicked (current section only)");
+    console.log("Save clicked");
 
     if (!selectedElement) {
-      console.log("❌ No selected element to save");
+      console.log("No selected element to save");
       return;
     }
 
     const page_id = window.location.pathname.split("/").pop() ?? "";
-
-    // Determine section_num:
-    // If you already store a section number on the element, use that.
-    // Otherwise we compute it by its position among editable leaves.
     const all = Array.from(
       document.body.querySelectorAll<HTMLElement>(
         '[data-editable][data-editable-leaf="true"]',
@@ -23,7 +21,7 @@ function SaveButton({ selectedElement }: SaveButtonProps) {
     );
     const section_num = all.indexOf(selectedElement) + 1; // 1-based
     if (section_num <= 0) {
-      console.log("❌ Selected element is not in editable leaf list");
+      console.log("Selected element is not in editable leaf list");
       return;
     }
 
@@ -37,13 +35,25 @@ function SaveButton({ selectedElement }: SaveButtonProps) {
       },
     };
 
-    // 🔹 PRINT what we are about to post
-    console.log("📦 Posting ONLY this section:", sectionData);
+    console.log("Posting section:", sectionData);
 
     try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (!user) {
+        console.log("Not logged in");
+        return;
+      }
+
+      const idToken = await user.getIdToken();
+
       const res = await fetch("http://localhost:3001/api/sections", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`,
+        },
         body: JSON.stringify(sectionData),
       });
 
@@ -53,9 +63,9 @@ function SaveButton({ selectedElement }: SaveButtonProps) {
       }
 
       const created = await res.json();
-      console.log("✅ Created section response:", created);
+      console.log("Created section response:", created);
     } catch (err) {
-      console.error("❌ Save failed:", err);
+      console.error("Save failed:", err);
     }
   };
 
