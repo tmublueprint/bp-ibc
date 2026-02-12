@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import sectionRoute from './routes/sectionRoute';
 import pageRoute from './routes/pageRoute'
 import draftRoute from './routes/draftRoute'
+import deployRoute from './routes/deployRoute'
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+app.use('/api', deployRoute);
 app.use('/api', sectionRoute);
 app.use('/api', pageRoute);
 app.use('/api', draftRoute);
