@@ -1,13 +1,10 @@
-export interface SectionPostModel {
+export interface SectionModel {
+  id: string;
   page_id: string;
-  section_num: number;
-  content: Record<string, any>;
+  section_number: number;
+  created_at: Date;
 }
 
-export interface SectionGetModel {
-  id: string;                       
-  page_id: string;
-  section_num: number;
-  created_at: Date;                   
-  content: Record<string, any>;
-}
+export type SectionGetModel = SectionModel;
+
+export type SectionPostModel = Omit<SectionModel, 'id' | 'created_at'>;
