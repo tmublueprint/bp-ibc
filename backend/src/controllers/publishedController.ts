@@ -5,20 +5,56 @@ import {
     getPublishedVersionsBySiteId,
     getPublishedVersionById as getPublishedVersionByIdService,
 } from '../services/publishedService';
+import { DraftModel } from '../models/draftModel';
 
-// POST /api/sites/:siteId/publish - Publish current active draft
+function isValidDraftPayload(payload: unknown): payload is DraftModel {
+    if (!payload || typeof payload !== 'object') {
+        return false;
+    }
+
+    const draft = payload as Record<string, unknown>;
+
+    return (
+        typeof draft.id === 'string' &&
+        draft.id.trim().length > 0 &&
+        typeof draft.site_id === 'string' &&
+        draft.site_id.trim().length > 0 &&
+        typeof draft.version === 'number' &&
+        Number.isFinite(draft.version) &&
+        typeof draft.is_active === 'boolean'
+    );
+}
+
+// POST /api/sites/:siteId/publish - Publish provided draft
 export async function publishSite(req: Request, res: Response) {
     try {
         const { siteId } = req.params;
-        const publishedVersion = await publishDraft(siteId);
-        if (publishedVersion) {
-            return res.status(201).json(publishedVersion);
-        } else {
-            return res.status(400).json({ message: 'No active draft to publish' });
+
+        if (!siteId?.trim()) {
+            return res.status(400).json({ message: 'Invalid siteId' });
         }
+
+        if (!isValidDraftPayload(req.body)) {
+            return res.status(400).json({ message: 'Invalid draft payload' });
+        }
+
+        if (req.body.site_id !== siteId) {
+            return res.status(400).json({ message: 'Draft site_id must match route siteId' });
+        }
+
+        const publishedVersion = await publishDraft(siteId, req.body);
+
+        return res.status(201).json({
+            message: 'Draft published successfully',
+            data: publishedVersion,
+        });
     } catch (e) {
+        if ((e as { statusCode?: number }).statusCode === 400) {
+            return res.status(400).json({ message: (e as Error).message });
+        }
+
         console.error('Error publishing site:', e);
-        return res.status(500).json({ error: 'Failed to publish site' });
+        return res.status(500).json({ message: 'Failed to publish site' });
     }
 }
 
