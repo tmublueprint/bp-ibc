@@ -148,7 +148,7 @@ function LoadFromLocalAutoSave({
       return appliedCount;
     };
 
-    const timeouts: number[] = [];
+    const timeouts: Array<ReturnType<typeof setTimeout>> = [];
 
     // Apply page-specific snapshot with retry
     const pageApplied = applySnapshot(storageKey, '[data-editable][data-editable-leaf="true"]', false);
