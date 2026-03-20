@@ -1,4 +1,4 @@
-name: Build and Push
+name: GitHub Actions
 
 on:
   push:
@@ -11,11 +11,10 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push:
+  frontend-tests:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
 
     steps:
       - name: Checkout code
@@ -31,6 +30,17 @@ jobs:
 
       - name: Run frontend unit tests
         run: npm run test:run --prefix frontend
+
+  build-and-push:
+    needs: frontend-tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
