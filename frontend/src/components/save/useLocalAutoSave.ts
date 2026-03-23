@@ -23,13 +23,14 @@ function useLocalAutoSave(
         return;
       }
 
-      const pageSnapshot: Array<{ id: string; text: string }> = [];
-      const sharedSnapshot: Array<{ id: string; text: string }> = [];
+      const pageSnapshot: Array<{ id: string; text: string; stylingUpdates: string }> = [];
+      const sharedSnapshot: Array<{ id: string; text: string; stylingUpdates: string }> = [];
 
       pageElements.forEach((editableElement) => {
         const data = {
           id: editableElement.getAttribute('data-editable-id') ?? '',
           text: editableElement.textContent ?? '',
+          stylingUpdates: editableElement.getAttribute('data-styling-updates') ?? ''
         };
 
         // Check if element is inside nav or footer
@@ -48,7 +49,7 @@ function useLocalAutoSave(
         
         if (sharedSnapshot.length > 0) {
           console.log(`[Autosave] Saved ${sharedSnapshot.length} shared component elements:`, 
-            sharedSnapshot.map(s => ({ id: s.id, text: s.text.substring(0, 30) })));
+            sharedSnapshot.map(s => ({ id: s.id, text: s.text.substring(0, 30), stylingUpdates: s.stylingUpdates.substring(0, 30) })));
         }
 
         Object.keys(localStorage)
