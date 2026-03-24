@@ -9,6 +9,12 @@ type LoadFromLocalAutoSaveProps = {
   ready?: boolean;
 };
 
+type StyleUpdate = {
+  idx: number,
+  style: string,
+  val: string
+}
+
 const placeholderSnippets = [
   'Click me! then double-click me!',
   '>hello<',
@@ -33,6 +39,11 @@ function LoadFromLocalAutoSave({
 
     const root = rootRef?.current ?? document.body;
 
+    // applyStylingToInnerHTML
+    const applyStylingToInnerHTML = (htmlText: string, stylingUpdatesArray: Array<StyleUpdate>): string => {
+      return htmlText
+    }
+
     const applySnapshot = (targetKey: string, selector: string, isShared = false) => {
       const rawSaved = localStorage.getItem(targetKey);
       if (!rawSaved) {
@@ -42,7 +53,7 @@ function LoadFromLocalAutoSave({
         return;
       }
 
-      let savedElements: Array<{ id: string; text: string }> = [];
+      let savedElements: Array<{ id: string; text: string; stylingUpdates: string }> = [];
       let legacyElements: string[] = [];
 
       try {
@@ -54,7 +65,7 @@ function LoadFromLocalAutoSave({
               element !== null &&
               'id' in element &&
               'text' in element
-          ) as Array<{ id: string; text: string }>;
+          ) as Array<{ id: string; text: string; stylingUpdates: string }>;
 
           legacyElements = parsed.filter(
             (element) => typeof element === 'string'
@@ -69,6 +80,7 @@ function LoadFromLocalAutoSave({
         savedElements = legacyElements.map((value, index) => ({
           id: String(index),
           text: value,
+          stylingUpdates: ""
         }));
       }
 
@@ -137,6 +149,10 @@ function LoadFromLocalAutoSave({
         const target = editableMap.get(value.id);
         if (target) {
           target.textContent = value.text;
+          // Styling reloaded
+          const stylingUpdatesArray = JSON.parse(value.stylingUpdates || "[]")
+          target.innerHTML = applyStylingToInnerHTML(target.innerHTML, stylingUpdatesArray.reverse())
+
           appliedCount++;
         }
       });
