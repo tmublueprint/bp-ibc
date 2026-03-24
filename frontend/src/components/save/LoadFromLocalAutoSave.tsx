@@ -52,8 +52,14 @@ function LoadFromLocalAutoSave({
         }
         else {
           switch (currentStyleUpdate.style){
+            case "italic":
+              styleAttribute = "<div style=\"font-style:italic;display:inline-block\">";
+              break;
             case "underline":
-              styleAttribute = "<div style=\"text-decoration:underline; display:inline-block\">";
+              styleAttribute = "<div style=\"text-decoration:underline;display:inline-block\">";
+              break;
+            case "strike":
+              styleAttribute = "<div style=\"text-decoration:line-through;display:inline-block\">";
               break;
           }
         }
