@@ -44,7 +44,6 @@ function LoadFromLocalAutoSave({
       let newText: string = htmlText;
 
       stylingUpdatesArray.map((currentStyleUpdate: StyleUpdate) => {
-        const idx = currentStyleUpdate.idx;
         let styleAttribute = "";
 
         if (currentStyleUpdate.val == "0"){
@@ -52,6 +51,15 @@ function LoadFromLocalAutoSave({
         }
         else {
           switch (currentStyleUpdate.style){
+            case "fontFamily":
+              styleAttribute = `<div style=\"font-family:${currentStyleUpdate.val};display:inline-block\">`;
+              break;
+            case "fontSize":
+              styleAttribute = `<div style=\"font-size:${currentStyleUpdate.val};display:inline-block\">`;
+              break;
+            case "bold":
+              styleAttribute = `<div style=\"font-weight:${currentStyleUpdate.val};display:inline-block\">`;
+              break;
             case "italic":
               styleAttribute = "<div style=\"font-style:italic;display:inline-block\">";
               break;
@@ -64,7 +72,7 @@ function LoadFromLocalAutoSave({
           }
         }
 
-        newText = newText.slice(0, idx) + styleAttribute + newText.slice(idx);
+        newText = newText.slice(0, currentStyleUpdate.idx) + styleAttribute + newText.slice(currentStyleUpdate.idx);
       })
 
       return newText;
@@ -187,7 +195,7 @@ function LoadFromLocalAutoSave({
       if (isShared) {
         console.log(`[Autosave] Shared - Applied ${appliedCount} changes`);
       }
-      
+
       return appliedCount;
     };
 
