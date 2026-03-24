@@ -169,9 +169,10 @@ function LoadFromLocalAutoSave({
         const target = editableMap.get(value.id);
         if (target) {
           target.textContent = value.text;
+          target.setAttribute("data-styling-updates", value.stylingUpdates);
           // Styling reloaded
-          const stylingUpdatesArray = JSON.parse(value.stylingUpdates || "[]")
-          target.innerHTML = applyStylingToInnerHTML(target.innerHTML, stylingUpdatesArray.reverse())
+          const stylingUpdatesArray = JSON.parse(value.stylingUpdates || "[]");
+          target.innerHTML = applyStylingToInnerHTML(target.innerHTML, stylingUpdatesArray.reverse());
 
           appliedCount++;
         }
