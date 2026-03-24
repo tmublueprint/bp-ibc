@@ -41,7 +41,27 @@ function LoadFromLocalAutoSave({
 
     // applyStylingToInnerHTML
     const applyStylingToInnerHTML = (htmlText: string, stylingUpdatesArray: Array<StyleUpdate>): string => {
-      return htmlText
+      let newText: string = htmlText;
+
+      stylingUpdatesArray.map((currentStyleUpdate: StyleUpdate) => {
+        const idx = currentStyleUpdate.idx;
+        let styleAttribute = "";
+
+        if (currentStyleUpdate.val == "0"){
+          styleAttribute = "</div>";
+        }
+        else {
+          switch (currentStyleUpdate.style){
+            case "underline":
+              styleAttribute = "<div style=\"text-decoration:underline; display:inline-block\">";
+              break;
+          }
+        }
+
+        newText = newText.slice(0, idx) + styleAttribute + newText.slice(idx);
+      })
+
+      return newText;
     }
 
     const applySnapshot = (targetKey: string, selector: string, isShared = false) => {
