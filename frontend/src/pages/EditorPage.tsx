@@ -13,6 +13,10 @@ import { publishActiveDraft } from '../services/publishService';
 import { useDispatch } from 'react-redux';
 import { SetPublished, SetUnpublished } from '../features/siteStatus/siteStatus.slices';
 
+import AdminUINavbar from '../components/site/adminUI/layout/AdminUINavbar';
+import AdminUIHeader from '../components/site/adminUI/layout/AdminUIHeader';
+import AdminUILayout from '../components/site/adminUI/layout/AdminUILayout';
+
 function EditorPage() {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -25,6 +29,8 @@ function EditorPage() {
   const [publishSuccess, setPublishSuccess] = useState<string | null>(null);
   const frameRef = useRef<HTMLDivElement | null>(null);
   const siteId = import.meta.env.VITE_SITE_ID ?? '1';
+
+  const [view, setView] = useState(0); // 0 = dashboard | 1 = edit | 2 = images
 
   useLocalAutoSave(storageKey, sharedStorageKey, frameRef);
   const PageComponent = pageOption.Component;
@@ -105,8 +111,26 @@ function EditorPage() {
   }, [pageOption.id]);
 
   return (
-    <div className="editor-shell">
-      <aside className="editor-sidebar">
+    <div className="editor-page">
+      {/* Admin Panel navbar */}
+      <AdminUINavbar 
+        view={view}
+        setView={setView}
+      />
+
+      <div className="editor-content">
+        {/* header */}
+        <AdminUIHeader
+          view={view}
+        />
+
+        {/* layout */}
+        <AdminUILayout
+          view={view} 
+        />
+      </div>
+
+      {/* <aside className="editor-sidebar">
         <div className="editor-sidebar__content">
           <p className="eyebrow">Site editor</p>
           <h1 className="editor-title">{pageOption.label}</h1>
@@ -118,8 +142,8 @@ function EditorPage() {
             </p>
           </div>
         </div>
-      </aside>
-      <main className="editor-main">
+      </aside> */}
+      {/* <main className="editor-main">
         <div className="editor-topbar">
           <div>
             <p className="eyebrow">Editing template</p>
@@ -167,7 +191,7 @@ function EditorPage() {
             />
           </div>
         </div>
-      </main>
+      </main> */}
     </div>
   );
 }
