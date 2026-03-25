@@ -16,31 +16,31 @@ function Dashboard() {
                 />
                 <DashboardCard
                     title="About Page"
-                    content="Update headlines, buttons, and images."
+                    content="Update mission statement, and organization info."
                     handleClick={() => console.log("Editing Home Page")}
                     icon={<EditIcon width={62} height={62} strokeWidth={2} />}
                 />
                 <DashboardCard
                     title="Education Page"
-                    content="Update headlines, buttons, and images."
+                    content="Update wildlife guidance, and act guidelines."
                     handleClick={() => console.log("Editing Home Page")}
                     icon={<EditIcon width={62} height={62} strokeWidth={2} />}
                 />
                 <DashboardCard
                     title="Volunteer Page"
-                    content="Update headlines, buttons, and images."
+                    content="Update volunteer role descriptions."
                     handleClick={() => console.log("Editing Home Page")}
                     icon={<EditIcon width={62} height={62} strokeWidth={2} />}
                 />
                 <DashboardCard
                     title="Contact Page"
-                    content="Update headlines, buttons, and images."
+                    content="Update contact information."
                     handleClick={() => console.log("Editing Home Page")}
                     icon={<EditIcon width={62} height={62} strokeWidth={2} />}
                 />
                 <DashboardCard
                     title="Images"
-                    content="Update headlines, buttons, and images."
+                    content="Rearrange or upload new images for your site."
                     handleClick={() => console.log("Editing Home Page")}
                     icon={<ImageIcon width={62} height={62} strokeWidth={2} />}
                 />
