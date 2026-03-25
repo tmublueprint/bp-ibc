@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ibc_logo from '../assets/navigation/logo.svg'
+import { Button } from '../components/ui/Button';
 import './SignInPage.css'
 
 interface SignInCredentials {
@@ -49,9 +50,11 @@ function SignInPage() {
                 </div>
 
                 {/* sign in button */}
-                <button className="signin-button" onClick={() => handleSignIn({ username, password })}>
-                    Sign In
-                </button>
+                <div className="signin-button-container">
+                    <Button handleClick={() => handleSignIn({ username, password })} variance="primary" borderRadius="27px">
+                        Sign In
+                    </Button>
+                </div>
             </div>
         </div>
     )
