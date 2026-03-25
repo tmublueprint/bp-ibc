@@ -1,11 +1,21 @@
-.admin-header {
-    color: #1E2E5E; 
+.admin-header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-width: 100%;
+    color: #1E2E5E;
+    background-color: white;
+    font-family: "DM Sans", sans-serif;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
-.admin-header-h1 {
+.admin-header-container h1, .admin-header-container h1 span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-weight: 700;
     font-style: Bold;
     font-size: 48px;
@@ -17,11 +27,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: fit-content;
     gap: 30px;
 }
 
-.admin-header-button {
+/* .admin-header-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,7 +41,7 @@
     padding-right: 36px;
     padding-bottom: 15px;
     padding-left: 36px;
-    gap: 10px;  /* gap between icon and text */
+    gap: 10px;
 
     font-weight: 700;
     font-style: Bold;
@@ -43,4 +52,4 @@
     background-color: #F5EDEA;
     border: none;
 
-}
+} */
