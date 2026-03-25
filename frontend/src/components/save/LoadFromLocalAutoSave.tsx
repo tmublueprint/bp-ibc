@@ -171,7 +171,7 @@ function LoadFromLocalAutoSave({
           return false;
         }
 
-        return value.text !== (target.textContent ?? '');
+        return value.text !== (target.textContent ?? '') || value.stylingUpdates !== (target.getAttribute("data-styling-updates") ?? '');
       });
 
       if (!shouldApply) {
