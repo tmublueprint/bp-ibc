@@ -2,12 +2,13 @@ import React, {useEffect, useRef, useContext, useState } from "react";
 import './TextSettingStyle.css'
 import { UIContext } from "../../context/UIContext";
 import { FontEnum } from "../../enum/fontEnum";
-
+import { Update, renderStyledDivs } from "./TextEdit";
 interface TextSettingPopupUIProps {
   content: string;
   position: { x: number; y: number } | null;
   onClose: () => void;
 }
+
 
 
 function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIProps) {
@@ -36,17 +37,6 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
     'font-size': 'fontSize',
     'strike': 'strike',
   };
-
-  class Update {
-    idx: number;
-    style: string;
-    val: string | undefined | null;
-    constructor(idx: number, style: string, val?: string) {
-      this.idx = idx;
-      this.style = style;
-      this.val = val;
-    }
-  }
 
   // Inserts an update, and shouldn't insert any redundant updates.
   // TODO: Improve by using binary search instead of linear search later, also refactor the whole thing. Control structure sucks right now
@@ -175,38 +165,7 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
     return newUpdates;
   }
 
-  function renderStyledDivs(text: string, updates: Update[]) {
-    const state: Record<string, string> = {};
-    for (let i = 0; i < stylingTypes.length; i++) state[stylingTypes[i]] = OFFVAL;
-
-    const toStyleString = () => { // inline styling for now
-      let styles = "";
-      if(state.bold != OFFVAL) styles+='font-weight:'+state.bold+';';
-      if(state.italic != OFFVAL) styles+='font-style:italic;';
-      const decorations = [
-        state.underline != OFFVAL ? 'underline' : '',
-        state.strike != OFFVAL ? 'line-through' : '',
-      ].filter(Boolean).join(' ');
-      if(decorations) styles+=`text-decoration:${decorations};`;
-      if(state.fontFamily != OFFVAL) styles+='font-family:'+state.fontFamily+';';
-      if(state.fontSize != OFFVAL) styles+='font-size:'+state.fontSize+';';
-      styles+='display:inline-block;'; // not sure if needed, maybe put in an outside css file?
-      return styles;
-    };
-
-    let html = "";
-    let curIdx = 0;
-    for(let i = 0; i < updates.length; i++) {
-      if(updates[i].idx != curIdx) {
-        
-        html += '<div style="'+toStyleString()+'">'+text.substring(curIdx, updates[i].idx)+'</div>';
-        curIdx = updates[i].idx;
-      }
-      state[updates[i].style as keyof typeof state] = updates[i].val || OFFVAL; // the OFFVAL or null makes it off
-    }
-    html += '<div style="'+toStyleString()+'">'+text.substring(curIdx)+'</div>';
-    return html;
-  }
+  
 
   useEffect(() => { // Redundant code, it's useless!
     if (!element) return;
@@ -261,16 +220,16 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
       const token = propertyToType[property]; // holds the queue for now, remove and replace with a db query
       if (token) {
         let updates = updatesRef.current;
-        console.log('stylingUpdates presweep:', start, " ", token, " ", end, " ", value, " ", updates);
-        console.log('fulloverlapcheck', fullOverlapCheck(start, end, token, updates))
+        // console.log('stylingUpdates presweep:', start, " ", token, " ", end, " ", value, " ", updates);
+        // console.log('fulloverlapcheck', fullOverlapCheck(start, end, token, updates))
         if(fullOverlapCheck(start, end, token, updates)) updates = insertUpdate(start, end, token, OFFVAL, updates);
         else updates = insertUpdate(start, end, token, value, updates);
-        console.log('stylingUpdates premerge:', start, " ", token, " ", end, " ", updates);
+        // console.log('stylingUpdates premerge:', start, " ", token, " ", end, " ", updates);
         updates = mergeUpdates(updates);
         // console.log('stylingUpdates:', start, " ", token, " ", end, " ", updates);
         if (element) {
           element.setAttribute('data-styling-updates', JSON.stringify(updates)); // remove, and replace with a db query and an unpacking function if needed
-          element.innerHTML = renderStyledDivs(element.textContent || '', updates);
+          element.innerHTML = renderStyledDivs(element.textContent || '', updates, stylingTypes, OFFVAL);
         }
         }
     } catch (e) {
