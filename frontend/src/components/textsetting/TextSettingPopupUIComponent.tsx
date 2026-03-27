@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useContext, useState } from "react";
 import './TextSettingStyle.css'
 import { UIContext } from "../../context/UIContext";
 import { FontEnum } from "../../enum/fontEnum";
-import { Update, stylingTypes, renderStyledDivs } from "./TextEdit";
+import { Update, stylingTypes, OFFVAL, renderStyledDivs } from "./TextEdit";
 
 interface TextSettingPopupUIProps {
   content: string;
@@ -23,9 +23,6 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
   const [fontWeight, setFontWeight] = useState(element ? Number(window.getComputedStyle(element).fontWeight) : 400); // font weight / bold 
   const [fontSize, setFontSize] = useState(element ? parseFloat(window.getComputedStyle(element).fontSize) : Number(12));  // font size 
   const [alignment, setAlignmentState] = useState(element ? (window.getComputedStyle(element).textAlign) : 'left'); // text alignment 
-  
-  const OFFVAL = "0"; // constant because not sure if "0" or "-1" is better for off, needs to be a string to hold value (ex. bold 700)
-
   const isInvertible = ["bold", "italic", "underline", "strike"];
   const propertyToType: Record<string, string | undefined> = { // this can be refactored out.
     'font-weight': 'bold',
@@ -227,7 +224,7 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
         // console.log('stylingUpdates:', start, " ", token, " ", end, " ", updates);
         if (element) {
           element.setAttribute('data-styling-updates', JSON.stringify(updates)); // remove, and replace with a db query and an unpacking function if needed
-          element.innerHTML = renderStyledDivs(element.textContent || '', updates, OFFVAL);
+          element.innerHTML = renderStyledDivs(element.textContent || '', updates);
         }
         }
     } catch (e) {
