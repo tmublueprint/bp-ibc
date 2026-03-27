@@ -1,0 +1,44 @@
+export {Update, renderStyledDivs}
+
+class Update {
+  idx: number;
+  style: string;
+  val: string | undefined | null;
+  constructor(idx: number, style: string, val?: string) {
+    this.idx = idx;
+    this.style = style;
+    this.val = val;
+  }
+}
+
+function renderStyledDivs(text: string, updates: Update[], stylingTypes: string[], OFFVAL: string) {
+  const state: Record<string, string> = {};
+  for (let i = 0; i < stylingTypes.length; i++) state[stylingTypes[i]] = OFFVAL;
+
+  const toStyleString = () => { // inline styling for now
+    let styles = "";
+    if(state.bold != OFFVAL) styles+='font-weight:'+state.bold+';';
+    if(state.italic != OFFVAL) styles+='font-style:italic;';
+    const decorations = [
+      state.underline != OFFVAL ? 'underline' : '',
+      state.strike != OFFVAL ? 'line-through' : '',
+    ].filter(Boolean).join(' ');
+    if(decorations) styles+=`text-decoration:${decorations};`;
+    if(state.fontFamily != OFFVAL) styles+='font-family:'+state.fontFamily+';';
+    if(state.fontSize != OFFVAL) styles+='font-size:'+state.fontSize+';';
+    styles+='display:inline-block;'; // not sure if needed, maybe put in an outside css file?
+    return styles;
+  };
+
+  let html = "";
+  let curIdx = 0;
+  for(let i = 0; i < updates.length; i++) {
+    if(updates[i].idx != curIdx) {
+      html += '<div style="'+toStyleString()+'">'+text.substring(curIdx, updates[i].idx)+'</div>';
+      curIdx = updates[i].idx;
+    }
+    state[updates[i].style as keyof typeof state] = updates[i].val || OFFVAL; // the OFFVAL or null makes it off
+  }
+  html += '<div style="'+toStyleString()+'">'+text.substring(curIdx)+'</div>';
+  return html;
+}
