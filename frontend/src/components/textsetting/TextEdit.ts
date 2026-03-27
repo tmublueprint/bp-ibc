@@ -1,4 +1,4 @@
-export {Update, renderStyledDivs}
+export { Update, stylingTypes, renderStyledDivs }
 
 class Update {
   idx: number;
@@ -11,7 +11,9 @@ class Update {
   }
 }
 
-function renderStyledDivs(text: string, updates: Update[], stylingTypes: string[], OFFVAL: string) {
+const stylingTypes = ["bold", "italic", "underline", "strike", "fontFamily", "fontSize"]; // everything should depend on this
+
+function renderStyledDivs(text: string, updates: Update[], OFFVAL: string) {
   const state: Record<string, string> = {};
   for (let i = 0; i < stylingTypes.length; i++) state[stylingTypes[i]] = OFFVAL;
 

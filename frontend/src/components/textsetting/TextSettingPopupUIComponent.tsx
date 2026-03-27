@@ -2,14 +2,13 @@ import React, {useEffect, useRef, useContext, useState } from "react";
 import './TextSettingStyle.css'
 import { UIContext } from "../../context/UIContext";
 import { FontEnum } from "../../enum/fontEnum";
-import { Update, renderStyledDivs } from "./TextEdit";
+import { Update, stylingTypes, renderStyledDivs } from "./TextEdit";
+
 interface TextSettingPopupUIProps {
   content: string;
   position: { x: number; y: number } | null;
   onClose: () => void;
 }
-
-
 
 function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIProps) {
   const popupRef = useRef<HTMLDivElement>(null);
@@ -27,7 +26,6 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
   
   const OFFVAL = "0"; // constant because not sure if "0" or "-1" is better for off, needs to be a string to hold value (ex. bold 700)
 
-  const stylingTypes = ["bold", "italic", "underline", "strike", "fontFamily", "fontSize"]; // everything should depend on this
   const isInvertible = ["bold", "italic", "underline", "strike"];
   const propertyToType: Record<string, string | undefined> = { // this can be refactored out.
     'font-weight': 'bold',
@@ -229,7 +227,7 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
         // console.log('stylingUpdates:', start, " ", token, " ", end, " ", updates);
         if (element) {
           element.setAttribute('data-styling-updates', JSON.stringify(updates)); // remove, and replace with a db query and an unpacking function if needed
-          element.innerHTML = renderStyledDivs(element.textContent || '', updates, stylingTypes, OFFVAL);
+          element.innerHTML = renderStyledDivs(element.textContent || '', updates, OFFVAL);
         }
         }
     } catch (e) {
