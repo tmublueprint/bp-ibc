@@ -139,7 +139,7 @@ function LoadFromLocalAutoSave({
         const target = editableMap.get(value.id);
         if (target) {
           target.textContent = value.text;
-          target.setAttribute("data-styling-updates", value.stylingUpdates);
+          target.setAttribute("data-styling-updates", value.stylingUpdates ?? '');
           // Styling reloaded
           const stylingUpdatesArray: Update[] = JSON.parse(value.stylingUpdates || "[]");
           target.innerHTML = renderStyledDivs(target.innerHTML, stylingUpdatesArray);
