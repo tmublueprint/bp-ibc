@@ -1,5 +1,6 @@
 import type { RefObject } from 'react';
 import { useEffect } from 'react';
+import { Update, renderStyledDivs } from '../textsetting/TextEdit'
 
 type LoadFromLocalAutoSaveProps = {
   storageKey: string;
@@ -8,12 +9,6 @@ type LoadFromLocalAutoSaveProps = {
   rootRef?: RefObject<HTMLElement | null>;
   ready?: boolean;
 };
-
-type StyleUpdate = {
-  idx: number,
-  style: string,
-  val: string
-}
 
 const placeholderSnippets = [
   'Click me! then double-click me!',
@@ -38,45 +33,6 @@ function LoadFromLocalAutoSave({
     }
 
     const root = rootRef?.current ?? document.body;
-
-    // applyStylingToInnerHTML
-    const applyStylingToInnerHTML = (htmlText: string, stylingUpdatesArray: Array<StyleUpdate>): string => {
-      let newText: string = htmlText;
-
-      stylingUpdatesArray.map((currentStyleUpdate: StyleUpdate) => {
-        let styleAttribute = "";
-
-        if (currentStyleUpdate.val == "0"){
-          styleAttribute = "</div>";
-        }
-        else {
-          switch (currentStyleUpdate.style){
-            case "fontFamily":
-              styleAttribute = `<div style=\"font-family:${currentStyleUpdate.val};display:inline-block\">`;
-              break;
-            case "fontSize":
-              styleAttribute = `<div style=\"font-size:${currentStyleUpdate.val};display:inline-block\">`;
-              break;
-            case "bold":
-              styleAttribute = `<div style=\"font-weight:${currentStyleUpdate.val};display:inline-block\">`;
-              break;
-            case "italic":
-              styleAttribute = "<div style=\"font-style:italic;display:inline-block\">";
-              break;
-            case "underline":
-              styleAttribute = "<div style=\"text-decoration:underline;display:inline-block\">";
-              break;
-            case "strike":
-              styleAttribute = "<div style=\"text-decoration:line-through;display:inline-block\">";
-              break;
-          }
-        }
-
-        newText = newText.slice(0, currentStyleUpdate.idx) + styleAttribute + newText.slice(currentStyleUpdate.idx);
-      })
-
-      return newText;
-    }
 
     const applySnapshot = (targetKey: string, selector: string, isShared = false) => {
       const rawSaved = localStorage.getItem(targetKey);
@@ -185,9 +141,8 @@ function LoadFromLocalAutoSave({
           target.textContent = value.text;
           target.setAttribute("data-styling-updates", value.stylingUpdates);
           // Styling reloaded
-          const stylingUpdatesArray = JSON.parse(value.stylingUpdates || "[]");
-          target.innerHTML = applyStylingToInnerHTML(target.innerHTML, stylingUpdatesArray.reverse());
-
+          const stylingUpdatesArray: Update[] = JSON.parse(value.stylingUpdates || "[]");
+          target.innerHTML = renderStyledDivs(target.innerHTML, stylingUpdatesArray);
           appliedCount++;
         }
       });
