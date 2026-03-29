@@ -1,3 +1,9 @@
+export interface EditableElementModel {
+    id: string;
+    text: string;
+    section_id: string;
+}
+
 export interface PageGetModel {
     id: string;
     draft_id: string | null;
@@ -5,4 +11,5 @@ export interface PageGetModel {
     page_name: string;
     page_number: number;
     created_at: Date;
+    editable_elements?: EditableElementModel[];
 }

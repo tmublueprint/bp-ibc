@@ -7,6 +7,7 @@ import pageRoute from './routes/pageRoute';
 import draftRoute from './routes/draftRoute';
 import siteRoute from './routes/siteRoute';
 import publishedRoute from './routes/publishedRoute';
+import contentRoute from './routes/contentRoute';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use('/api', siteRoute);
 app.use('/api', draftRoute);
 app.use('/api', pageRoute);
 app.use('/api', sectionRoute);
+app.use('/api', contentRoute);
 app.use('/api', publishedRoute);
 
 app.listen(PORT, () => {

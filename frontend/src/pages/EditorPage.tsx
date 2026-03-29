@@ -8,7 +8,8 @@ import { getPageOption } from '../components/retrieve/pageOptions';
 import useLocalAutoSave from '../components/save/useLocalAutoSave';
 import SaveButton from '../components/save/SaveButton';
 import { applyEditableTags, disableEditorLinks } from '../utils/applyEditableTags';
-import { publishActiveDraft } from '../services/publishService';
+import { publishActiveDraft, type PageType } from '../services/publishService';
+import { syncTemplateWithPublishedPages } from '../utils/syncPublishedPages';
 import { useDispatch } from 'react-redux';
 import { SetPublished, SetUnpublished } from '../features/siteStatus/siteStatus.slices';
 
@@ -22,6 +23,7 @@ function EditorPage() {
   const [isPublishing, setIsPublishing] = useState(false);
   const [publishError, setPublishError] = useState<string | null>(null);
   const [publishSuccess, setPublishSuccess] = useState<string | null>(null);
+  const [publishedPages, setPublishedPages] = useState<PageType[]>([]);
   const frameRef = useRef<HTMLDivElement | null>(null);
   const siteId = import.meta.env.VITE_SITE_ID ?? '1';
 
@@ -44,12 +46,31 @@ function EditorPage() {
     setIsPublishing(true);
 
     try {
-      const message = await publishActiveDraft(siteId);
-      setPublishSuccess(message);
+      const { message, pages } = await publishActiveDraft(siteId);
+      setPublishedPages(pages);
+
+      if (import.meta.env.DEV) {
+        console.log('[Publish QA] fetched pages payload', {
+          count: pages.length,
+          firstPage: pages[0] ?? null,
+          firstPageKeys: pages[0] ? Object.keys(pages[0]) : [],
+        });
+      }
+
+      const frame = frameRef.current;
+      const syncResult =
+        frame && pages.length
+          ? syncTemplateWithPublishedPages(frame, pages)
+          : { differences: [], appliedCount: 0 };
+
+      setPublishSuccess(
+        `${message} (${syncResult.appliedCount} template updates applied)`
+      );
       dispatch(SetPublished());
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to publish draft.';
       setPublishError(message);
+      setPublishedPages([]);
       dispatch(SetUnpublished());
     } finally {
       setIsPublishing(false);
@@ -151,7 +172,16 @@ function EditorPage() {
             </button>
           </div>
           {publishError && <p className="editor-status editor-status--error">{publishError}</p>}
-          {publishSuccess && <p className="editor-status editor-status--success">{publishSuccess}</p>}
+          {publishSuccess && (
+            <p className="editor-status editor-status--success">
+              {publishSuccess}
+            </p>
+          )}
+          {publishSuccess && (
+            <p className="editor-status editor-status--success">
+              Published pages fetched: {publishedPages.length}
+            </p>
+          )}
         </div>
         <div className="editor-canvas">
           <div className="editor-canvas__frame" ref={frameRef}>

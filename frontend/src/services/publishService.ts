@@ -13,6 +13,25 @@ type PublishResponse = {
   message?: string;
 };
 
+type PublishedResponse = {
+  draft_id: string;
+};
+
+export type PageType = {
+  id: string;
+  draft_id: string | null;
+  published_version_id: string | null;
+  page_name: string;
+  page_number: number;
+  created_at: string | Date;
+  [key: string]: unknown;
+};
+
+type PublishResult = {
+  message: string;
+  pages: PageType[];
+};
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001/api';
 
 async function getAuthToken() {
@@ -73,7 +92,53 @@ async function fetchActiveDraft(siteId: string, token: string): Promise<DraftMod
   return activeDraft;
 }
 
-export async function publishActiveDraft(siteId: string): Promise<string> {
+async function fetchCurrentPublished(siteId: string, token: string): Promise<PublishedResponse> {
+  const response = await fetch(`${API_BASE_URL}/sites/${siteId}/published`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const payload = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw new Error(getMessageFromResponse(payload, 'Failed to fetch published content.'));
+  }
+
+  if (
+    !payload ||
+    typeof payload !== 'object' ||
+    typeof (payload as { draft_id?: unknown }).draft_id !== 'string'
+  ) {
+    throw new Error('Invalid published response from server.');
+  }
+
+  return payload as PublishedResponse;
+}
+
+async function fetchPublishedPages(draftId: string, token: string): Promise<PageType[]> {
+  const response = await fetch(`${API_BASE_URL}/drafts/${draftId}/pages`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const payload = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw new Error(getMessageFromResponse(payload, 'Failed to fetch published pages.'));
+  }
+
+  if (!Array.isArray(payload)) {
+    throw new Error('Invalid pages response from server.');
+  }
+
+  return payload as PageType[];
+}
+
+export async function publishActiveDraft(siteId: string): Promise<PublishResult> {
   const token = await getAuthToken();
   const activeDraft = await fetchActiveDraft(siteId, token);
 
@@ -92,5 +157,11 @@ export async function publishActiveDraft(siteId: string): Promise<string> {
     throw new Error(getMessageFromResponse(payload, 'Failed to publish draft.'));
   }
 
-  return getMessageFromResponse(payload, 'Draft published successfully.');
+  const published = await fetchCurrentPublished(siteId, token);
+  const pages = await fetchPublishedPages(published.draft_id, token);
+
+  return {
+    message: getMessageFromResponse(payload, 'Draft published successfully.'),
+    pages,
+  };
 }
