@@ -1,5 +1,6 @@
 import type { RefObject } from 'react';
 import { useEffect } from 'react';
+import { Update, renderStyledDivs } from '../textsetting/TextEdit'
 
 type LoadFromLocalAutoSaveProps = {
   storageKey: string;
@@ -42,7 +43,7 @@ function LoadFromLocalAutoSave({
         return;
       }
 
-      let savedElements: Array<{ id: string; text: string }> = [];
+      let savedElements: Array<{ id: string; text: string; stylingUpdates: string }> = [];
       let legacyElements: string[] = [];
 
       try {
@@ -54,7 +55,7 @@ function LoadFromLocalAutoSave({
               element !== null &&
               'id' in element &&
               'text' in element
-          ) as Array<{ id: string; text: string }>;
+          ) as Array<{ id: string; text: string; stylingUpdates: string }>;
 
           legacyElements = parsed.filter(
             (element) => typeof element === 'string'
@@ -69,6 +70,7 @@ function LoadFromLocalAutoSave({
         savedElements = legacyElements.map((value, index) => ({
           id: String(index),
           text: value,
+          stylingUpdates: ""
         }));
       }
 
@@ -125,7 +127,7 @@ function LoadFromLocalAutoSave({
           return false;
         }
 
-        return value.text !== (target.textContent ?? '');
+        return value.text !== (target.textContent ?? '') || value.stylingUpdates !== (target.getAttribute("data-styling-updates") ?? '');
       });
 
       if (!shouldApply) {
@@ -137,6 +139,10 @@ function LoadFromLocalAutoSave({
         const target = editableMap.get(value.id);
         if (target) {
           target.textContent = value.text;
+          target.setAttribute("data-styling-updates", value.stylingUpdates ?? '');
+          // Styling reloaded
+          const stylingUpdatesArray: Update[] = JSON.parse(value.stylingUpdates || "[]");
+          target.innerHTML = renderStyledDivs(target.innerHTML, stylingUpdatesArray);
           appliedCount++;
         }
       });
@@ -144,7 +150,7 @@ function LoadFromLocalAutoSave({
       if (isShared) {
         console.log(`[Autosave] Shared - Applied ${appliedCount} changes`);
       }
-      
+
       return appliedCount;
     };
 
