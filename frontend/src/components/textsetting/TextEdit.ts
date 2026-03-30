@@ -29,7 +29,7 @@ function renderStyledDivs(text: string, updates: Update[]) {
     if(decorations) styles+=`text-decoration:${decorations};`;
     if(state.fontFamily != OFFVAL) styles+='font-family:'+state.fontFamily+';';
     if(state.fontSize != OFFVAL) styles+='font-size:'+state.fontSize+';';
-    styles+='display:inline-block;'; // not sure if needed, maybe put in an outside css file?
+    styles += 'white-space: pre-wrap';
     return styles;
   };
 
@@ -37,11 +37,11 @@ function renderStyledDivs(text: string, updates: Update[]) {
   let curIdx = 0;
   for(let i = 0; i < updates.length; i++) {
     if(updates[i].idx != curIdx) {
-      html += '<div style="'+toStyleString()+'">'+text.substring(curIdx, updates[i].idx)+'</div>';
+      html += '<span style="'+toStyleString()+'">'+text.substring(curIdx, updates[i].idx)+'</span>';
       curIdx = updates[i].idx;
     }
     state[updates[i].style as keyof typeof state] = updates[i].val || OFFVAL; // the OFFVAL or null makes it off
   }
-  html += '<div style="'+toStyleString()+'">'+text.substring(curIdx)+'</div>';
+  html += '<span style="'+toStyleString()+'">'+text.substring(curIdx)+'</span>';
   return html;
 }
