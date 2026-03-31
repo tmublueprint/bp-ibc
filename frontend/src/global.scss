@@ -1,0 +1,37 @@
+// Typography weights
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+
+// Typography sizes
+$text-header-1-size: 90px;
+$text-header-2-size: 70px;
+$text-header-3-size: 60px;
+$text-body-size: 38px;
+$text-card-title-size: 37px;
+$text-header-text-size: 30px;
+
+// Palette
+$text-header-color: #324436;
+$nav-header-text: #1E2E5E;
+
+// CSS custom properties for runtime usage in plain CSS
+:root {
+  --font-weight-regular: #{$font-weight-regular};
+  --font-weight-medium: #{$font-weight-medium};
+  --font-weight-semibold: #{$font-weight-semibold};
+
+  --text-header-1-size: #{$text-header-1-size};
+  --text-header-2-size: #{$text-header-2-size};
+  --text-header-3-size: #{$text-header-3-size};
+  --text-body-size: #{$text-body-size};
+  --text-card-title-size: #{$text-card-title-size};
+  --text-header-text-size: #{$text-header-text-size};
+
+  --text-header-color: #{$text-header-color};
+  --nav-header-text: #{$nav-header-text};
+
+  --color-text-primary: #{$text-header-color};
+  --color-text-secondary: #{$text-header-color};
+  --color-header-text: #{$nav-header-text};
+}

@@ -1,4 +1,4 @@
-name: Build and Push
+name: GitHub Actions
 
 on:
   push:
@@ -11,7 +11,28 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  frontend-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install frontend dependencies
+        run: npm ci --prefix frontend
+
+      - name: Run frontend unit tests
+        run: npm run test:run --prefix frontend
+
   build-and-push:
+    needs: frontend-tests
     runs-on: ubuntu-latest
     permissions:
       contents: read

@@ -1,0 +1,168 @@
+.admin-ui-navbar {
+	width: 200px;
+	min-height: 100vh;
+	background: #ffffff;
+	padding: 26px 12px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+}
+
+.admin-ui-navbar-brand {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	color: #000000;
+}
+
+.admin-ui-navbar-brand-icon {
+	width: 66px;
+	height: 66px;
+	border-radius: 50%;
+	overflow: hidden;
+	flex-shrink: 0;
+}
+
+.admin-ui-navbar-brand-icon img {
+	width: 100%;
+	height: 100%;
+	display: block;
+
+}
+
+.admin-ui-navbar-brand-copy {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.admin-ui-navbar-brand-copy p {
+	margin: 0;
+	font-weight: 700;
+	font-size: 18px;
+	line-height: 1.1;
+	color: #1e2e5e;
+}
+
+
+.admin-ui-navbar-brand-copy p.admin-panel-text {
+	font-size: 16px;
+	text-decoration: underline;
+}
+
+.admin-ui-navbar-divider {
+	margin: 20px 2px 17px;
+	border-bottom: 3px solid #2f4a87;
+}
+
+.admin-ui-navbar-nav ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	margin-left: -100px;
+}
+
+.admin-ui-navbar-nav li {
+	width: 100%;
+}
+
+.admin-ui-navbar-footer {
+	margin-top: auto;
+	padding: 24px 8px 6px;
+}
+
+.admin-ui-sign-out-button {
+	width: 100%;
+	min-height: 48px;
+	border: 0;
+	border-radius: 999px;
+	background: #ece6e5;
+	color: #1e2e5e;
+	font-family: inherit;
+	font-size: 18px;
+	font-weight: 700;
+	line-height: 1.1;
+	padding: 10px 12px;
+	cursor: default;
+}
+
+.admin-ui-nav-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-height: 48px;
+	width: 100%;
+	padding: 10px 14px;
+	border-radius: 999px;
+	color: #202020;
+	box-sizing: border-box;
+}
+
+.admin-ui-nav-item-active {
+	background: #ece6e5;
+	color: #1e2e5e;
+}
+
+.admin-ui-nav-label {
+	font-size: 18px;
+	font-weight: 300;
+	line-height: 1.15;
+	letter-spacing: 0;
+}
+
+.admin-ui-nav-item-active .admin-ui-nav-label {
+	font-weight: 700;
+}
+
+.admin-ui-nav-icon {
+	width: 30px;
+	height: 30px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.admin-ui-nav-icon img {
+	width: 100%;
+	height: 100%;
+	display: block;
+	object-fit: contain;
+}
+
+@media (max-width: 900px) {
+	.admin-ui-navbar {
+		width: 100%;
+		min-height: auto;
+		border-right: 0;
+		border-bottom: 1px solid #dce3ef;
+		padding: 18px 16px;
+	}
+
+	.admin-ui-navbar-divider {
+		margin: 16px 0 20px;
+	}
+
+	.admin-ui-navbar-nav ul {
+		flex-direction: row;
+		flex-wrap: wrap;
+		margin-left: -100;
+	}
+
+	.admin-ui-nav-label {
+		font-size: 18px;
+	}
+
+	.admin-ui-navbar-footer {
+		margin-top: 16px;
+		padding: 8px 0 0;
+	}
+
+	.admin-ui-sign-out-button {
+		max-width: 180px;
+		font-size: 24px;
+	}
+}
