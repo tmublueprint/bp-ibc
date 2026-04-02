@@ -32,11 +32,9 @@ function EducationQuestions() {
             </div>
             <h1>Please Do Not</h1>
             <div className="education_warnings">
-                <ul>
+                <ul className="education_warnings_list">
                     <li>Feed wild animals food or water</li>
                     <li>Take animals home</li>
-                </ul>
-                <ul>
                     <li>Move animals away from where they were found</li>
                     <li>Assume an animal is abandoned without observing</li>
                 </ul>
