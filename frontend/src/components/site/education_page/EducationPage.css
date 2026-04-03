@@ -5,68 +5,121 @@
     background-color: #F5EDEA;
     padding: 16px 8px;
     text-align: center;
+    box-sizing: border-box;
 }
 
 .education_questions h1 {
     padding-top: 4.36vw;
     padding-bottom: 2.15vw;
+    font-size: var(--text-header-3-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-header-color);
 }
 
 .education_grid {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(3, auto);
     justify-content: center;
     gap: 20px;
-}
-
-.education_questions h1 {
-    font-size: 60px; 
-    font-weight: 500;
-    color: #324436;
+    max-width: 100%;
 }
 
 @media (max-width: 1600px) {
     .education_grid {
-        grid-template-columns: auto;
+        grid-template-columns: 1fr;
+        justify-items: center;
     }
 }
 
 .education_item {
     box-sizing: border-box;
-    width: 533.1px;
-    height: 432.38px;
-    padding-top: 50px;
+    width: 100%;
+    max-width: 533.1px;
+    min-height: 432.38px;
+    height: auto;
+    padding: 40px 24px 32px;
     border: 1px solid #B3B3B3;
     box-shadow: 7px 7px 10px 0px #231F201A;
     border-radius: 30px;
 }
 
+.education_item img {
+    max-width: 100%;
+    height: auto;
+}
+
 .education_item h2 {
-    font-size: 37px; 
-    font-weight: 600px;
+    font-size: var(--text-card-title-size);
+    font-weight: var(--font-weight-semibold);
 }
 
 .education_item p {
-    font-size: 30px;
-    font-weight: 400px;
+    font-size: var(--text-header-text-size);
+    font-weight: var(--font-weight-regular);
 }
 
 .education_warnings {
     display: flex;
-    margin-bottom: 100px;
     justify-content: center;
-    gap: 50px;
+    margin-bottom: 100px;
+    padding: 0 12px;
+    box-sizing: border-box;
 }
 
-.education_warnings ul {
+.education_warnings_list {
+    list-style-position: outside;
     text-align: left;
-    max-width: 750px;
+    margin: 0;
+    padding-left: 1.25em;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: min(calc(750px * 2 + 48px), 100%);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 750px));
+    column-gap: 48px;
+    row-gap: 72px;
+    justify-content: center;
 }
 
-.education_warnings ul li {
-    font-size: 36px;
-    font-weight: 400px;
-    margin: 50px;
+.education_warnings_list li {
+    font-size: var(--text-body-size);
+    font-weight: var(--font-weight-regular);
+    line-height: 1.45;
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 1600px) {
+    .education_warnings_list {
+        grid-template-columns: 1fr;
+        max-width: min(750px, 100%);
+        column-gap: 0;
+    }
+}
+
+@media (max-width: 1440px) {
+    .education_warnings {
+        margin-bottom: 64px;
+    }
+
+    .education_warnings_list {
+        row-gap: 56px;
+    }
+}
+
+@media (max-width: 1280px) {
+    .education_warnings {
+        margin-bottom: 48px;
+    }
+
+    .education_warnings_list {
+        row-gap: 48px;
+    }
+
+    .education_item {
+        min-height: 380px;
+        padding: 32px 20px 28px;
+    }
 }
 
 #not-every-animal * {
@@ -80,26 +133,30 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    
     height: 33.68vw;
+    width: 100%;
+    min-height: 320px;
     background-color: #3b4d3f;
     position: relative;
+    box-sizing: border-box;
 }
 
 #not-every-animal h2 {
     color: #ffffff;
-    font-size: 3.7vw;
-    font-weight: 500;
+    font-size: var(--text-header-2-size);
+    font-weight: var(--font-weight-medium);
     position: absolute;
     top: 7.14vw;
     left: 8.42vw;
+    right: 4vw;
 }
 
 #not-every-animal p {
-    width: 67.9vw;
+    width: min(67.9vw, 920px);
+    max-width: calc(100% - 17vw);
     color: #DCDACD;
-    font-size: 1.57vw;
-    font-weight: 400;
+    font-size: var(--text-header-text-size);
+    font-weight: var(--font-weight-regular);
     position: absolute;
     top: 14.66vw;
     left: 8.51vw;
@@ -113,25 +170,69 @@
 
 #wildlife-guide {
     height: 28.89vw;
+    width: 100%;
+    min-height: 280px;
     background-color: #f5edea;
     position: relative;
+    box-sizing: border-box;
 }
 
 #wildlife-guide h2 {
-    color: #324436;
-    font-size: 4.7vw;
+    color: var(--text-header-color);
+    font-size: var(--text-header-1-size);
     font-weight: 700;
     position: absolute;
     top: 6.2vw;
     left: 8.27vw;
+    right: 4vw;
+    max-width: 90vw;
 }
 
 #wildlife-guide p {
-    width: 64vw;
-    color: #324436;
-    font-size: 1.57vw;
-    font-weight: 400;
+    width: min(64vw, 900px);
+    max-width: calc(100% - 17vw);
+    color: var(--text-header-color);
+    font-size: var(--text-header-text-size);
+    font-weight: var(--font-weight-regular);
     position: absolute;
     top: 14.19vw;
     left: 8.57vw;
+}
+
+@media (max-width: 1440px) {
+    #not-every-animal p,
+    #wildlife-guide p {
+        width: min(67.9vw, 52rem);
+    }
+}
+
+@media (max-width: 1280px) {
+    #not-every-animal p,
+    #wildlife-guide p {
+        width: min(78vw, 48rem);
+    }
+}
+
+@media (max-height: 800px),
+    (max-width: 1536px) and (max-height: 880px),
+    (max-width: 1400px) {
+    #not-every-animal,
+    #wildlife-guide {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: clamp(20px, 3vw, 36px);
+        height: auto;
+        padding: clamp(24px, 5vw, 48px) clamp(16px, 6vw, 120px) clamp(32px, 6vw, 56px);
+    }
+
+    #not-every-animal h2,
+    #not-every-animal p,
+    #wildlife-guide h2,
+    #wildlife-guide p {
+        position: static;
+        width: 100%;
+        max-width: min(48rem, 100%);
+        margin: 0;
+    }
 }

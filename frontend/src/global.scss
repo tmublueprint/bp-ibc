@@ -35,3 +35,37 @@ $nav-header-text: #1E2E5E;
   --color-text-secondary: #{$text-header-color};
   --color-header-text: #{$nav-header-text};
 }
+
+@media (max-width: 1536px) {
+  :root {
+    --text-header-1-size: 72px;
+    --text-header-2-size: 56px;
+    --text-header-3-size: 48px;
+    --text-body-size: 30px;
+    --text-card-title-size: 30px;
+    --text-header-text-size: 24px;
+  }
+}
+
+@media (max-width: 1440px) {
+  :root {
+    --text-header-1-size: 68px;
+    --text-header-2-size: 53px;
+    --text-header-3-size: 45px;
+    --text-body-size: 29px;
+    --text-card-title-size: 28px;
+    --text-header-text-size: 23px;
+  }
+}
+
+@media (max-width: 1280px) {
+  :root {
+    --text-header-1-size: 60px;
+    --text-header-2-size: 47px;
+    --text-header-3-size: 40px;
+    --text-body-size: 25px;
+    --text-card-title-size: 25px;
+    --text-header-text-size: 20px;
+  }
+}
+
