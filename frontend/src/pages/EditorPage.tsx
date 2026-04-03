@@ -8,6 +8,7 @@ import { getPageOption } from '../components/retrieve/pageOptions';
 import useLocalAutoSave from '../components/save/useLocalAutoSave';
 import SaveButton from '../components/save/SaveButton';
 import { applyEditableTags, disableEditorLinks } from '../utils/applyEditableTags';
+import { removeAllHighlightingForEditedElements } from '../utils/timestamp';
 
 function EditorPage() {
   const { id } = useParams();
@@ -117,6 +118,7 @@ function EditorPage() {
             <button
               type="button"
               className="editor-button editor-button--ghost"
+              onClick={removeAllHighlightingForEditedElements}
               title="Publish changes to live site"
             >
               Publish

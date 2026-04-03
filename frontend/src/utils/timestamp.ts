@@ -20,3 +20,14 @@ export function highlightIfEdited(element: HTMLElement): void {
         element.classList.add("edited-not-published-yet");
     }
 }
+
+
+export function removeAllHighlightingForEditedElements(): void {
+    document.querySelectorAll(".edited-not-published-yet").forEach(element => {
+	    element.classList.remove("edited-not-published-yet");
+        element.removeAttribute("text-timestamp");
+        element.removeAttribute("style-timestamp");
+    });
+
+    // NOTE FOR LATER: When working with autosave, clear the information in there as well
+}
