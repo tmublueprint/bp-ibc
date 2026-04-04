@@ -35,7 +35,12 @@ export function highlightIfEdited(element: HTMLElement): void {
     return;
   }
 
-  const elementIsDifferentFromRecord = !(element.getAttribute("text-record") == element.innerText && [element.getAttribute("style-record"), "", "[]"].includes((element.getAttribute("data-styling-updates") ?? "")));
+  const textContent: string = element.innerText;
+  const textRecord: string = element.getAttribute("text-record") ?? "";
+  const styleContent: string = element.getAttribute("data-styling-updates") ?? "[]";
+  const styleRecord: string = element.getAttribute("style-record") ?? "";
+
+  const elementIsDifferentFromRecord = !(textContent === textRecord && (styleContent === styleRecord || ["", "[]"].includes(styleContent) && ["", "[]"].includes(styleRecord)));
 
   if (elementIsDifferentFromRecord){
     element.classList.add("edited-not-published-yet");
