@@ -1,10 +1,10 @@
 import './HomePage.css';
 import { useNavigate } from 'react-router-dom';
-import GreenLeaf from '/src/assets/home/greenLeaf.svg';
-import Paw from '/src/assets/home/bluePaw.svg';
-import LeftHeart from '/src/assets/shared/leftHeart.svg';
-import RightHeart from '/src/assets/shared/rightHeart.svg';
-import GreenArrow from '/src/assets/shared/greenArrowThin.svg'
+import GreenLeaf from '../../../assets/home/greenLeaf.svg';
+import Paw from '../../../assets/home/bluePaw.svg';
+import LeftHeart from '../../../assets/shared/leftHeart.svg';
+import RightHeart from '../../../assets/shared/rightHeart.svg';
+import GreenArrow from '../../../assets/shared/greenArrowThin.svg'
 
 function HelpSection(){
     const navigate = useNavigate();

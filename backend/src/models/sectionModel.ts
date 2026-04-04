@@ -1,4 +1,5 @@
-export interface SectionPostModel {
+export interface SectionModel {
+  id: string;
   page_id: string;
   section_num: number;
   styling: string;

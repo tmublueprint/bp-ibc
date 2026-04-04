@@ -1,0 +1,46 @@
+.admin-header {
+    color: #1E2E5E; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-header-h1 {
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 48px;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    gap: 30px;
+}
+
+.admin-header-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 1;
+    border-radius: 42px;
+    padding-top: 15px;
+    padding-right: 36px;
+    padding-bottom: 15px;
+    padding-left: 36px;
+    gap: 10px;  /* gap between icon and text */
+
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 30px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1E2E5E;
+    background-color: #F5EDEA;
+    border: none;
+
+}

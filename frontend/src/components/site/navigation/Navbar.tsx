@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom"
 import './Navbar.css';
-import ibc_logo from '/src/assets/navigation/logo.svg'
+import ibc_logo from '../../../assets/navigation/logo.svg'
 
 function Navbar() {
     return (

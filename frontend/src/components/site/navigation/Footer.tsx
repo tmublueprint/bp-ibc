@@ -1,5 +1,5 @@
 import './Footer.css'
-import facebook from '/src/assets/navigation/facebook.svg'
+import facebook from '../../../assets/navigation/facebook.svg'
 
 function Footer() {
     return (

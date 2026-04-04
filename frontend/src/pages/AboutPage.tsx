@@ -6,13 +6,13 @@ import EducationSection from '../components/site/about_page/EducationSection'
 
 function AboutPage() {
     return (
-        <>
+        <div data-id="1">
             <Navbar/>
             <AboutIBCSection/>
             <MissionSection/>
             <EducationSection/>
             <Footer/>
-        </>
+        </div>
     )
 }
 

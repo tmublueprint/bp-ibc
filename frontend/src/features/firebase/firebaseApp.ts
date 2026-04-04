@@ -16,6 +16,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// local emulation, needs to be removed for prod
-connectAuthEmulator(auth, import.meta.env.VITE_AUTH_EMULATOR_HOST)
+const authEmulatorHost = import.meta.env.VITE_AUTH_EMULATOR_HOST;
+if (import.meta.env.DEV && authEmulatorHost) {
+  connectAuthEmulator(auth, authEmulatorHost);
+}
 export default auth

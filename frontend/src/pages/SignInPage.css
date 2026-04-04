@@ -1,0 +1,113 @@
+.signin-page {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: #F5EDEA;
+}
+
+.signin-card {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    align-items: center;
+    border-radius: 27px;
+    background-color: white;
+    width: 40%;
+    min-width: 400px;
+    height: auto;
+    padding-top: 64px;
+    padding-bottom: 64px;
+}
+
+.signin-header {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.signin-header img {
+    width: 150px;
+    height: auto;
+}
+
+.signin-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+}
+
+.signin-title h1 {
+    margin: 0;
+}
+
+.signin-title h2 {
+    margin: 0;
+}
+
+.signin-admin-label {
+    text-decoration: underline;
+}
+
+.input-field-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    align-items: center;
+}
+
+.input-container input {
+    border-radius: 27px;
+    background-color: #F5EDEA;
+    outline: none;
+    border: none;
+    padding: 24px;
+    width: 60%;
+    height: 62px;
+    font-size: 20px;
+}
+
+.input-container input:focus-visible {
+    outline: 2px solid #1E2E5E;
+    outline-offset: 2px;
+}
+
+.input-container p {
+    margin: 0;
+    width: 60%;
+    text-align: left;
+    font-weight: 600;
+}
+
+.signin-button {
+    background-color: #1E2E5E;
+    border-radius: 27px;
+    font-size: 40px;
+    font-weight: 700;
+    color: white;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    width: 50%;
+    transition: background-color 300ms ease-in-out;
+}
+
+.signin-button:hover {
+    cursor: pointer;
+    background-color: #0f1a38;
+}
+
+.signin-button:focus-visible {
+    outline: 2px solid #1E2E5E;
+    outline-offset: 2px;
+}
+

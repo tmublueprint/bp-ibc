@@ -1,7 +1,7 @@
 import './AboutPage.css';
-import shieldIcon from '/src/assets/about/shieldIcon.svg'
-import heartIcon from '/src/assets/about/heartIcon.svg'
-import lockIcon from '/src/assets/about/lockIcon.svg'
+import shieldIcon from '../../../assets/about/shieldIcon.svg'
+import heartIcon from '../../../assets/about/heartIcon.svg'
+import lockIcon from '../../../assets/about/lockIcon.svg'
 
 function EducationSection(){
     return (

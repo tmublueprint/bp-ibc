@@ -1,16 +1,12 @@
-export interface DraftSection {
-    section_id: string;
-    section_num: number;
-}
-
-export interface DraftGetModel {
+export interface DraftModel {
     id: string;
-    created_at: Date;
-    sections: DraftSection[];
+    site_id: string;
     version: number;
+    is_active: boolean;
+    created_at: Date;
+    updated_at: Date;
 }
 
-export interface DraftPostModel {
-    sections: DraftSection[];
-    version: number;
-}
+export type DraftGetModel = DraftModel;
+
+export type DraftPostModel = Omit<DraftModel, 'id' | 'created_at' | 'updated_at'>;

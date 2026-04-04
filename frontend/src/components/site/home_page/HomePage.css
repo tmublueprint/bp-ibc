@@ -65,7 +65,7 @@
     justify-content: space-evenly;
     height: fit-content;
     padding: 40px 20px 40px 20px;
-    background-image: url('src/assets/shared/greenBackground.svg');
+    background-image: url('../../../assets/shared/greenBackground.svg');
     box-sizing: border-box;
 }
 
@@ -255,7 +255,7 @@
     justify-content: space-evenly;
     height: fit-content;
     padding: 40px 20px 40px 20px;
-    background-image: url('src/assets/shared/greenBackground.svg');
+    background-image: url('../../../assets/shared/greenBackground.svg');
     background-position: center;
     box-sizing: border-box;
 }

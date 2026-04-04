@@ -1,7 +1,7 @@
 import './EducationPage.css'
-import bandage from '/src/assets/education/bandageIcon.svg'
-import babyAnimal from '/src/assets/education/babyAnimalIcon.svg'
-import warning from '/src/assets/education/warningIcon.svg'
+import bandage from '../../../assets/education/bandageIcon.svg'
+import babyAnimal from '../../../assets/education/babyAnimalIcon.svg'
+import warning from '../../../assets/education/warningIcon.svg'
 
 function EducationQuestions() {
     return (
@@ -32,11 +32,9 @@ function EducationQuestions() {
             </div>
             <h1>Please Do Not</h1>
             <div className="education_warnings">
-                <ul>
+                <ul className="education_warnings_list">
                     <li>Feed wild animals food or water</li>
                     <li>Take animals home</li>
-                </ul>
-                <ul>
                     <li>Move animals away from where they were found</li>
                     <li>Assume an animal is abandoned without observing</li>
                 </ul>

@@ -6,13 +6,13 @@ import Help from '../components/site/home_page/HelpSection'
 
 function HomePage() {
     return (
-        <>
+        <div data-id="3">
             <Navbar/>
             <FoundAnimal/>
             <DoNot/>
             <Help/>
             <Footer/> 
-        </>
+        </div>
     )
 }
 

@@ -7,12 +7,12 @@ export function AutoSave(){
     const saveStatus = useSelector(selectSaveStatus)
     const dispatch = useDispatch();
     
-    const autosaveTimeout = useRef<number | null>(null);
+    const autosaveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() =>{
         if (saveStatus === "unsaved"){
             // ensure only one call after user finishes editing
-            if(autosaveTimeout.current){
+            if(autosaveTimeout.current !== null){
                 clearTimeout(autosaveTimeout.current);
             }
 
@@ -25,7 +25,7 @@ export function AutoSave(){
 
         // clean up existing timeouts
         return () => {
-            if (autosaveTimeout.current) {
+            if (autosaveTimeout.current !== null) {
                 clearTimeout(autosaveTimeout.current);
             }
         };

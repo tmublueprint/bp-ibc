@@ -6,13 +6,13 @@ import EducationQuestions from '../components/site/education_page/EducationSecti
 
 function EducationPage() {
     return (
-        <>
+        <div data-id="2">
             <Navbar/> 
             <WildlifeGuide/>
             <NotEveryAnimal />
             <EducationQuestions/>
             <Footer/> 
-        </>
+        </div>
     )
 }
 

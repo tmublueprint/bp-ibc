@@ -1,6 +1,6 @@
 import './HomePage.css';
-import GreenArrow from '/src/assets/shared/greenArrowThin.svg';
-import ProhibitSign from '/src/assets/home/prohibitSign.svg';
+import GreenArrow from '../../../assets/shared/greenArrowThin.svg';
+import ProhibitSign from '../../../assets/home/prohibitSign.svg';
 
 function DoNotSection(){
     return (  

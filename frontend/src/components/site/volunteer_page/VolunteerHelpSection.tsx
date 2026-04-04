@@ -23,8 +23,6 @@ function VolunteerHelp() {
                 <ul>
                     <li>Compassionate and calm</li>
                     <li>Reliable and respectful of guidelines</li>
-                </ul>
-                <ul>
                     <li>Comfortable working as part of a team</li>
                     <li>Open to learning — and unlearning — common wildlife misconceptions</li>
                 </ul>

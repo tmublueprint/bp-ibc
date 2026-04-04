@@ -56,17 +56,6 @@ function TextSettingPopupUIComponent({
     strike: "strike",
   };
 
-  class Update {
-    idx: number;
-    style: string;
-    val: string | undefined | null;
-    constructor(idx: number, style: string, val?: string) {
-      this.idx = idx;
-      this.style = style;
-      this.val = val;
-    }
-  }
-
   // Inserts an update, and shouldn't insert any redundant updates.
   // TODO: Improve by using binary search instead of linear search later, also refactor the whole thing. Control structure sucks right now
   function insertUpdate(
