@@ -8,7 +8,7 @@ import { getPageOption } from '../components/retrieve/pageOptions';
 import useLocalAutoSave from '../components/save/useLocalAutoSave';
 import SaveButton from '../components/save/SaveButton';
 import { applyEditableTags, disableEditorLinks } from '../utils/applyEditableTags';
-import { removeAllHighlightingForEditedElements } from '../utils/timestamp';
+import { removeAllHighlightingForEditedElements } from '../utils/record';
 
 function EditorPage() {
   const { id } = useParams();
@@ -118,7 +118,7 @@ function EditorPage() {
             <button
               type="button"
               className="editor-button editor-button--ghost"
-              onClick={removeAllHighlightingForEditedElements}
+              onClick={removeAllHighlightingForEditedElements} // NOTE: When this function is replaced with the Publish function, make sure to add removeAllHighlightingForEditedElements somewhere within the code of the Publish function
               title="Publish changes to live site"
             >
               Publish

@@ -6,7 +6,7 @@ import type { UIState } from "../model/uiStateModel";
 import { SetUnsaved } from "../features/siteStatus/siteStatus.slices";
 import { store } from "../store/store";
 import { AutoSave } from "../features/autoSave/autosave";
-import { addTimestamp, highlightIfEdited } from "../utils/timestamp";
+import { addRecord, highlightIfEdited } from "../utils/record";
 
 const initialState: UIState = {
     popupContent: null,
@@ -37,7 +37,7 @@ function UIContextProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         function showPopupFor(element: HTMLElement) {
-            addTimestamp(element);
+            addRecord(element);
             const rect = element.getBoundingClientRect();
             dispatch({
                 type: "SHOW_POPUP",
