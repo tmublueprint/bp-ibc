@@ -1,5 +1,6 @@
 import type { RefObject } from 'react';
 import { useEffect } from 'react'
+import { saveTimestampsInLocalStorage } from '../../utils/timestamp';
 
 // Value represented in seconds
 const autoSaveInterval = 10; // e.g. 10 = call the local auto save every 10s
@@ -60,6 +61,8 @@ function useLocalAutoSave(
           console.error('Local storage exceeded!');
         }
       }
+
+      saveTimestampsInLocalStorage();
     };
 
     const localAutoSaveCall = setInterval(localAutoSave, autoSaveInterval * 1000);
