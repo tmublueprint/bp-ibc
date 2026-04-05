@@ -87,6 +87,24 @@
   background: #f8fafc;
 }
 
+.editor-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.editor-status {
+  margin: 10px 0 0 0;
+  font-size: 14px;
+}
+
+.editor-status--error {
+  color: #b91c1c;
+}
+
+.editor-status--success {
+  color: #166534;
+}
+
 .editor-canvas {
   background: linear-gradient(135deg, #e5e7eb 0%, #f8fafc 100%);
   border-radius: 20px;

@@ -9,14 +9,22 @@ import useLocalAutoSave from '../components/save/useLocalAutoSave';
 import SaveButton from '../components/save/SaveButton';
 import { applyEditableTags, disableEditorLinks } from '../utils/applyEditableTags';
 import { removeAllHighlightingForEditedElements } from '../utils/record';
+import { publishActiveDraft } from '../services/publishService';
+import { useDispatch } from 'react-redux';
+import { SetPublished, SetUnpublished } from '../features/siteStatus/siteStatus.slices';
 
 function EditorPage() {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const pageOption = getPageOption(id);
   const storageKey = `bp-ibc:autosave:${pageOption.id}`;
   const sharedStorageKey = 'bp-ibc:autosave:shared';
   const [editableReady, setEditableReady] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [publishError, setPublishError] = useState<string | null>(null);
+  const [publishSuccess, setPublishSuccess] = useState<string | null>(null);
   const frameRef = useRef<HTMLDivElement | null>(null);
+  const siteId = import.meta.env.VITE_SITE_ID ?? '1';
 
   useLocalAutoSave(storageKey, sharedStorageKey, frameRef);
   const PageComponent = pageOption.Component;
@@ -29,6 +37,24 @@ function EditorPage() {
   const handleClearSharedDraft = () => {
     localStorage.removeItem(sharedStorageKey);
     window.location.reload(); // Reload to show original content
+  };
+
+  const handlePublish = async () => {
+    setPublishError(null);
+    setPublishSuccess(null);
+    setIsPublishing(true);
+
+    try {
+      const message = await publishActiveDraft(siteId);
+      setPublishSuccess(message);
+      dispatch(SetPublished());
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to publish draft.';
+      setPublishError(message);
+      dispatch(SetUnpublished());
+    } finally {
+      setIsPublishing(false);
+    }
   };
 
   useEffect(() => {
@@ -120,10 +146,14 @@ function EditorPage() {
               className="editor-button editor-button--ghost"
               onClick={removeAllHighlightingForEditedElements} // NOTE: When this function is replaced with the Publish function, make sure to add removeAllHighlightingForEditedElements somewhere within the code of the Publish function
               title="Publish changes to live site"
+              onClick={handlePublish}
+              disabled={isPublishing}
             >
-              Publish
+              {isPublishing ? 'Publishing...' : 'Publish'}
             </button>
           </div>
+          {publishError && <p className="editor-status editor-status--error">{publishError}</p>}
+          {publishSuccess && <p className="editor-status editor-status--success">{publishSuccess}</p>}
         </div>
         <div className="editor-canvas">
           <div className="editor-canvas__frame" ref={frameRef}>
