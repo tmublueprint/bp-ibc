@@ -1,31 +1,47 @@
 import { db } from '../firebaseAdmin';
+import { DraftModel } from '../models/draftModel';
 import { PublishedModel } from '../models/publishedModel';
 
 const publishedCollection = db.collection('published');
 const draftsCollection = db.collection('drafts');
 
-// Publish current active draft for a site
-export async function publishDraft(siteId: string): Promise<PublishedModel | null> {
-    try {
-        // Get active draft
-        const draftSnapshot = await draftsCollection
-            .where('site_id', '==', siteId)
-            .where('is_active', '==', true)
-            .limit(1)
-            .get();
+class PublishDraftError extends Error {
+    statusCode: number;
 
-        if (draftSnapshot.empty) {
-            return null;
+    constructor(message: string, statusCode = 400) {
+        super(message);
+        this.name = 'PublishDraftError';
+        this.statusCode = statusCode;
+    }
+}
+
+// Publish provided draft for a site
+export async function publishDraft(siteId: string, draft: DraftModel): Promise<PublishedModel> {
+    try {
+        const draftRef = draftsCollection.doc(draft.id);
+        const draftSnapshot = await draftRef.get();
+
+        if (!draftSnapshot.exists) {
+            throw new PublishDraftError('Draft not found for this site');
         }
 
-        const activeDraft = draftSnapshot.docs[0];
+        const draftData = draftSnapshot.data()!;
+
+        if (draftData.site_id !== siteId || draft.site_id !== siteId) {
+            throw new PublishDraftError('Draft does not belong to this site');
+        }
+
+        if (!draftData.is_active || !draft.is_active) {
+            throw new PublishDraftError('Draft must be active to publish');
+        }
+
         const now = new Date();
-        const version = (activeDraft.data().version || 0) + 1;
+        const version = (draftData.version || draft.version || 0) + 1;
 
         // Create published version
         const documentRef = await publishedCollection.add({
             site_id: siteId,
-            draft_id: activeDraft.id,
+            draft_id: draft.id,
             version: version,
             is_current: true,
             published_at: now,
@@ -42,7 +58,8 @@ export async function publishDraft(siteId: string): Promise<PublishedModel | nul
         prevPublishedSnapshot.docs.forEach((doc) => {
             batch.update(doc.ref, { is_current: false });
         });
-        batch.commit();
+
+        await batch.commit();
 
         const documentSnapshot = await documentRef.get();
 
@@ -55,6 +72,10 @@ export async function publishDraft(siteId: string): Promise<PublishedModel | nul
             published_at: documentSnapshot.data()!.published_at.toDate(),
         };
     } catch (error) {
+        if (error instanceof PublishDraftError) {
+            throw error;
+        }
+
         console.error('Error publishing draft:', error);
         throw error;
     }
