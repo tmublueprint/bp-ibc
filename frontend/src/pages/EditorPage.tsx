@@ -31,6 +31,7 @@ function EditorPage() {
   const siteId = import.meta.env.VITE_SITE_ID ?? '1';
 
   const [view, setView] = useState(0); // 0 = dashboard | 1 = edit | 2 = images
+  const [editPageNumber, setEditPageNumber] = useState(0); // 0 = home | 1 = about | 2 = education | 3 = volunteer | 4 = contact | 5 = header
 
   useLocalAutoSave(storageKey, sharedStorageKey, frameRef);
   const PageComponent = pageOption.Component;
@@ -127,6 +128,9 @@ function EditorPage() {
         {/* layout */}
         <AdminUILayout
           view={view} 
+          setView={setView}
+          editPageNumber={editPageNumber}
+          setEditPageNumber={setEditPageNumber}
         />
       </div>
 
