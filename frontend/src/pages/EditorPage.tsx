@@ -55,6 +55,8 @@ function EditorPage() {
     } finally {
       setIsPublishing(false);
     }
+
+    removeAllHighlightingForEditedElements;
   };
 
   useEffect(() => {
@@ -144,7 +146,6 @@ function EditorPage() {
             <button
               type="button"
               className="editor-button editor-button--ghost"
-              onClick={removeAllHighlightingForEditedElements} // NOTE: When this function is replaced with the Publish function, make sure to add removeAllHighlightingForEditedElements somewhere within the code of the Publish function
               title="Publish changes to live site"
               onClick={handlePublish}
               disabled={isPublishing}
