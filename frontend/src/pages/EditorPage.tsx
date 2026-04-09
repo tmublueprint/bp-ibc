@@ -8,6 +8,7 @@ import { getPageOption } from '../components/retrieve/pageOptions';
 import useLocalAutoSave from '../components/save/useLocalAutoSave';
 import SaveButton from '../components/save/SaveButton';
 import { applyEditableTags, disableEditorLinks } from '../utils/applyEditableTags';
+import { removeAllHighlightingForEditedElements } from '../utils/record';
 import { publishActiveDraft } from '../services/publishService';
 import { useDispatch } from 'react-redux';
 import { SetPublished, SetUnpublished } from '../features/siteStatus/siteStatus.slices';
@@ -54,6 +55,8 @@ function EditorPage() {
     } finally {
       setIsPublishing(false);
     }
+
+    removeAllHighlightingForEditedElements;
   };
 
   useEffect(() => {

@@ -79,3 +79,7 @@ body {
 span[data-editable="true"]:empty {
   background: #0080ff;
 }
+
+.edited-not-published-yet {
+  background-color: rgba(144, 238, 144, 0.2);
+}

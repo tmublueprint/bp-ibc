@@ -3,6 +3,7 @@ import './TextSettingStyle.css'
 import { UIContext } from "../../context/UIContext";
 import { FontEnum } from "../../enum/fontEnum";
 import { Update, stylingTypes, OFFVAL, renderStyledDivs } from "./TextEdit";
+import { highlightIfEdited } from "../../utils/record";
 
 interface TextSettingPopupUIProps {
   content: string;
@@ -230,6 +231,8 @@ function TextSettingPopupUIComponent({ position, onClose}: TextSettingPopupUIPro
     } catch (e) {
         console.error('Error applying style to selection:', e);
     }
+
+    highlightIfEdited(element);
     };
 
   function applyFontFamily(fontFamily: string){

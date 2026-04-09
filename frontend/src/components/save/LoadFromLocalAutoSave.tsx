@@ -1,6 +1,7 @@
 import type { RefObject } from 'react';
 import { useEffect } from 'react';
 import { Update, renderStyledDivs } from '../textsetting/TextEdit'
+import { loadRecordsFromLocalStorage } from '../../utils/record';
 
 type LoadFromLocalAutoSaveProps = {
   storageKey: string;
@@ -181,6 +182,8 @@ function LoadFromLocalAutoSave({
       }, 100);
       timeouts.push(sharedRetryTimeout);
     }
+
+    loadRecordsFromLocalStorage();
     
     return () => {
       timeouts.forEach(clearTimeout);
