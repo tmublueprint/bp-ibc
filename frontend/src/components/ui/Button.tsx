@@ -1,13 +1,13 @@
 import './Button.css'
 
 interface ButtonProps {
-    handleClick: () => void;
-    children: React.ReactNode;
-    variance?: 'primary' | 'secondary' | 'tertiary';
-    disabled?: boolean;
-    icon?: React.ReactNode;
-    borderRadius?: string;
-    active?: boolean;
+    handleClick: () => void; // function to be called when the button is clicked
+    children: React.ReactNode; // the button text
+    variance?: 'primary' | 'secondary' | 'tertiary' | 'quaternary'; 
+    disabled?: boolean; // if the button is disabled, it will have a different style and the handleClick function will not be called when the button is clicked
+    icon?: React.ReactNode; // include an icon to the left of the button text
+    borderRadius?: string; // modify the border radius if it is unique from the variances
+    active?: boolean; // if the button is active, it will have a different style to indicate that it is active. Refer to navbar buttons in the admin UI as an example
 }
 
 // eventually have a loading state when api calls are made, which will

@@ -68,3 +68,23 @@
     font-weight: 700;
     color: #1E2E5E;
 }
+
+.button-quaternary {
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    font-size: 24px;
+    font-weight: 700;
+    color: black;
+    width: auto;
+    transition: background-color 300ms ease-in-out;
+}
+
+.button-quaternary:not(.active-quaternary):hover {
+    background-color: #f0f0f0;
+}
+
+.active-quaternary {
+    background-color: #1E2E5E;
+    color: white;
+}
