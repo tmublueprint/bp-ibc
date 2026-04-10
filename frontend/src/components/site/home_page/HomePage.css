@@ -17,42 +17,42 @@
 
 #home-page-section h1 {
     color: #FFFFFF;
-    font-size: 90px;
-    font-weight: 700;
+    font-size: var(--text-header-1-size);
+    font-weight: var(--text-header-1-weight);
 }
 
 #home-page-section h2 {
-    color: #324436;
-    font-size: 90px;
-    font-weight: 700;
+    color: var(--text-header-color);
+    font-size: var(--text-header-2-size);
+    font-weight: var(--text-header-2-weight);
 }
 
 #home-page-section h3 {
     color: #DCDACD;
-    font-size: 60px;
-    font-weight: 500;
+    font-size: var(--text-header-3-size);
+    font-weight: var(--text-header-3-weight);
 }
 
 #home-page-section h4 {
     color: #DCDACD;
-    font-size: 38px;
-    font-weight: 400;
+    font-size: var(--text-body-size);
+    font-weight: var(--font-weight-regular);
 }
 
 #home-page-section p {
     width: 1200px;
-    color: #324436;
-    font-size: 30px;
-    font-weight: 400;
+    color: var(--text-header-color);
+    font-size: var(--text-body-size);
+    font-weight: var(--font-weight-regular);
     white-space: normal;
     overflow-wrap: break-word;
     max-width: 100%;
 }
 
 #home-page-section li {
-    color: #324436;
-    font-size: 28px;
-    font-weight: 400;
+    color: var(--text-header-color);
+    font-size: var(--text-body-size);
+    font-weight: var(--font-weight-regular);
     margin-bottom: 15px;
 }
 
@@ -141,6 +141,10 @@
         margin-left: 50px;
         margin-right: 50px;
     }
+
+    #text-section.do-not-text {
+        margin-left: 50px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -148,6 +152,10 @@
         margin-left: auto;
         margin-right: auto;
         height: fit-content;
+    }
+
+    #text-section.do-not-text {
+        margin-left: 50px;
     }
 }
 
@@ -160,6 +168,10 @@
         #DCDACD 22%,
         #FFFFFF 17%
     );
+    }
+
+    #text-section.do-not-text {
+        margin-left: 25px;
     }
 }
 
@@ -174,7 +186,7 @@
 #do-not-card h3 {
     font-size: 38px;
     font-weight: 600;
-    color: #324436;
+    color: var(--text-header-color);
 }
 
 #do-not-card ul {
@@ -185,7 +197,7 @@
 
 #do-not-card ul li {
     font-size: 34px;
-    font-weight: 400;
+    font-weight: var(--text-weight-regular);
 }
 #do-not-card img {
     width: 50px;
@@ -204,7 +216,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin: 120px 165px 170px 50px;
+    margin: 120px 165px 170px 75px;
 }
 
 #main-image {
@@ -225,7 +237,7 @@
     }
 
     #text-section.found-animal-text {
-        margin-left: 50px;
+        margin-left: 60px;
         margin-top: 120px;
         margin-bottom: 170px;
         margin-right: 35px;
@@ -373,9 +385,9 @@
 }
 
 #home-page-section .card-title {
-    font-size: 38px;
+    font-size: var(--text-body-size);
     font-weight: 600;
-    color: #324436;
+    color: var(--text-header-color);
 }
 
 #home-page-section .card-content {
@@ -390,6 +402,13 @@
     background-color: #F5EDEA;
     border-radius: 16px;
     object-fit: cover;
+}
+
+@media (min-width: 1024px) {
+    #home-page-section .card-content p{
+        font-size: 30px;
+        font-weight: 400; 
+    }
 }
 
 #button-section {
@@ -408,15 +427,15 @@
     flex-direction: row;
     align-items: center;
     background-color: #DCDACD;
-    color: #324436;
+    color: var(--text-header-color);
     border: none;
     padding: 20px 40px;
     margin-top: 20px;
     gap: 20px;
     border-radius: 16px;
     cursor: pointer;
-    font-size: 37px;
-    font-weight: 500;
+    font-size: var(--text-body-size);
+    font-weight: var(--font-weight-medium);
 }
 
 #page-button img {
