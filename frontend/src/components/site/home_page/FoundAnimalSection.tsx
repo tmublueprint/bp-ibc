@@ -9,7 +9,7 @@ function FoundAnimalSection(){
     return (
         <section id="home-page-section">
             <div className="homepage-green">
-                <div id="text-section">
+                <div id="text-section" className="found-animal-text">
                     <h1>Found a wild animal?</h1>
                     <h4>Before helping, learn what to do- and what NOT <br></br>
                         to do - to keep wildlife safe.
