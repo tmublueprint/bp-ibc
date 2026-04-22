@@ -11,7 +11,7 @@ function DoNotSection(){
                         <img src={ProhibitSign} alt="no-sign"/>
                         <h3>Please Do Not Feed or Move Wildlife</h3>
                     </div>
-                    <div id="text-section">
+                    <div id="text-section" className="do-not-text">
                         <ul>
                             <li>Not every baby animal is abandoned.</li>
                             <li>Feeding or handling can cause serious harm.</li>

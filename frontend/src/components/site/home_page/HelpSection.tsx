@@ -9,9 +9,9 @@ import GreenArrow from '../../../assets/shared/greenArrowThin.svg'
 function HelpSection(){
     const navigate = useNavigate();
     return (
-        <section id="home-page-section">
+        <section id="home-page-section" className="homepage-help-section">
             <div id="help-section">
-                <h3>How Itty Bitty Critter Helps</h3>
+                <h3 className="help-title">How Itty Bitty Critter Helps</h3>
                 <div className="gallery">
                     <div className="card-content">
                         <div className="icons">
