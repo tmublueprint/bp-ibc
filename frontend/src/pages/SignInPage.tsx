@@ -17,7 +17,7 @@ function SignInPage() {
     const [password, setPassword] = useState('');
 
     const handleSignIn = ({ username, password }: SignInCredentials) => {
-        // TODO: Implement actual authentication logic here & handle errors
+        // TODO: Implement actual authentication logic here & handle errors.
         console.log("Signing in with credentials:", { username, password });
         navigate('/edit');
     }
