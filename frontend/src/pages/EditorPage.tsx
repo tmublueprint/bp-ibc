@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './Page.css';
 import '../App.css';
-import LoadFromLocalAutoSave from '../components/save/LoadFromLocalAutoSave';
-import { PageDropdown } from '../components/retrieve/RetrievePages';
+// import LoadFromLocalAutoSave from '../components/save/LoadFromLocalAutoSave';
+// import { PageDropdown } from '../components/retrieve/RetrievePages';
 import { getPageOption } from '../components/retrieve/pageOptions';
 import useLocalAutoSave from '../components/save/useLocalAutoSave';
-import SaveButton from '../components/save/SaveButton';
+// import SaveButton from '../components/save/SaveButton';
 import { applyEditableTags, disableEditorLinks } from '../utils/applyEditableTags';
 import { removeAllHighlightingForEditedElements } from '../utils/record';
 import { publishActiveDraft } from '../services/publishService';
@@ -34,17 +34,17 @@ function EditorPage() {
   const [editPageNumber, setEditPageNumber] = useState(0); // 0 = home | 1 = about | 2 = education | 3 = volunteer | 4 = contact | 5 = header
 
   useLocalAutoSave(storageKey, sharedStorageKey, frameRef);
-  const PageComponent = pageOption.Component;
+  // const PageComponent = pageOption.Component;
 
-  const handleClearDraft = () => {
-    localStorage.removeItem(storageKey);
-    window.location.reload(); // Reload to show original content
-  };
+  // const handleClearDraft = () => {
+  //   localStorage.removeItem(storageKey);
+  //   window.location.reload(); // Reload to show original content
+  // };
 
-  const handleClearSharedDraft = () => {
-    localStorage.removeItem(sharedStorageKey);
-    window.location.reload(); // Reload to show original content
-  };
+  // const handleClearSharedDraft = () => {
+  //   localStorage.removeItem(sharedStorageKey);
+  //   window.location.reload(); // Reload to show original content
+  // };
 
   const handlePublish = async () => {
     setPublishError(null);
