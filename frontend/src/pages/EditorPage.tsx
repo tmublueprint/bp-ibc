@@ -5,7 +5,7 @@ import '../App.css';
 // import LoadFromLocalAutoSave from '../components/save/LoadFromLocalAutoSave';
 // import { PageDropdown } from '../components/retrieve/RetrievePages';
 import { getPageOption } from '../components/retrieve/pageOptions';
-import useLocalAutoSave from '../components/save/useLocalAutoSave';
+// import useLocalAutoSave from '../components/save/useLocalAutoSave';
 // import SaveButton from '../components/save/SaveButton';
 import { applyEditableTags, disableEditorLinks } from '../utils/applyEditableTags';
 import { removeAllHighlightingForEditedElements } from '../utils/record';
@@ -21,8 +21,8 @@ function EditorPage() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const pageOption = getPageOption(id);
-  const storageKey = `bp-ibc:autosave:${pageOption.id}`;
-  const sharedStorageKey = 'bp-ibc:autosave:shared';
+  // const storageKey = `bp-ibc:autosave:${pageOption.id}`;
+  // const sharedStorageKey = 'bp-ibc:autosave:shared';
   const [editableReady, setEditableReady] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [publishError, setPublishError] = useState<string | null>(null);
@@ -33,7 +33,7 @@ function EditorPage() {
   const [view, setView] = useState(0); // 0 = dashboard | 1 = edit | 2 = images
   const [editPageNumber, setEditPageNumber] = useState(0); // 0 = home | 1 = about | 2 = education | 3 = volunteer | 4 = contact | 5 = header
 
-  useLocalAutoSave(storageKey, sharedStorageKey, frameRef);
+  // useLocalAutoSave(storageKey, sharedStorageKey, frameRef);
   // const PageComponent = pageOption.Component;
 
   // const handleClearDraft = () => {
