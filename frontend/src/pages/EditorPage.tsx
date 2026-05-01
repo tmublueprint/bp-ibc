@@ -8,27 +8,27 @@ import { getPageOption } from '../components/retrieve/pageOptions';
 // import useLocalAutoSave from '../components/save/useLocalAutoSave';
 // import SaveButton from '../components/save/SaveButton';
 import { applyEditableTags, disableEditorLinks } from '../utils/applyEditableTags';
-import { removeAllHighlightingForEditedElements } from '../utils/record';
-import { publishActiveDraft } from '../services/publishService';
-import { useDispatch } from 'react-redux';
-import { SetPublished, SetUnpublished } from '../features/siteStatus/siteStatus.slices';
+// import { removeAllHighlightingForEditedElements } from '../utils/record';
+// import { publishActiveDraft } from '../services/publishService';
+// import { useDispatch } from 'react-redux';
+// import { SetPublished, SetUnpublished } from '../features/siteStatus/siteStatus.slices';
 
 import AdminUINavbar from '../components/site/adminUI/layout/AdminUINavbar';
 import AdminUIHeader from '../components/site/adminUI/layout/AdminUIHeader';
 import AdminUILayout from '../components/site/adminUI/layout/AdminUILayout';
 
 function EditorPage() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { id } = useParams();
   const pageOption = getPageOption(id);
   // const storageKey = `bp-ibc:autosave:${pageOption.id}`;
   // const sharedStorageKey = 'bp-ibc:autosave:shared';
   const [editableReady, setEditableReady] = useState(false);
-  const [isPublishing, setIsPublishing] = useState(false);
-  const [publishError, setPublishError] = useState<string | null>(null);
-  const [publishSuccess, setPublishSuccess] = useState<string | null>(null);
+  // const [isPublishing, setIsPublishing] = useState(false);
+  // const [publishError, setPublishError] = useState<string | null>(null);
+  // const [publishSuccess, setPublishSuccess] = useState<string | null>(null);
   const frameRef = useRef<HTMLDivElement | null>(null);
-  const siteId = import.meta.env.VITE_SITE_ID ?? '1';
+  // const siteId = import.meta.env.VITE_SITE_ID ?? '1';
 
   const [view, setView] = useState(0); // 0 = dashboard | 1 = edit | 2 = images
   const [editPageNumber, setEditPageNumber] = useState(0); // 0 = home | 1 = about | 2 = education | 3 = volunteer | 4 = contact | 5 = header
@@ -46,25 +46,25 @@ function EditorPage() {
   //   window.location.reload(); // Reload to show original content
   // };
 
-  const handlePublish = async () => {
-    setPublishError(null);
-    setPublishSuccess(null);
-    setIsPublishing(true);
+  // const handlePublish = async () => {
+  //   setPublishError(null);
+  //   setPublishSuccess(null);
+  //   setIsPublishing(true);
 
-    try {
-      const message = await publishActiveDraft(siteId);
-      setPublishSuccess(message);
-      dispatch(SetPublished());
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to publish draft.';
-      setPublishError(message);
-      dispatch(SetUnpublished());
-    } finally {
-      setIsPublishing(false);
-    }
+  //   try {
+  //     const message = await publishActiveDraft(siteId);
+  //     setPublishSuccess(message);
+  //     dispatch(SetPublished());
+  //   } catch (error) {
+  //     const message = error instanceof Error ? error.message : 'Failed to publish draft.';
+  //     setPublishError(message);
+  //     dispatch(SetUnpublished());
+  //   } finally {
+  //     setIsPublishing(false);
+  //   }
 
-    removeAllHighlightingForEditedElements;
-  };
+  //   removeAllHighlightingForEditedElements;
+  // };
 
   useEffect(() => {
     setEditableReady(false);
