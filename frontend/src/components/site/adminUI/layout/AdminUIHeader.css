@@ -30,6 +30,24 @@
     gap: 30px;
 }
 
+@media (max-width: 1620px) {
+    .admin-header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+    
+    .admin-header-container h1 {
+        margin-top: 16px;
+        margin-bottom: 16px;
+    }
+    
+    .buttons-container {
+        justify-content: flex-start;
+    }
+}
+
 /* .admin-header-button {
     display: flex;
     justify-content: center;

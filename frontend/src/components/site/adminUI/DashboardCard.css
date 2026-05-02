@@ -4,7 +4,7 @@
     background-color: white;
     border-radius: 31px;
     padding: 40px;
-    gap: 37px;
+    gap: 30px;
     max-width: 480px;
 }
 
@@ -24,9 +24,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 100px;
-    padding: 28px;
+    width: 80px;
+    height: 80px;
+    padding: 20px;
     flex-shrink: 0;
     background-color: #F5EDEA;
     border-radius: 50%;
@@ -45,4 +45,9 @@
 .dashboard-card-content {
     font-size: 29px;
     margin: 0px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
