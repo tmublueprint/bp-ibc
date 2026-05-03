@@ -1,0 +1,64 @@
+.editor-navbar {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  min-width: 250px;
+  padding: 22px;
+  gap: 16px;
+}
+
+.editor-navbar-header {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.editor-navbar-header img {
+    width: 75px;
+    height: auto;
+}
+
+.editor-navbar-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+}
+
+.editor-navbar-title h2 {
+    margin: 0
+}
+
+.editor-navbar-title h3 {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.editor-navbar-admin-label {
+    text-decoration: underline;
+}
+
+.editor-navbar-divider {
+    width: 100%;
+    border-top: 2px solid black;
+    margin: 0px;
+}
+
+.editor-navbar-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+.navbar-button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.signout-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

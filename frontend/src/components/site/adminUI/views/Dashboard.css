@@ -1,0 +1,30 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 112px);
+    background-color: #F5EDEA;
+    gap: 24px;
+    padding: 24px;
+    font-family: 'DM Sans', sans-serif;
+    overflow-y: auto;
+}
+
+.dashboard-title {
+    margin: 0;
+    font-weight: 400;
+    color: #1E2E5E;
+}
+
+.dashboard-cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 24px;
+}
+
+@media (min-width: 1620px) {
+    .dashboard-container {
+        height: calc(100vh - 128px);
+    }
+}

@@ -2,62 +2,81 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './Page.css';
 import '../App.css';
-import LoadFromLocalAutoSave from '../components/save/LoadFromLocalAutoSave';
-import { PageDropdown } from '../components/retrieve/RetrievePages';
+// import LoadFromLocalAutoSave from '../components/save/LoadFromLocalAutoSave';
+// import { PageDropdown } from '../components/retrieve/RetrievePages';
 import { getPageOption } from '../components/retrieve/pageOptions';
-import useLocalAutoSave from '../components/save/useLocalAutoSave';
-import SaveButton from '../components/save/SaveButton';
+// import useLocalAutoSave from '../components/save/useLocalAutoSave';
+// import SaveButton from '../components/save/SaveButton';
 import { applyEditableTags, disableEditorLinks } from '../utils/applyEditableTags';
-import { removeAllHighlightingForEditedElements } from '../utils/record';
-import { publishActiveDraft } from '../services/publishService';
-import { useDispatch } from 'react-redux';
-import { SetPublished, SetUnpublished } from '../features/siteStatus/siteStatus.slices';
+// import { removeAllHighlightingForEditedElements } from '../utils/record';
+// import { publishActiveDraft } from '../services/publishService';
+// import { useDispatch } from 'react-redux';
+// import { SetPublished, SetUnpublished } from '../features/siteStatus/siteStatus.slices';
+
+import AdminUINavbar from '../components/site/adminUI/layout/AdminUINavbar';
+import AdminUIHeader from '../components/site/adminUI/layout/AdminUIHeader';
+import AdminUILayout from '../components/site/adminUI/layout/AdminUILayout';
+import { ComputerIcon } from '../components/ui/icons/adminUI/ComputerIcon';
 
 function EditorPage() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { id } = useParams();
   const pageOption = getPageOption(id);
-  const storageKey = `bp-ibc:autosave:${pageOption.id}`;
-  const sharedStorageKey = 'bp-ibc:autosave:shared';
+  // const storageKey = `bp-ibc:autosave:${pageOption.id}`;
+  // const sharedStorageKey = 'bp-ibc:autosave:shared';
   const [editableReady, setEditableReady] = useState(false);
-  const [isPublishing, setIsPublishing] = useState(false);
-  const [publishError, setPublishError] = useState<string | null>(null);
-  const [publishSuccess, setPublishSuccess] = useState<string | null>(null);
+  // const [isPublishing, setIsPublishing] = useState(false);
+  // const [publishError, setPublishError] = useState<string | null>(null);
+  // const [publishSuccess, setPublishSuccess] = useState<string | null>(null);
   const frameRef = useRef<HTMLDivElement | null>(null);
-  const siteId = import.meta.env.VITE_SITE_ID ?? '1';
+  // const siteId = import.meta.env.VITE_SITE_ID ?? '1';
 
-  useLocalAutoSave(storageKey, sharedStorageKey, frameRef);
-  const PageComponent = pageOption.Component;
+  const [view, setView] = useState(0); // 0 = dashboard | 1 = edit | 2 = images
+  const [editPageNumber, setEditPageNumber] = useState(0); // 0 = home | 1 = about | 2 = education | 3 = volunteer | 4 = contact | 5 = header
 
-  const handleClearDraft = () => {
-    localStorage.removeItem(storageKey);
-    window.location.reload(); // Reload to show original content
-  };
+  const [isWindowTooSmall, setIsWindowTooSmall] = useState(window.innerWidth < 1400);
 
-  const handleClearSharedDraft = () => {
-    localStorage.removeItem(sharedStorageKey);
-    window.location.reload(); // Reload to show original content
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsWindowTooSmall(window.innerWidth < 1400);
+    };
 
-  const handlePublish = async () => {
-    setPublishError(null);
-    setPublishSuccess(null);
-    setIsPublishing(true);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-    try {
-      const message = await publishActiveDraft(siteId);
-      setPublishSuccess(message);
-      dispatch(SetPublished());
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to publish draft.';
-      setPublishError(message);
-      dispatch(SetUnpublished());
-    } finally {
-      setIsPublishing(false);
-    }
+  // useLocalAutoSave(storageKey, sharedStorageKey, frameRef);
+  // const PageComponent = pageOption.Component;
 
-    removeAllHighlightingForEditedElements;
-  };
+  // const handleClearDraft = () => {
+  //   localStorage.removeItem(storageKey);
+  //   window.location.reload(); // Reload to show original content
+  // };
+
+  // const handleClearSharedDraft = () => {
+  //   localStorage.removeItem(sharedStorageKey);
+  //   window.location.reload(); // Reload to show original content
+  // };
+
+  // const handlePublish = async () => {
+  //   setPublishError(null);
+  //   setPublishSuccess(null);
+  //   setIsPublishing(true);
+
+  //   try {
+  //     const message = await publishActiveDraft(siteId);
+  //     setPublishSuccess(message);
+  //     dispatch(SetPublished());
+  //   } catch (error) {
+  //     const message = error instanceof Error ? error.message : 'Failed to publish draft.';
+  //     setPublishError(message);
+  //     dispatch(SetUnpublished());
+  //   } finally {
+  //     setIsPublishing(false);
+  //   }
+
+  //   removeAllHighlightingForEditedElements;
+  // };
 
   useEffect(() => {
     setEditableReady(false);
@@ -104,9 +123,39 @@ function EditorPage() {
     };
   }, [pageOption.id]);
 
+  if (isWindowTooSmall) {
+    return (
+      <div className="editor-page" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '20px', textAlign: 'center', color: '#1E2E5E' }}>
+        <ComputerIcon />
+        <h2>The screen is too small to view the editor content.<br/><br/>Please view on a window wider than 1400px.</h2>
+      </div>
+    );
+  }
+
   return (
-    <div className="editor-shell">
-      <aside className="editor-sidebar">
+    <div className="editor-page">
+      {/* Admin Panel navbar */}
+      <AdminUINavbar 
+        view={view}
+        setView={setView}
+      />
+
+      <div className="editor-content">
+        {/* header */}
+        <AdminUIHeader
+          view={view}
+        />
+
+        {/* layout */}
+        <AdminUILayout
+          view={view} 
+          setView={setView}
+          editPageNumber={editPageNumber}
+          setEditPageNumber={setEditPageNumber}
+        />
+      </div>
+
+      {/* <aside className="editor-sidebar">
         <div className="editor-sidebar__content">
           <p className="eyebrow">Site editor</p>
           <h1 className="editor-title">{pageOption.label}</h1>
@@ -118,8 +167,8 @@ function EditorPage() {
             </p>
           </div>
         </div>
-      </aside>
-      <main className="editor-main">
+      </aside> */}
+      {/* <main className="editor-main">
         <div className="editor-topbar">
           <div>
             <p className="eyebrow">Editing template</p>
@@ -167,7 +216,7 @@ function EditorPage() {
             />
           </div>
         </div>
-      </main>
+      </main> */}
     </div>
   );
 }
