@@ -17,6 +17,7 @@ import AdminUINavbar from '../components/site/adminUI/layout/AdminUINavbar';
 import AdminUIHeader from '../components/site/adminUI/layout/AdminUIHeader';
 import AdminUILayout from '../components/site/adminUI/layout/AdminUILayout';
 import { ComputerIcon } from '../components/ui/icons/adminUI/ComputerIcon';
+import UIContextProvider from '../context/UIContext';
 
 function EditorPage() {
   // const dispatch = useDispatch();
@@ -133,9 +134,10 @@ function EditorPage() {
   }
 
   return (
+    <UIContextProvider>
     <div className="editor-page">
       {/* Admin Panel navbar */}
-      <AdminUINavbar 
+      <AdminUINavbar
         view={view}
         setView={setView}
       />
@@ -148,7 +150,7 @@ function EditorPage() {
 
         {/* layout */}
         <AdminUILayout
-          view={view} 
+          view={view}
           setView={setView}
           editPageNumber={editPageNumber}
           setEditPageNumber={setEditPageNumber}
@@ -218,6 +220,7 @@ function EditorPage() {
         </div>
       </main> */}
     </div>
+    </UIContextProvider>
   );
 }
 

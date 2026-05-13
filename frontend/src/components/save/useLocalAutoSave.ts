@@ -1,9 +1,9 @@
 import type { RefObject } from 'react';
-import { useEffect } from 'react'
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { saveRecordsInLocalStorage } from '../../utils/record';
 
 // Value represented in seconds
-const autoSaveInterval = 10; // e.g. 10 = call the local auto save every 10s
+const autoSaveInterval = 10;
 const legacyKeyPrefix = 'Saved Element #';
 
 function useLocalAutoSave(
@@ -11,76 +11,87 @@ function useLocalAutoSave(
   sharedStorageKey: string,
   rootRef?: RefObject<HTMLElement | null>
 ) {
+  // forceAll=true is used on page switch to capture format-only changes (font, size,
+  // colour) that were applied while contentEditable was still 'true' due to the
+  // toolbar focus guard. The periodic timer uses forceAll=false to avoid mid-typing noise.
+  const localAutoSave = useCallback((forceAll = false) => {
+    const root = rootRef?.current ?? document.body;
+    const pageElements = Array.from(
+      root.querySelectorAll('[data-editable][data-editable-leaf="true"]')
+    );
+
+    if (!pageElements.length) return;
+
+    const pageSnapshot: Array<{ id: string; text: string; stylingUpdates: string }> = [];
+    const sharedSnapshot: Array<{ id: string; text: string; stylingUpdates: string }> = [];
+
+    pageElements.forEach((editableElement) => {
+      const el = editableElement as HTMLElement;
+      // Skip elements currently being edited to avoid saving mid-edit state,
+      // unless we're doing a forced full-save on page switch.
+      if (!forceAll && el.contentEditable === 'true') return;
+      const data = {
+        id: el.getAttribute('data-editable-id') ?? '',
+        text: el.innerHTML,
+        stylingUpdates: el.getAttribute('data-styling-updates') ?? '',
+      };
+
+      const isShared = editableElement.closest('nav') || editableElement.closest('footer');
+      if (isShared) {
+        sharedSnapshot.push(data);
+      } else {
+        pageSnapshot.push(data);
+      }
+    });
+
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(pageSnapshot));
+      localStorage.setItem(sharedStorageKey, JSON.stringify(sharedSnapshot));
+
+      if (sharedSnapshot.length > 0) {
+        console.log(
+          `[Autosave] Saved ${sharedSnapshot.length} shared component elements:`,
+          sharedSnapshot.map(s => ({
+            id: s.id,
+            text: s.text.substring(0, 30),
+            stylingUpdates: s.stylingUpdates.substring(0, 30),
+          }))
+        );
+      }
+
+      Object.keys(localStorage)
+        .filter(key => key.startsWith(legacyKeyPrefix))
+        .forEach(key => localStorage.removeItem(key));
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name === 'QuotaExceededError') {
+        console.error('Local storage exceeded!');
+      }
+    }
+
+    saveRecordsInLocalStorage();
+  }, [storageKey, sharedStorageKey, rootRef]);
+
+  // Save synchronously before React mutates the DOM on page switch.
+  // useLayoutEffect cleanup fires before the DOM mutation phase, so the old
+  // page's elements are still in rootRef.current when we snapshot them.
+  // useEffect cleanup fires after the mutation — too late, new page is already there.
+  useLayoutEffect(() => {
+    return () => { localAutoSave(true); };
+  }, [localAutoSave]);
+
   useEffect(() => {
-    const localAutoSave = () => {
-      const root = rootRef?.current ?? document.body;
-      const pageElements = Array.from(
-        root.querySelectorAll(
-          '[data-editable][data-editable-leaf="true"]'
-        )
-      );
-
-      if (!pageElements.length) {
-        return;
-      }
-
-      const pageSnapshot: Array<{ id: string; text: string; stylingUpdates: string }> = [];
-      const sharedSnapshot: Array<{ id: string; text: string; stylingUpdates: string }> = [];
-
-      pageElements.forEach((editableElement) => {
-        const data = {
-          id: editableElement.getAttribute('data-editable-id') ?? '',
-          text: editableElement.textContent ?? '',
-          stylingUpdates: editableElement.getAttribute('data-styling-updates') ?? ''
-        };
-
-        // Check if element is inside nav or footer
-        const isShared = editableElement.closest('nav') || editableElement.closest('footer');
-        
-        if (isShared) {
-          sharedSnapshot.push(data);
-        } else {
-          pageSnapshot.push(data);
-        }
-      });
-
-      try {
-        localStorage.setItem(storageKey, JSON.stringify(pageSnapshot));
-        localStorage.setItem(sharedStorageKey, JSON.stringify(sharedSnapshot));
-        
-        if (sharedSnapshot.length > 0) {
-          console.log(`[Autosave] Saved ${sharedSnapshot.length} shared component elements:`, 
-            sharedSnapshot.map(s => ({ id: s.id, text: s.text.substring(0, 30), stylingUpdates: s.stylingUpdates.substring(0, 30) })));
-        }
-
-        Object.keys(localStorage)
-          .filter((key) => key.startsWith(legacyKeyPrefix))
-          .forEach((key) => localStorage.removeItem(key));
-      } catch (error: unknown) {
-        if (error instanceof Error && error.name === 'QuotaExceededError') {
-          console.error('Local storage exceeded!');
-        }
-      }
-
-      saveRecordsInLocalStorage();
-    };
-
-    const localAutoSaveCall = setInterval(localAutoSave, autoSaveInterval * 1000);
-
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        localAutoSave();
-      }
+      if (document.visibilityState === 'hidden') localAutoSave();
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    const intervalId = setInterval(localAutoSave, autoSaveInterval * 1000);
 
     return () => {
-      localAutoSave();
-      clearInterval(localAutoSaveCall);
+      clearInterval(intervalId);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [storageKey, sharedStorageKey, rootRef]);
+  }, [localAutoSave]);
 }
 
 export default useLocalAutoSave;

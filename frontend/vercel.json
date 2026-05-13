@@ -1,5 +1,17 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/edit",
+      "destination": "https://bp-ibc.web.app/edit",
+      "permanent": false
+    },
+    {
+      "source": "/edit/:path*",
+      "destination": "https://bp-ibc.web.app/edit/:path*",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/((?!api/).*)",

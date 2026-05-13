@@ -1,0 +1,49 @@
+{
+  "hosting": {
+    "public": "frontend/dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "redirects": [
+      { "source": "/",             "destination": "https://bp-ibc.vercel.app/home",      "type": 302 },
+      { "source": "/home",         "destination": "https://bp-ibc.vercel.app/home",      "type": 302 },
+      { "source": "/about",        "destination": "https://bp-ibc.vercel.app/about",     "type": 302 },
+      { "source": "/education",    "destination": "https://bp-ibc.vercel.app/education", "type": 302 },
+      { "source": "/volunteer",    "destination": "https://bp-ibc.vercel.app/volunteer", "type": 302 },
+      { "source": "/blog",         "destination": "https://bp-ibc.vercel.app/blog",      "type": 302 },
+      { "source": "/blog/:slug",   "destination": "https://bp-ibc.vercel.app/blog/:slug","type": 302 }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/**",
+        "run": {
+          "serviceId": "api",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "functions": [
+    {
+      "source": "backend",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "runtime": "nodejs22",
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ]
+}

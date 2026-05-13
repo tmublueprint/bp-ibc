@@ -1,6 +1,5 @@
 import type { RefObject } from 'react';
 import { useEffect } from 'react';
-import { Update, renderStyledDivs } from '../textsetting/TextEdit'
 import { loadRecordsFromLocalStorage } from '../../utils/record';
 
 type LoadFromLocalAutoSaveProps = {
@@ -13,7 +12,6 @@ type LoadFromLocalAutoSaveProps = {
 
 const placeholderSnippets = [
   'Click me! then double-click me!',
-  '>hello<',
   'good morning!',
 ];
 
@@ -75,22 +73,6 @@ function LoadFromLocalAutoSave({
         }));
       }
 
-      const normalizedElements = savedElements.map((value) => {
-        if (value.text.includes('<') && value.text.includes('>')) {
-          const temp = document.createElement('div');
-          temp.innerHTML = value.text;
-          return { ...value, text: temp.textContent ?? '' };
-        }
-
-        return value;
-      });
-
-      if (normalizedElements.some((value, index) => value !== savedElements[index])) {
-        localStorage.setItem(targetKey, JSON.stringify(normalizedElements));
-      }
-
-      savedElements = normalizedElements;
-
       const hasPlaceholderContent = savedElements.some((elementText) =>
         placeholderSnippets.some((snippet) => elementText.text.includes(snippet))
       );
@@ -128,7 +110,7 @@ function LoadFromLocalAutoSave({
           return false;
         }
 
-        return value.text !== (target.textContent ?? '') || value.stylingUpdates !== (target.getAttribute("data-styling-updates") ?? '');
+        return value.text !== ((target as HTMLElement).innerHTML ?? '') || value.stylingUpdates !== (target.getAttribute("data-styling-updates") ?? '');
       });
 
       if (!shouldApply) {
@@ -139,11 +121,10 @@ function LoadFromLocalAutoSave({
       savedElements.forEach((value) => {
         const target = editableMap.get(value.id);
         if (target) {
-          target.textContent = value.text;
-          target.setAttribute("data-styling-updates", value.stylingUpdates ?? '');
-          // Styling reloaded
-          const stylingUpdatesArray: Update[] = JSON.parse(value.stylingUpdates || "[]");
-          target.innerHTML = renderStyledDivs(target.innerHTML, stylingUpdatesArray);
+          target.innerHTML = value.text;
+          if (value.stylingUpdates) {
+            target.setAttribute("data-styling-updates", value.stylingUpdates);
+          }
           appliedCount++;
         }
       });

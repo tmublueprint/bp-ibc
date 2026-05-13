@@ -8,7 +8,6 @@ const BLOCKED_TAGS = new Set([
   'INPUT',
   'SELECT',
   'OPTION',
-  'BUTTON',
 ]);
 
 const EDITABLE_ID_ATTRIBUTE = 'data-editable-id';
@@ -102,9 +101,21 @@ export function applyEditableTags(root: HTMLElement = document.body) {
       return;
     }
 
-    parent.setAttribute('data-editable', 'true');
-    parent.setAttribute('data-editable-leaf', 'true');
-    ensureEditableId(parent, root);
+    if (parent.tagName === 'BUTTON') {
+      // Make a span editable inside the button rather than the button itself.
+      // contentEditable on a <button> causes Space to fire a click instead of
+      // inserting a character, and Backspace behaves erratically.
+      const span = document.createElement('span');
+      parent.replaceChild(span, textNode);
+      span.appendChild(textNode);
+      span.setAttribute('data-editable', 'true');
+      span.setAttribute('data-editable-leaf', 'true');
+      ensureEditableId(span, root);
+    } else {
+      parent.setAttribute('data-editable', 'true');
+      parent.setAttribute('data-editable-leaf', 'true');
+      ensureEditableId(parent, root);
+    }
   });
 
   const editableElements = Array.from(
@@ -133,16 +144,7 @@ export function isSharedComponent(element: HTMLElement): boolean {
   return false;
 }
 
-export function disableEditorLinks(root: HTMLElement = document.body) {
-  const links = Array.from(root.querySelectorAll('a'));
-
-  links.forEach((link) => {
-    link.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-    });
-
-    link.setAttribute('data-editor-link-disabled', 'true');
-  });
+export function disableEditorLinks(_root: HTMLElement = document.body) {
+  // No-op: link blocking is handled via onClickCapture on the canvas div in EditPages
 }
 

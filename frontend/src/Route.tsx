@@ -6,8 +6,8 @@ import EducationPage from './pages/EducationPage';
 import VolunteerPage from './pages/VolunteerPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
-import App from './App';
 import EditorPage from './pages/EditorPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 export default function AppRoutes() {
     return (
@@ -18,9 +18,9 @@ export default function AppRoutes() {
             <Route path="/education" element={<EducationPage />} />
             <Route path="/volunteer" element={<VolunteerPage />} />
             <Route path="/edit">
-                <Route index element={<App />} />
+                <Route index element={<Navigate to="/edit/signin" replace />} />
                 <Route path="signin" element={<SignInPage />} />
-                <Route path=":id" element={<EditorPage />} />
+                <Route path=":id" element={<ProtectedRoute><EditorPage /></ProtectedRoute>} />
             </Route>
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />

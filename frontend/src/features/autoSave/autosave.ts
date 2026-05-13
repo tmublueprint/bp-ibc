@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SetSaved } from "../siteStatus/siteStatus.slices"
 import { useEffect, useRef } from "react";
 import { selectSaveStatus } from "../siteStatus/siteStatus.selectors";
+import { saveAllPagesToDatabase } from "../../services/draftSaveService";
 
 export function AutoSave(){
     const saveStatus = useSelector(selectSaveStatus)
@@ -16,8 +17,12 @@ export function AutoSave(){
                 clearTimeout(autosaveTimeout.current);
             }
 
-            autosaveTimeout.current = setTimeout(() => {
-                // TODO: add save function
+            autosaveTimeout.current = setTimeout(async () => {
+                try {
+                    await saveAllPagesToDatabase();
+                } catch (err) {
+                    console.error('[Autosave] DB save failed:', err);
+                }
                 dispatch(SetSaved());
             }, 30000)
             
