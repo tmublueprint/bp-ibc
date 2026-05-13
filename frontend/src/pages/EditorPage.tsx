@@ -38,6 +38,11 @@ function EditorPage() {
   const [isWindowTooSmall, setIsWindowTooSmall] = useState(window.innerWidth < 1400);
 
   useEffect(() => {
+    document.title = 'IBC Admin';
+    return () => { document.title = 'Itty Bitty Critters'; };
+  }, []);
+
+  useEffect(() => {
     const handleResize = () => {
       setIsWindowTooSmall(window.innerWidth < 1400);
     };
