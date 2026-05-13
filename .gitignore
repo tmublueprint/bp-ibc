@@ -110,3 +110,6 @@ public/uploads/
 
 # firebase admin service account keys
 bp-i-4d7b8-firebase-adminsdk-fbsvc-5a1cfe595e.json
+
+# Firebase CLI cache
+.firebase/

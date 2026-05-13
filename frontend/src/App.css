@@ -81,5 +81,5 @@ span[data-editable="true"]:empty {
 }
 
 .edited-not-published-yet {
-  background-color: rgba(144, 238, 144, 0.2);
+  box-shadow: inset 0 -2px 0 rgba(50, 180, 50, 0.55);
 }

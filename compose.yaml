@@ -22,7 +22,7 @@ services:
       - USE_FIRESTORE_EMULATOR=true # Enable Firestore emulator remove for real Firestore
       - FIRESTORE_EMULATOR_HOST=firebase-emulator:3003 # Enable Firestore emulator remove for real Firestore
     env_file:
-      - ./backend/.env
+      - ./backend/.env.local
     volumes:
       - ./backend/src:/app/src
 

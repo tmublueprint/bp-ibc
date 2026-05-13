@@ -16,6 +16,7 @@ export async function getPagesBydraftId(draftId: string): Promise<PageGetModel[]
                 published_version_id: doc.data().published_version_id || null,
                 page_name: doc.data().page_name,
                 page_number: doc.data().page_number,
+                content: doc.data().content ?? null,
                 created_at: doc.data().created_at.toDate(),
             });
         });
@@ -43,6 +44,7 @@ export async function getPageById(id: string): Promise<PageGetModel | null> {
         published_version_id: documentSnapshot.data()!.published_version_id || null,
         page_name: documentSnapshot.data()!.page_name,
         page_number: documentSnapshot.data()!.page_number,
+        content: documentSnapshot.data()!.content ?? null,
         created_at: documentSnapshot.data()!.created_at.toDate(),
     };
 }
@@ -56,6 +58,7 @@ export async function createNewPage(draftId: string, pageData: Omit<PageGetModel
             page_name: pageData.page_name,
             page_number: pageData.page_number,
             published_version_id: pageData.published_version_id || null,
+            content: pageData.content ?? null,
             created_at: now,
         });
 
@@ -67,6 +70,7 @@ export async function createNewPage(draftId: string, pageData: Omit<PageGetModel
             published_version_id: documentSnapshot.data()!.published_version_id || null,
             page_name: documentSnapshot.data()!.page_name,
             page_number: documentSnapshot.data()!.page_number,
+            content: documentSnapshot.data()!.content ?? null,
             created_at: documentSnapshot.data()!.created_at.toDate(),
         };
     } catch (error) {
@@ -94,6 +98,7 @@ export async function updatePageById(pageId: string, updateData: Partial<PageGet
             published_version_id: documentSnapshot.data()!.published_version_id || null,
             page_name: documentSnapshot.data()!.page_name,
             page_number: documentSnapshot.data()!.page_number,
+            content: documentSnapshot.data()!.content ?? null,
             created_at: documentSnapshot.data()!.created_at.toDate(),
         };
     } catch (error) {

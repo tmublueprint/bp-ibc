@@ -2,12 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ibc_logo from '../assets/navigation/logo.svg'
 import { Button } from '../components/ui/Button';
+import { authenticateUser } from '../features/firebase/firebaseAuth';
 import './SignInPage.css'
-
-interface SignInCredentials {
-    username: string;
-    password: string;
-}
 
 function SignInPage() {
 
@@ -15,11 +11,20 @@ function SignInPage() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
-    const handleSignIn = ({ username, password }: SignInCredentials) => {
-        // TODO: Implement actual authentication logic here & handle errors.
-        console.log("Signing in with credentials:", { username, password });
-        navigate('/edit');
+    const handleSignIn = async () => {
+        setError(null);
+        setLoading(true);
+        try {
+            await authenticateUser(username, password);
+            navigate('/edit/1');
+        } catch {
+            setError('Invalid username or password.');
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -51,8 +56,9 @@ function SignInPage() {
 
                 {/* sign in button */}
                 <div className="signin-button-container">
-                    <Button handleClick={() => handleSignIn({ username, password })} variance="primary" borderRadius="27px">
-                        Sign In
+                    {error && <p className="signin-error">{error}</p>}
+                    <Button handleClick={handleSignIn} variance="primary" borderRadius="27px" disabled={loading}>
+                        {loading ? 'Signing in…' : 'Sign In'}
                     </Button>
                 </div>
             </div>

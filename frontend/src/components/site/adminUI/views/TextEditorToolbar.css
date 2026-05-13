@@ -1,0 +1,192 @@
+/* wrapper gives the card its pinkish background */
+.toolbar-wrapper {
+    background-color: #F5EDEA;
+    padding: 14px 24px;
+    flex-shrink: 0;
+    overflow-x: auto;
+}
+
+/* the white rounded card */
+.text-editor-toolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;   /* labels all top-aligned */
+    gap: 0;
+    padding: 14px 20px;
+    background-color: white;
+    border-radius: 14px;
+}
+
+/* each labelled group */
+.toolbar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+.toolbar-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1E2E5E;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+/* row of controls inside a group */
+.toolbar-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+}
+
+/* vertical divider between groups */
+.toolbar-divider {
+    width: 1px;
+    background-color: #E5DDD9;
+    align-self: stretch;
+    margin: 0 14px;
+    flex-shrink: 0;
+}
+
+/* ── Font select ── */
+.toolbar-font-select {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    color: #1E2E5E;
+    background-color: white;
+    border: 1.5px solid #D0C8C5;
+    border-radius: 9px;
+    padding: 6px 8px;
+    cursor: pointer;
+    outline: none;
+    min-width: 136px;
+    height: 40px;
+    appearance: auto;
+}
+
+.toolbar-font-select:focus { border-color: #1E2E5E; }
+
+/* ── Size ── */
+.toolbar-size-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+}
+
+/* the [18] size display — a div, not an input, so canvas selection stays visible */
+.toolbar-size-input {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    color: #1E2E5E;
+    background-color: white;
+    border: 1.5px solid #D0C8C5;
+    border-radius: 9px;
+    padding: 6px 8px;
+    outline: none;
+    width: 62px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: text;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.toolbar-size-input--active { border-color: #1E2E5E; }
+
+/* ▲ ▼ beside the size select */
+.toolbar-size-arrows {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.toolbar-arrow-btn {
+    font-size: 9px !important;
+    width: 30px !important;
+    height: 18px !important;
+    border-radius: 7px !important;
+    padding: 0 !important;
+}
+
+/* ── Generic button ── */
+.toolbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1.5px solid #D0C8C5;
+    border-radius: 9px;
+    cursor: pointer;
+    color: #1E2E5E;
+    width: 40px;
+    height: 40px;
+    transition: background-color 100ms ease, color 100ms ease, border-color 100ms ease;
+    font-family: 'DM Sans', sans-serif;
+    flex-shrink: 0;
+}
+
+.toolbar-btn:hover { background-color: #F0EAE7; }
+
+.toolbar-btn--active {
+    background-color: #1E2E5E;
+    color: white;
+    border-color: #1E2E5E;
+}
+
+.toolbar-btn--active:hover { background-color: #162248; }
+
+/* style btn text formatting */
+.toolbar-style-bold      { font-size: 17px; font-weight: 900; }
+.toolbar-style-italic    { font-size: 17px; font-style: italic; font-weight: 700; }
+.toolbar-style-underline { font-size: 17px; font-weight: 700; }
+
+/* ── Colour row ── */
+.toolbar-colour-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 7px;
+    border: 1.5px solid #D0C8C5;
+    border-radius: 9px;
+    padding: 5px 10px;
+    height: 40px;
+    background: white;
+    box-sizing: border-box;
+}
+
+.toolbar-color-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(0,0,0,0.12);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 100ms ease;
+}
+
+.toolbar-color-swatch:hover { transform: scale(1.15); }
+
+.toolbar-color-custom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    position: relative;
+}
+
+.toolbar-color-input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+}
