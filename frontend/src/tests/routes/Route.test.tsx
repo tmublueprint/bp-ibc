@@ -3,6 +3,11 @@ import { MemoryRouter } from 'react-router-dom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import AppRoutes from '../../Route';
 
+vi.mock('../../features/firebase/firebaseApp', () => ({ default: {} }));
+vi.mock('../../components/ProtectedRoute', () => ({
+  default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
 vi.mock('../../pages/SignInPage', () => ({ default: () => <div>Sign In Page</div> }));
 vi.mock('../../pages/HomePage', () => ({ default: () => <div>Home Page</div> }));
 vi.mock('../../pages/AboutPage', () => ({ default: () => <div>About Page</div> }));
@@ -11,7 +16,6 @@ vi.mock('../../pages/VolunteerPage', () => ({ default: () => <div>Volunteer Page
 vi.mock('../../pages/BlogPage', () => ({ default: () => <div>Blog Page</div> }));
 vi.mock('../../pages/BlogPostPage', () => ({ default: () => <div>Blog Post Page</div> }));
 vi.mock('../../pages/EditorPage', () => ({ default: () => <div>Editor Page</div> }));
-vi.mock('../../App', () => ({ default: () => <div>Template Library</div> }));
 
 afterEach(() => {
   cleanup();
@@ -47,14 +51,14 @@ describe('AppRoutes', () => {
     expect(screen.getByText('Home Page')).toBeInTheDocument();
   });
 
-  it('renders nested /edit route index page', () => {
+  it('redirects /edit to /edit/signin', () => {
     render(
       <MemoryRouter initialEntries={['/edit']}>
         <AppRoutes />
       </MemoryRouter>
     );
 
-    expect(screen.getByText('Template Library')).toBeInTheDocument();
+    expect(screen.getByText('Sign In Page')).toBeInTheDocument();
   });
 
   it('renders wildcard route for unknown pages', () => {
