@@ -7,7 +7,7 @@
       "**/node_modules/**"
     ],
     "redirects": [
-      { "source": "/",             "destination": "https://bp-ibc.vercel.app/home",      "type": 302 },
+      { "source": "/",             "destination": "https://bp-ibc.web.app/edit/signin", "type": 302 },
       { "source": "/home",         "destination": "https://bp-ibc.vercel.app/home",      "type": 302 },
       { "source": "/about",        "destination": "https://bp-ibc.vercel.app/about",     "type": 302 },
       { "source": "/education",    "destination": "https://bp-ibc.vercel.app/education", "type": 302 },

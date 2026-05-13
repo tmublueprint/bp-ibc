@@ -3,12 +3,12 @@
   "redirects": [
     {
       "source": "/edit",
-      "destination": "https://bp-ibc.web.app/edit",
+      "destination": "/home",
       "permanent": false
     },
     {
       "source": "/edit/:path*",
-      "destination": "https://bp-ibc.web.app/edit/:path*",
+      "destination": "/home",
       "permanent": false
     }
   ],
