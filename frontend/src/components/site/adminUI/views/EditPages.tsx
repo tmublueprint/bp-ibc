@@ -11,6 +11,7 @@ import AboutPage from '../../../../pages/AboutPage';
 import EducationPage from '../../../../pages/EducationPage';
 import VolunteerPage from '../../../../pages/VolunteerPage';
 import Navbar from '../../../../components/site/navigation/Navbar';
+import Footer from '../../../../components/site/navigation/Footer';
 import { loadPageFromDatabase, loadSharedFromDatabase } from '../../../../services/draftSaveService';
 
 interface EditPagesProps {
@@ -43,21 +44,8 @@ function EditPages({ editPageNumber, setEditPageNumber }: EditPagesProps) {
     const [editableReady, setEditableReady] = useState(false);
     const [dbSeedReady, setDbSeedReady] = useState(false);
     const [navVisible, setNavVisible] = useState(true);
-    const [toolbarVisible, setToolbarVisible] = useState(true);
-    const lastScrollY = useRef(0);
     const isHeaderView = editPageNumber === 5;
-
-    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-        const y = e.currentTarget.scrollTop;
-        if (y < 50) {
-            setToolbarVisible(true);
-        } else if (y < lastScrollY.current) {
-            setToolbarVisible(true);
-        } else {
-            setToolbarVisible(false);
-        }
-        lastScrollY.current = y;
-    };
+    const isFooterView = editPageNumber === 6;
 
     const storageKey = `bp-ibc:autosave:page-${editPageNumber}`;
     const sharedStorageKey = 'bp-ibc:autosave:shared';
@@ -128,10 +116,11 @@ function EditPages({ editPageNumber, setEditPageNumber }: EditPagesProps) {
     const PageComponent =
         editPageNumber === 4 ? ContactPlaceholder
         : editPageNumber === 5 ? Navbar
+        : editPageNumber === 6 ? Footer
         : PAGE_COMPONENTS[editPageNumber] ?? HomePage;
 
     // hide the shared nav + footer when editing individual page content
-    const canvasClass = `edit-pages-canvas${isHeaderView ? '' : ' edit-pages-canvas--hide-chrome'}`;
+    const canvasClass = `edit-pages-canvas${(isHeaderView || isFooterView) ? '' : ' edit-pages-canvas--hide-chrome'}`;
 
     return (
         <div className="edit-pages-container">
@@ -153,12 +142,9 @@ function EditPages({ editPageNumber, setEditPageNumber }: EditPagesProps) {
                 </button>
             </div>
 
-            {/* auto-hide toolbar */}
-            <div className={`edit-pages-toolbar-wrap${toolbarVisible ? '' : ' edit-pages-toolbar-wrap--hidden'}`}>
-                <TextEditorToolbar />
-            </div>
+            <TextEditorToolbar />
 
-            <div className={canvasClass} ref={frameRef} onScroll={handleScroll}>
+            <div className={canvasClass} ref={frameRef}>
                 <UNSAFE_NavigationContext.Provider value={frozenNavContext}>
                     <PageComponent />
                 </UNSAFE_NavigationContext.Provider>
