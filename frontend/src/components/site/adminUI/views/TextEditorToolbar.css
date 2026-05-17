@@ -53,6 +53,12 @@
 }
 
 /* ── Font select ── */
+.toolbar-font-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
 .toolbar-font-select {
     font-family: 'DM Sans', sans-serif;
     font-size: 16px;
@@ -60,15 +66,24 @@
     background-color: white;
     border: 1.5px solid #D0C8C5;
     border-radius: 9px;
-    padding: 6px 8px;
+    padding: 6px 32px 6px 8px;
     cursor: pointer;
     outline: none;
     min-width: 136px;
     height: 40px;
-    appearance: auto;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .toolbar-font-select:focus { border-color: #1E2E5E; }
+
+.toolbar-font-chevron {
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+}
 
 /* ── Size ── */
 .toolbar-size-row {
@@ -142,10 +157,24 @@
 
 .toolbar-btn--active:hover { background-color: #162248; }
 
-/* style btn text formatting */
-.toolbar-style-bold      { font-size: 17px; font-weight: 900; }
-.toolbar-style-italic    { font-size: 17px; font-style: italic; font-weight: 700; }
-.toolbar-style-underline { font-size: 17px; font-weight: 700; }
+/* invert SVG icons to white when button is active */
+.toolbar-btn--active .toolbar-icon,
+.toolbar-btn--active .toolbar-arrow-icon {
+    filter: brightness(0) invert(1);
+}
+
+/* ── SVG icon sizing ── */
+.toolbar-icon {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+.toolbar-arrow-icon {
+    height: 7px;
+    width: auto;
+    display: block;
+}
 
 /* ── Colour row ── */
 .toolbar-colour-row {
@@ -181,6 +210,9 @@
     width: 16px;
     height: 16px;
     position: relative;
+    border: none;
+    background: none;
+    padding: 0;
 }
 
 .toolbar-color-input {

@@ -1,6 +1,15 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import './TextEditorToolbar.css';
 
+import boldIcon         from '../../../../assets/editor/Bold.svg';
+import italicIcon       from '../../../../assets/editor/Italic.svg';
+import underlineIcon    from '../../../../assets/editor/Underline.svg';
+import arrowUpIcon      from '../../../../assets/editor/arrow-up.svg';
+import arrowDownIcon    from '../../../../assets/editor/arrow-down.svg';
+import listIcon         from '../../../../assets/editor/List.svg';
+import numberedListIcon from '../../../../assets/editor/Numbered List.svg';
+import undoIcon         from '../../../../assets/editor/undo.svg';
+
 const PRESET_COLORS = [
     { label: 'Forest Green', value: '#2E4A2E' },
     { label: 'Navy',         value: '#1E2E5E' },
@@ -11,21 +20,19 @@ const FONTS = ['DM Sans', 'Arial', 'Georgia', 'Times New Roman', 'Verdana', 'Cou
 
 type Alignment = 'Left' | 'Center' | 'Right' | 'Full';
 
-// Prevent toolbar button clicks from stealing the page-content selection.
 const noSteal = (e: React.MouseEvent) => e.preventDefault();
 
 function TextEditorToolbar() {
-    const [isBold,        setIsBold]        = useState(false);
-    const [isItalic,      setIsItalic]      = useState(false);
-    const [isUnderline,   setIsUnderline]   = useState(false);
-    const [align,         setAlign]         = useState<Alignment>('Left');
+    const [isBold,           setIsBold]           = useState(false);
+    const [isItalic,         setIsItalic]         = useState(false);
+    const [isUnderline,      setIsUnderline]      = useState(false);
+    const [isUnorderedList,  setIsUnorderedList]  = useState(false);
+    const [isOrderedList,    setIsOrderedList]    = useState(false);
+    const [align,            setAlign]            = useState<Alignment>('Left');
     const [fontSize,      setFontSize]      = useState(18);
     const [sizeEditMode,  setSizeEditMode]  = useState(false);
     const [pendingSizeStr, setPendingSizeStr] = useState('');
 
-    // Tracks the last known selection inside editable content.
-    // Restored before every command so focus-stealing controls (select, color input)
-    // still apply to the correct text.
     const savedRangeRef  = useRef<Range | null>(null);
     const colorInputRef  = useRef<HTMLInputElement>(null);
     const fontSizeRef    = useRef(18);
@@ -37,9 +44,6 @@ function TextEditorToolbar() {
         setFontSize(clamped);
     };
 
-    // Re-focus the editable element and restore the saved selection so that
-    // execCommand has a valid contentEditable target (needed after focus-stealing
-    // controls like <select> or <input type="color"> take focus).
     const restoreSelection = useCallback(() => {
         const range = savedRangeRef.current;
         if (!range) return;
@@ -58,14 +62,18 @@ function TextEditorToolbar() {
         document.execCommand(command, false, value);
     }, [restoreSelection]);
 
-    // insertHTML with inline style so the change wins over page-level CSS class rules
-    // that override the <font face="..."> tag produced by execCommand('fontName').
+    const cmdList = useCallback((command: string) => {
+        restoreSelection();
+        document.execCommand('styleWithCSS', false, 'false');
+        document.execCommand(command, false, undefined);
+        document.execCommand('styleWithCSS', false, 'true');
+    }, [restoreSelection]);
+
     const applyFontFamily = useCallback((family: string) => {
         restoreSelection();
         const sel = window.getSelection();
         if (!sel || sel.rangeCount === 0) return;
 
-        // Collapsed cursor: use execCommand so the sticky font applies to new typing.
         if (sel.isCollapsed) {
             document.execCommand('fontName', false, family);
             return;
@@ -73,18 +81,11 @@ function TextEditorToolbar() {
 
         const range = sel.getRangeAt(0);
         const anchor = range.commonAncestorContainer;
-
-        // Find the immediate element that contains the selection.
         const container: HTMLElement | null = anchor.nodeType === Node.TEXT_NODE
             ? (anchor as Text).parentElement
             : (anchor as HTMLElement);
-
         const editableRoot = container?.closest('[data-editable="true"]') as HTMLElement | null;
 
-        // When the selection sits inside a single styled span (bold, italic, etc.), adding
-        // font-family via insertHTML causes Chrome (with styleWithCSS=true) to run a
-        // normalization pass that strips the font-family from the reinserted span.
-        // Directly mutating the span's inline style avoids the normalization entirely.
         if (container && container.tagName === 'SPAN' && container !== editableRoot && editableRoot) {
             container.style.fontFamily = family;
             const newRange = document.createRange();
@@ -95,7 +96,6 @@ function TextEditorToolbar() {
             return;
         }
 
-        // Plain text or cross-element selection — wrap selected content in a new font span.
         const fragment = range.cloneContents();
         const tmp = document.createElement('div');
         const span = document.createElement('span');
@@ -123,16 +123,11 @@ function TextEditorToolbar() {
 
         const range = sel.getRangeAt(0);
         const anchor = range.commonAncestorContainer;
-
         const container: HTMLElement | null = anchor.nodeType === Node.TEXT_NODE
             ? (anchor as Text).parentElement
             : (anchor as HTMLElement);
-
         const editableRoot = container?.closest('[data-editable="true"]') as HTMLElement | null;
 
-        // When the selection is inside a single styled span, mutate font-size directly.
-        // insertHTML here causes Chrome to normalise away the outer span's styles
-        // (bold, italic, font-family, etc.) — the same issue as applyFontFamily.
         if (container && container.tagName === 'SPAN' && container !== editableRoot && editableRoot) {
             container.style.fontSize = `${px}px`;
             const newRange = document.createRange();
@@ -145,7 +140,6 @@ function TextEditorToolbar() {
             return;
         }
 
-        // Plain text or cross-element selection — wrap in a new size span via insertHTML.
         const fragment = range.cloneContents();
         const wrapper = document.createElement('div');
         const span = document.createElement('span');
@@ -153,7 +147,6 @@ function TextEditorToolbar() {
         span.className = 'ibc-size-pending';
         span.appendChild(fragment);
         wrapper.appendChild(span);
-
         document.execCommand('insertHTML', false, wrapper.innerHTML);
 
         const inserted = document.querySelector('.ibc-size-pending') as HTMLElement | null;
@@ -170,8 +163,6 @@ function TextEditorToolbar() {
     }, [restoreSelection]);
 
     const handleUndo = useCallback(() => {
-        // Focus the editable element so execCommand('undo') targets it,
-        // but don't restore the saved range — it may be stale after prior undos.
         const range = savedRangeRef.current;
         if (range) {
             const anchor = range.commonAncestorContainer;
@@ -184,26 +175,17 @@ function TextEditorToolbar() {
         document.execCommand('undo');
     }, []);
 
-    // Sync toolbar active states with cursor/selection position.
     useEffect(() => {
         const sync = () => {
             const sel = window.getSelection();
             const anchorNode = sel?.anchorNode;
-
-            // If anchorNode is an element (e.g. after selectNodeContents on a span),
-            // use it directly so getComputedStyle reads that element's own font-size.
-            // If it's a text node, use its parent element as usual.
             const el: HTMLElement | null = anchorNode
                 ? (anchorNode.nodeType === Node.ELEMENT_NODE
                     ? (anchorNode as HTMLElement)
                     : (anchorNode as Text).parentElement)
                 : null;
-
-            // Only update toolbar state when the cursor is inside editable page content.
-            // Clicking the canvas background or toolbar controls must not reset anything.
             if (!el || !(el.closest('[data-editable="true"]') || el.isContentEditable)) return;
 
-            // Persist the range so toolbar controls can restore it before applying commands.
             if (sel && sel.rangeCount > 0) {
                 savedRangeRef.current = sel.getRangeAt(0).cloneRange();
             }
@@ -211,6 +193,8 @@ function TextEditorToolbar() {
             setIsBold(document.queryCommandState('bold'));
             setIsItalic(document.queryCommandState('italic'));
             setIsUnderline(document.queryCommandState('underline'));
+            setIsUnorderedList(!!el.closest('ul'));
+            setIsOrderedList(!!el.closest('ol'));
 
             if      (document.queryCommandState('justifyCenter')) setAlign('Center');
             else if (document.queryCommandState('justifyRight'))  setAlign('Right');
@@ -227,15 +211,10 @@ function TextEditorToolbar() {
         return () => document.removeEventListener('selectionchange', sync);
     }, []);
 
-    // Make all execCommands (bold, italic, underline, foreColor) emit CSS inline
-    // styles instead of semantic elements (<b>, <i>, <u>, <font>). This lets Chrome
-    // merge new properties into an existing span's style attribute rather than
-    // wrapping/stripping outer spans — so font-family is preserved when bold is stacked on top.
     useEffect(() => {
         document.execCommand('styleWithCSS', false, 'true');
     }, []);
 
-    // Exit size-edit mode when the user clicks anywhere outside the size div.
     useEffect(() => {
         if (!sizeEditMode) return;
         const handleOutside = (e: MouseEvent) => {
@@ -247,9 +226,6 @@ function TextEditorToolbar() {
         return () => document.removeEventListener('mousedown', handleOutside);
     }, [sizeEditMode]);
 
-    // Capture keystrokes at document level while size-edit mode is active so
-    // that digits/Backspace/Enter never reach the contentEditable canvas and
-    // the canvas selection stays visible throughout.
     useEffect(() => {
         if (!sizeEditMode) return;
         const handleKey = (e: KeyboardEvent) => {
@@ -278,7 +254,7 @@ function TextEditorToolbar() {
                 setSizeEditMode(false);
             }
         };
-        document.addEventListener('keydown', handleKey, true); // capture phase
+        document.addEventListener('keydown', handleKey, true);
         return () => document.removeEventListener('keydown', handleKey, true);
     }, [sizeEditMode, applyFontSize]);
 
@@ -312,14 +288,17 @@ function TextEditorToolbar() {
                 {/* Font */}
                 <div className="toolbar-group">
                     <span className="toolbar-label">Font</span>
-                    <select className="toolbar-font-select" onChange={e => applyFontFamily(e.target.value)} defaultValue="DM Sans">
-                        {FONTS.map(f => <option key={f} value={f}>{f}</option>)}
-                    </select>
+                    <div className="toolbar-font-wrapper">
+                        <select className="toolbar-font-select" onChange={e => applyFontFamily(e.target.value)} defaultValue="DM Sans">
+                            {FONTS.map(f => <option key={f} value={f}>{f}</option>)}
+                        </select>
+                        <span className="toolbar-font-chevron"><ChevronDown /></span>
+                    </div>
                 </div>
 
                 <div className="toolbar-divider" />
 
-                {/* Size — click to enter edit mode, type digits, press Enter to apply */}
+                {/* Size */}
                 <div className="toolbar-group">
                     <span className="toolbar-label">Size</span>
                     <div className="toolbar-size-row">
@@ -332,8 +311,12 @@ function TextEditorToolbar() {
                             {sizeEditMode ? pendingSizeStr : fontSize}
                         </div>
                         <div className="toolbar-size-arrows">
-                            <button className="toolbar-btn toolbar-arrow-btn" onMouseDown={noSteal} onClick={handleSizeUp}   title="Increase">▲</button>
-                            <button className="toolbar-btn toolbar-arrow-btn" onMouseDown={noSteal} onClick={handleSizeDown} title="Decrease">▼</button>
+                            <button className="toolbar-btn toolbar-arrow-btn" onMouseDown={noSteal} onClick={handleSizeUp}   title="Increase">
+                                <img src={arrowUpIcon}   className="toolbar-arrow-icon" alt="" />
+                            </button>
+                            <button className="toolbar-btn toolbar-arrow-btn" onMouseDown={noSteal} onClick={handleSizeDown} title="Decrease">
+                                <img src={arrowDownIcon} className="toolbar-arrow-icon" alt="" />
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -344,12 +327,15 @@ function TextEditorToolbar() {
                 <div className="toolbar-group">
                     <span className="toolbar-label">Style</span>
                     <div className="toolbar-row">
-                        <button className={`toolbar-btn toolbar-style-bold${isBold ? ' toolbar-btn--active' : ''}`}
-                            onMouseDown={noSteal} onClick={handleBold} title="Bold"><strong>B</strong></button>
-                        <button className={`toolbar-btn toolbar-style-italic${isItalic ? ' toolbar-btn--active' : ''}`}
-                            onMouseDown={noSteal} onClick={handleItalic} title="Italic"><em>I</em></button>
-                        <button className={`toolbar-btn toolbar-style-underline${isUnderline ? ' toolbar-btn--active' : ''}`}
-                            onMouseDown={noSteal} onClick={handleUnderline} title="Underline"><u>U</u></button>
+                        <button className={`toolbar-btn${isBold      ? ' toolbar-btn--active' : ''}`} onMouseDown={noSteal} onClick={handleBold}      title="Bold">
+                            <img src={boldIcon}      className="toolbar-icon" alt="Bold" />
+                        </button>
+                        <button className={`toolbar-btn${isItalic    ? ' toolbar-btn--active' : ''}`} onMouseDown={noSteal} onClick={handleItalic}    title="Italic">
+                            <img src={italicIcon}    className="toolbar-icon" alt="Italic" />
+                        </button>
+                        <button className={`toolbar-btn${isUnderline ? ' toolbar-btn--active' : ''}`} onMouseDown={noSteal} onClick={handleUnderline} title="Underline">
+                            <img src={underlineIcon} className="toolbar-icon" alt="Underline" />
+                        </button>
                     </div>
                 </div>
 
@@ -403,8 +389,12 @@ function TextEditorToolbar() {
                 <div className="toolbar-group">
                     <span className="toolbar-label">Lists</span>
                     <div className="toolbar-row">
-                        <button className="toolbar-btn" onMouseDown={noSteal} onClick={() => cmd('insertUnorderedList')} title="Bullet list"><BulletListIcon /></button>
-                        <button className="toolbar-btn" onMouseDown={noSteal} onClick={() => cmd('insertOrderedList')}   title="Numbered list"><NumberedListIcon /></button>
+                        <button className={`toolbar-btn${isUnorderedList ? ' toolbar-btn--active' : ''}`} onMouseDown={noSteal} onClick={() => cmdList('insertUnorderedList')} title="Bullet list">
+                            <img src={listIcon}         className="toolbar-icon" alt="Bullet list" />
+                        </button>
+                        <button className={`toolbar-btn${isOrderedList ? ' toolbar-btn--active' : ''}`} onMouseDown={noSteal} onClick={() => cmdList('insertOrderedList')}   title="Numbered list">
+                            <img src={numberedListIcon} className="toolbar-icon" alt="Numbered list" />
+                        </button>
                     </div>
                 </div>
 
@@ -414,7 +404,9 @@ function TextEditorToolbar() {
                 <div className="toolbar-group">
                     <span className="toolbar-label">Undo</span>
                     <div className="toolbar-row">
-                        <button className="toolbar-btn" onMouseDown={noSteal} onClick={handleUndo} title="Undo"><UndoIcon /></button>
+                        <button className="toolbar-btn" onMouseDown={noSteal} onClick={handleUndo} title="Undo">
+                            <img src={undoIcon} className="toolbar-icon" alt="Undo" />
+                        </button>
                     </div>
                 </div>
 
@@ -442,42 +434,6 @@ function AlignIcon({ type }: { type: Alignment }) {
             <line x1={shortX1} y1="7"    x2={shortX2} y2="7"    stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
             <line x1="2" y1="10.5" x2="16" y2="10.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
             <line x1={shortX1} y1="14"   x2={shortX2} y2="14"   stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
-        </svg>
-    );
-}
-
-function BulletListIcon() {
-    return (
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <circle cx="3" cy="4.5" r="1.4" fill="currentColor"/>
-            <line x1="6.5" y1="4.5" x2="16" y2="4.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
-            <circle cx="3" cy="9"   r="1.4" fill="currentColor"/>
-            <line x1="6.5" y1="9"   x2="16" y2="9"   stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
-            <circle cx="3" cy="13.5" r="1.4" fill="currentColor"/>
-            <line x1="6.5" y1="13.5" x2="16" y2="13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
-        </svg>
-    );
-}
-
-function NumberedListIcon() {
-    return (
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <text x="1" y="6.5" fontSize="5.5" fontWeight="700" fill="currentColor" fontFamily="sans-serif">1.</text>
-            <line x1="6.5" y1="4.5" x2="16" y2="4.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
-            <text x="1" y="11"  fontSize="5.5" fontWeight="700" fill="currentColor" fontFamily="sans-serif">2.</text>
-            <line x1="6.5" y1="9"   x2="16" y2="9"   stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
-            <text x="1" y="15.5" fontSize="5.5" fontWeight="700" fill="currentColor" fontFamily="sans-serif">3.</text>
-            <line x1="6.5" y1="13.5" x2="16" y2="13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
-        </svg>
-    );
-}
-
-function UndoIcon() {
-    return (
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M3 6.5C4.3 4.2 6.8 2.5 9.7 2.5C13.8 2.5 17 5.7 17 9.8S13.8 17 9.7 17C6.8 17 4.3 15.3 3 13"
-                stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
-            <polyline points="1,3.5 3,6.5 5.5,5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
     );
 }

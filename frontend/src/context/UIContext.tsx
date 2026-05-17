@@ -59,10 +59,49 @@ function UIContextProvider({ children }: { children: ReactNode }) {
 
             element.addEventListener('input', handleTextChanges);
 
+            const getAnchorNode = (sel: Selection): HTMLElement | null => {
+                const anchor = sel.anchorNode;
+                if (!anchor) return null;
+                return anchor.nodeType === Node.TEXT_NODE
+                    ? (anchor as Text).parentElement
+                    : anchor as HTMLElement;
+            };
+
             const handleKeyDown = (e: KeyboardEvent) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
+                    // Inside a list: let browser create a new <li> naturally
+                    const sel = window.getSelection();
+                    if (sel && getAnchorNode(sel)?.closest('ul, ol')) return;
                     e.preventDefault();
                     element.blur();
+                }
+
+                if (e.key === 'Backspace') {
+                    const sel = window.getSelection();
+                    if (!sel || !sel.isCollapsed || sel.rangeCount === 0) return;
+                    const node = getAnchorNode(sel);
+                    const li = node?.closest('li');
+                    if (!li) return;
+
+                    // Only handle when cursor is at the very start of the <li> content
+                    const range = sel.getRangeAt(0);
+                    try {
+                        const testRange = document.createRange();
+                        testRange.setStart(li, 0);
+                        testRange.setEnd(range.startContainer, range.startOffset);
+                        if (testRange.toString().length > 0) return;
+                    } catch {
+                        return;
+                    }
+
+                    // Let browser handle non-first items (merges with previous <li>)
+                    if (li.previousElementSibling) return;
+
+                    const list = li.closest('ul, ol');
+                    if (!list) return;
+                    e.preventDefault();
+                    const cmd = list.tagName === 'UL' ? 'insertUnorderedList' : 'insertOrderedList';
+                    document.execCommand(cmd, false, undefined);
                 }
             };
 
