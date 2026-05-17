@@ -2,16 +2,54 @@
   display: flex;
   flex-direction: column;
   background-color: white;
+  width: 250px;
   min-width: 250px;
   padding: 22px;
   gap: 16px;
+  transition: width 0.25s ease, min-width 0.25s ease, padding 0.25s ease;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.editor-navbar--collapsed {
+  width: 72px;
+  min-width: 72px;
+  padding: 22px 12px;
+}
+
+/* hide title text and sign-out when collapsed */
+.editor-navbar--collapsed .editor-navbar-title,
+.editor-navbar--collapsed .signout-button-container {
+  display: none;
+}
+
+/* center the logo when collapsed */
+.editor-navbar--collapsed .editor-navbar-header {
+  justify-content: center;
+}
+
+.editor-navbar--collapsed .editor-navbar-header img {
+  width: 38px;
+}
+
+/* center icon-only nav buttons */
+.editor-navbar--collapsed .button {
+  justify-content: center;
+  padding: 10px;
+}
+
+/* hide button label text when collapsed */
+.editor-navbar--collapsed .button-text {
+  display: none;
 }
 
 .editor-navbar-header {
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 20px;
 }
+
 
 .editor-navbar-header img {
     width: 75px;

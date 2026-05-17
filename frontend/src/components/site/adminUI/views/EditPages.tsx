@@ -42,7 +42,22 @@ function EditPages({ editPageNumber, setEditPageNumber }: EditPagesProps) {
     const frameRef = useRef<HTMLDivElement | null>(null);
     const [editableReady, setEditableReady] = useState(false);
     const [dbSeedReady, setDbSeedReady] = useState(false);
+    const [navVisible, setNavVisible] = useState(true);
+    const [toolbarVisible, setToolbarVisible] = useState(true);
+    const lastScrollY = useRef(0);
     const isHeaderView = editPageNumber === 5;
+
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const y = e.currentTarget.scrollTop;
+        if (y < 50) {
+            setToolbarVisible(true);
+        } else if (y < lastScrollY.current) {
+            setToolbarVisible(true);
+        } else {
+            setToolbarVisible(false);
+        }
+        lastScrollY.current = y;
+    };
 
     const storageKey = `bp-ibc:autosave:page-${editPageNumber}`;
     const sharedStorageKey = 'bp-ibc:autosave:shared';
@@ -120,9 +135,30 @@ function EditPages({ editPageNumber, setEditPageNumber }: EditPagesProps) {
 
     return (
         <div className="edit-pages-container">
-            <EditPageNavbar editPageNumber={editPageNumber} setEditPageNumber={setEditPageNumber} />
-            <TextEditorToolbar />
-            <div className={canvasClass} ref={frameRef}>
+
+            {/* collapsible page nav */}
+            <div className={`edit-pages-nav-wrap${navVisible ? '' : ' edit-pages-nav-wrap--hidden'}`}>
+                <EditPageNavbar editPageNumber={editPageNumber} setEditPageNumber={setEditPageNumber} />
+            </div>
+
+            {/* always-visible strip: nav toggle + toolbar state hint */}
+            <div className="edit-pages-controls">
+                <button
+                    className="edit-pages-nav-toggle"
+                    onClick={() => setNavVisible(v => !v)}
+                    title={navVisible ? 'Hide page selector' : 'Show page selector'}
+                >
+                    <NavToggleChevron up={navVisible} />
+                    {navVisible ? 'Hide pages' : 'Show pages'}
+                </button>
+            </div>
+
+            {/* auto-hide toolbar */}
+            <div className={`edit-pages-toolbar-wrap${toolbarVisible ? '' : ' edit-pages-toolbar-wrap--hidden'}`}>
+                <TextEditorToolbar />
+            </div>
+
+            <div className={canvasClass} ref={frameRef} onScroll={handleScroll}>
                 <UNSAFE_NavigationContext.Provider value={frozenNavContext}>
                     <PageComponent />
                 </UNSAFE_NavigationContext.Provider>
@@ -134,6 +170,14 @@ function EditPages({ editPageNumber, setEditPageNumber }: EditPagesProps) {
                 />
             </div>
         </div>
+    );
+}
+
+function NavToggleChevron({ up }: { up: boolean }) {
+    return (
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ transform: up ? 'rotate(0deg)' : 'rotate(180deg)', transition: 'transform 0.25s ease' }}>
+            <path d="M2.5 7.5L6 4L9.5 7.5" stroke="#1E2E5E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
     );
 }
 

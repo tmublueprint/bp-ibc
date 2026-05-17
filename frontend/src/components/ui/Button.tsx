@@ -22,7 +22,7 @@ export function Button({ handleClick, children, variance = 'primary', disabled =
             style={{borderRadius: borderRadius}}
         >   
             {icon ?? null}
-            {children}
+            <span className="button-text">{children}</span>
         </button>
     );
 }

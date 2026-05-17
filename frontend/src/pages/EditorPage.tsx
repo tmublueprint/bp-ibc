@@ -34,6 +34,7 @@ function EditorPage() {
 
   const [view, setView] = useState(0); // 0 = dashboard | 1 = edit | 2 = images
   const [editPageNumber, setEditPageNumber] = useState(0); // 0 = home | 1 = about | 2 = education | 3 = volunteer | 4 = contact | 5 = header
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const [isWindowTooSmall, setIsWindowTooSmall] = useState(window.innerWidth < 1400);
 
@@ -145,12 +146,16 @@ function EditorPage() {
       <AdminUINavbar
         view={view}
         setView={setView}
+        collapsed={sidebarCollapsed}
+        onToggle={() => setSidebarCollapsed(c => !c)}
       />
 
       <div className="editor-content">
         {/* header */}
         <AdminUIHeader
           view={view}
+          sidebarCollapsed={sidebarCollapsed}
+          onToggleSidebar={() => setSidebarCollapsed(c => !c)}
         />
 
         {/* layout */}

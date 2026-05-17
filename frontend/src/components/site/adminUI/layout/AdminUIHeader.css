@@ -23,6 +23,23 @@
     letter-spacing: 0%;
 }
 
+.admin-header-sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    transition: background-color 0.15s ease;
+}
+
+.admin-header-sidebar-toggle:hover {
+    background-color: rgba(30, 46, 94, 0.08);
+}
+
 .buttons-container {
     display: flex;
     justify-content: center;
