@@ -10,9 +10,11 @@ const SITE_ID = import.meta.env.VITE_SITE_ID ?? '1';
 
 interface AdminUIHeaderProps {
     view: number;
+    sidebarCollapsed: boolean;
+    onToggleSidebar: () => void;
 }
 
-function AdminUIHeader({ view }: AdminUIHeaderProps) {
+function AdminUIHeader({ view, sidebarCollapsed, onToggleSidebar }: AdminUIHeaderProps) {
     const [saving, setSaving] = useState(false);
     const [deploying, setDeploying] = useState(false);
 
@@ -42,6 +44,9 @@ function AdminUIHeader({ view }: AdminUIHeaderProps) {
 
     return (
         <div className="admin-header-container">
+            <button className="admin-header-sidebar-toggle" onClick={onToggleSidebar} title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
+                <HamburgerIcon />
+            </button>
             <h1>Hi, Kelly!&nbsp;
                 <span>
                     {view === 1 ? "You're editing pages now."
@@ -60,6 +65,16 @@ function AdminUIHeader({ view }: AdminUIHeaderProps) {
                 </div>
             }
         </div>
+    );
+}
+
+function HamburgerIcon() {
+    return (
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <line x1="3" y1="5.5"  x2="19" y2="5.5"  stroke="#1E2E5E" strokeWidth="2" strokeLinecap="round"/>
+            <line x1="3" y1="11"   x2="19" y2="11"   stroke="#1E2E5E" strokeWidth="2" strokeLinecap="round"/>
+            <line x1="3" y1="16.5" x2="19" y2="16.5" stroke="#1E2E5E" strokeWidth="2" strokeLinecap="round"/>
+        </svg>
     );
 }
 

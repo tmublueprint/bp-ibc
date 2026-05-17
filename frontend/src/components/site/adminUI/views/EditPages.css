@@ -8,6 +8,62 @@
     overflow: hidden;
 }
 
+/* ── Page nav collapse ── */
+.edit-pages-nav-wrap {
+    overflow: hidden;
+    max-height: 200px;
+    transition: max-height 0.3s ease;
+    flex-shrink: 0;
+}
+
+.edit-pages-nav-wrap--hidden {
+    max-height: 0;
+}
+
+/* ── Always-visible strip with toggle ── */
+.edit-pages-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 4px 24px;
+    flex-shrink: 0;
+}
+
+.edit-pages-nav-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1E2E5E;
+    padding: 4px 10px;
+    border-radius: 8px;
+    transition: background-color 0.15s ease;
+}
+
+.edit-pages-nav-toggle:hover {
+    background-color: rgba(30, 46, 94, 0.09);
+}
+
+/* ── Toolbar auto-hide ── */
+.edit-pages-toolbar-wrap {
+    overflow: hidden;
+    max-height: 120px;
+    opacity: 1;
+    transition: max-height 0.25s ease, opacity 0.2s ease;
+    flex-shrink: 0;
+}
+
+.edit-pages-toolbar-wrap--hidden {
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
 .edit-pages-canvas {
     flex: 1;
     min-height: 0;

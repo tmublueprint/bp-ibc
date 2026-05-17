@@ -9,20 +9,20 @@ import ibc_logo from '../../../../assets/navigation/logo.svg';
 interface AdminUINavbarProps {
   view: number;
   setView: (view: number) => void;
+  collapsed?: boolean;
+  onToggle?: () => void;
 }
 
 
-function AdminUINavbar({ view, setView }: AdminUINavbarProps) {
+function AdminUINavbar({ view, setView, collapsed = false }: AdminUINavbarProps) {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-    // when sign in/out logic is implemented,
-    // remove any cookies/local storage items here as well
     navigate('/edit/signin');
   }
 
 	return (
-		<div className="editor-navbar">
+		<div className={`editor-navbar${collapsed ? ' editor-navbar--collapsed' : ''}`}>
 
         {/* logo */}
         <div className="editor-navbar-header">
@@ -58,5 +58,6 @@ function AdminUINavbar({ view, setView }: AdminUINavbarProps) {
       </div>
 	);
 }
+
 
 export default AdminUINavbar;
