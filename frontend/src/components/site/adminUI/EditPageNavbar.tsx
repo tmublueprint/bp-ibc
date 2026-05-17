@@ -1,7 +1,6 @@
 import './EditPageNavbar.css';
 import { Button } from '../../ui/Button';
 import EditPencilIcon from '../../ui/icons/adminUI/EditPencilIcon';
-import PlusIcon from '../../ui/icons/adminUI/PlusIcon';
 
 interface EditPageNavbarProps {
     editPageNumber: number;
@@ -29,8 +28,8 @@ function EditPageNavbar({ editPageNumber, setEditPageNumber }: EditPageNavbarPro
             <Button handleClick={() => setEditPageNumber(5)} variance="quaternary" borderRadius="27px" active={editPageNumber === 5} icon={ editPageNumber === 5 ? <EditPencilIcon /> : undefined }>
                 Header
             </Button>
-            <Button handleClick={() => {}} variance="quaternary" borderRadius="27px" icon={<PlusIcon />}>
-                Add Section
+            <Button handleClick={() => setEditPageNumber(6)} variance="quaternary" borderRadius="27px" active={editPageNumber === 6} icon={ editPageNumber === 6 ? <EditPencilIcon /> : undefined }>
+                Footer
             </Button>
         </div>
     );

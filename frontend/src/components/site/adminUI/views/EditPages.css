@@ -49,20 +49,6 @@
     background-color: rgba(30, 46, 94, 0.09);
 }
 
-/* ── Toolbar auto-hide ── */
-.edit-pages-toolbar-wrap {
-    overflow: hidden;
-    max-height: 120px;
-    opacity: 1;
-    transition: max-height 0.25s ease, opacity 0.2s ease;
-    flex-shrink: 0;
-}
-
-.edit-pages-toolbar-wrap--hidden {
-    max-height: 0;
-    opacity: 0;
-    pointer-events: none;
-}
 
 .edit-pages-canvas {
     flex: 1;
