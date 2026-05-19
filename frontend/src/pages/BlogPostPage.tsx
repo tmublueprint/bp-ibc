@@ -4,6 +4,8 @@ import { PortableText } from '@portabletext/react';
 import { getPostBySlug } from '../services/blogService';
 import type { BlogPost } from '../types/blog.types';
 import { urlFor } from '../lib/sanityClient';
+import Navbar from '../components/site/navigation/Navbar';
+import Footer from '../components/site/navigation/Footer';
 import './BlogPostPage.css';
 
 export default function BlogPostPage() {
@@ -46,19 +48,31 @@ export default function BlogPostPage() {
   };
 
   if (loading) {
-    return <div className="blog-post-loading">Loading...</div>;
+    return (
+      <>
+        <Navbar />
+        <div className="blog-post-loading">Loading...</div>
+        <Footer />
+      </>
+    );
   }
 
   if (error || !post) {
     return (
-      <div className="blog-post-error">
-        <h2>{error || 'Post not found'}</h2>
-        <button onClick={() => navigate('/blog')}>Back to Blog</button>
-      </div>
+      <>
+        <Navbar />
+        <div className="blog-post-error">
+          <h2>{error || 'Post not found'}</h2>
+          <button onClick={() => navigate('/blog')}>Back to Blog</button>
+        </div>
+        <Footer />
+      </>
     );
   }
 
   return (
+    <>
+    <Navbar />
     <div className="blog-post-page">
       <button className="back-button" onClick={() => navigate('/blog')}>
         ← Back to Blog
@@ -96,5 +110,7 @@ export default function BlogPostPage() {
         </div>
       </article>
     </div>
+    <Footer />
+    </>
   );
 }

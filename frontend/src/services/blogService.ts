@@ -20,8 +20,9 @@ export async function getAllPosts(): Promise<BlogPost[]> {
     publishedAt,
     body
   }`;
-  
-  return await client.fetch(query);
+
+  const result = await client.fetch(query);
+  return result ?? [];
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -78,6 +79,7 @@ export async function getAllCategories(): Promise<Category[]> {
     title,
     description
   }`;
-  
-  return await client.fetch(query);
+
+  const result = await client.fetch(query);
+  return result ?? [];
 }

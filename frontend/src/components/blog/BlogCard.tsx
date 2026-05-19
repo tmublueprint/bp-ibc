@@ -25,13 +25,16 @@ export default function BlogCard({ post, onClick }: BlogCardProps) {
     });
   };
 
+  if (!post.slug?.current) return null;
+
   return (
     <div className="blog-card" onClick={() => onClick(post.slug.current)}>
-      {imageUrl && (
-        <div className="blog-card-image">
-          <img src={imageUrl} alt={post.title} />
-        </div>
-      )}
+      <div className="blog-card-image">
+        {imageUrl
+          ? <img src={imageUrl} alt={post.title} />
+          : <div className="blog-card-image-placeholder">🐾</div>
+        }
+      </div>
       <div className="blog-card-content">
         <h3 className="blog-card-title">{post.title}</h3>
         <div className="blog-card-meta">
