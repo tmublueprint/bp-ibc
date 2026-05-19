@@ -81,7 +81,13 @@ export function applyEditableTags(root: HTMLElement = document.body) {
         }
 
         if (parent.childElementCount > 0) {
-          return NodeFilter.FILTER_REJECT;
+          // Void/decorative elements (BR, IMG, SVG) hold no text and shouldn't
+          // prevent sibling text nodes from being made editable
+          const VOID_TAGS = new Set(['BR', 'IMG', 'SVG']);
+          const hasBlockingChildren = Array.from(parent.children).some(
+            child => !VOID_TAGS.has((child as Element).tagName)
+          );
+          if (hasBlockingChildren) return NodeFilter.FILTER_REJECT;
         }
 
         return NodeFilter.FILTER_ACCEPT;
