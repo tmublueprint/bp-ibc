@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { getAllPosts, getAllCategories, getPostsByCategory } from '../services/blogService';
 import type { BlogPost, Category } from '../types/blog.types';
 import BlogCard from '../components/blog/BlogCard';
+import Navbar from '../components/site/navigation/Navbar';
+import Footer from '../components/site/navigation/Footer';
 import './BlogPage.css';
 
 export default function BlogPage() {
@@ -10,6 +12,7 @@ export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retrying, setRetrying] = useState(false);
@@ -35,9 +38,17 @@ export default function BlogPage() {
       const fetchedPosts = categoryId
         ? await getPostsByCategory(categoryId)
         : await getAllPosts();
-      setPosts(fetchedPosts);
+      setPosts(fetchedPosts.sort((a, b) =>
+        sortOrder === 'newest'
+          ? new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+          : new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
+      ));
     } catch (err) {
-      setError('Unable to load blog posts. Please check your connection or try again.');
+      const msg = err instanceof Error ? err.message : String(err);
+      const isCors = msg.toLowerCase().includes('cors') || msg.toLowerCase().includes('network') || msg.toLowerCase().includes('failed to fetch');
+      setError(isCors
+        ? 'Unable to connect to the blog. If you\'re the site admin, add your domain to CORS Origins in the Sanity dashboard.'
+        : 'Unable to load blog posts. Please try again.');
       console.error('Error loading posts:', err);
     } finally {
       setLoading(false);
@@ -55,35 +66,64 @@ export default function BlogPage() {
     loadPosts(categoryId || undefined);
   };
 
+  const handleSortChange = (order: 'newest' | 'oldest') => {
+    setSortOrder(order);
+    setPosts(prev => [...prev].sort((a, b) =>
+      order === 'newest'
+        ? new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+        : new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
+    ));
+  };
+
   const handlePostClick = (slug: string) => {
     navigate(`/blog/${slug}`);
   };
 
   return (
+    <>
+    <Navbar />
     <div className="blog-page">
       <div className="blog-header">
         <h1>Blog</h1>
         <p>Insights, stories, and updates from our community</p>
       </div>
 
-      {/* Category Filter */}
-      {!error && categories.length > 0 && (
-        <div className="blog-filters">
-          <button
-            className={`filter-btn ${!selectedCategory ? 'active' : ''}`}
-            onClick={() => handleCategoryFilter(null)}
-          >
-            All Posts
-          </button>
-          {categories.map((category) => (
+      {/* Filters */}
+      {!error && (
+        <div className="blog-controls">
+          {categories.length > 0 && (
+            <div className="blog-filters">
+              <button
+                className={`filter-btn ${!selectedCategory ? 'active' : ''}`}
+                onClick={() => handleCategoryFilter(null)}
+              >
+                All Posts
+              </button>
+              {categories.map((category) => (
+                <button
+                  key={category._id}
+                  className={`filter-btn ${selectedCategory === category._id ? 'active' : ''}`}
+                  onClick={() => handleCategoryFilter(category._id)}
+                >
+                  {category.title}
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="blog-sort">
             <button
-              key={category._id}
-              className={`filter-btn ${selectedCategory === category._id ? 'active' : ''}`}
-              onClick={() => handleCategoryFilter(category._id)}
+              className={`sort-btn ${sortOrder === 'newest' ? 'active' : ''}`}
+              onClick={() => handleSortChange('newest')}
             >
-              {category.title}
+              Newest
             </button>
-          ))}
+            <button
+              className={`sort-btn ${sortOrder === 'oldest' ? 'active' : ''}`}
+              onClick={() => handleSortChange('oldest')}
+            >
+              Oldest
+            </button>
+          </div>
         </div>
       )}
 
@@ -110,7 +150,7 @@ export default function BlogPage() {
         <div className="blog-empty-container">
           <div className="empty-icon">📝</div>
           <h2>No posts yet</h2>
-          <p>Check back soon for new content!</p>
+          <p>Check back soon — we'll be sharing stories and updates here.</p>
         </div>
       ) : (
         <div className="blog-feed">
@@ -120,5 +160,7 @@ export default function BlogPage() {
         </div>
       )}
     </div>
+    <Footer />
+    </>
   );
 }

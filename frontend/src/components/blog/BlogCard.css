@@ -1,20 +1,21 @@
 .blog-card {
   background: white;
-  border-radius: 8px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e8e2de;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-family: 'DM Sans', sans-serif;
 }
 
 .blog-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(30, 46, 94, 0.12);
 }
 
 .blog-card-image {
   width: 100%;
-  height: 250px;
+  height: 220px;
   overflow: hidden;
 }
 
@@ -24,15 +25,26 @@
   object-fit: cover;
 }
 
+.blog-card-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #F5EDEA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
 .blog-card-content {
   padding: 1.5rem;
 }
 
 .blog-card-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 0 0 1rem 0;
-  color: #1a1a1a;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  color: #1E2E5E;
+  line-height: 1.35;
 }
 
 .blog-card-meta {
@@ -40,11 +52,12 @@
   gap: 1rem;
   margin-bottom: 1rem;
   font-size: 0.875rem;
-  color: #666;
+  color: #7a8a7c;
 }
 
 .blog-card-author {
-  font-weight: 500;
+  font-weight: 600;
+  color: #324436;
 }
 
 .blog-card-tags {
@@ -54,10 +67,11 @@
 }
 
 .blog-tag {
-  background: #e8f4f8;
-  color: #0066cc;
-  padding: 0.25rem 0.75rem;
-  border-radius: 16px;
-  font-size: 0.875rem;
-  font-weight: 500;
+  background: #F5EDEA;
+  color: #1E2E5E;
+  padding: 0.25rem 0.875rem;
+  border-radius: 42px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
 }
