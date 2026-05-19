@@ -1,7 +1,6 @@
 import './AdminUILayout.css';
 import Dashboard from "../views/Dashboard";
 import EditPages from '../views/EditPages';
-import Images from '../views/Images';
 
 interface AdminUILayoutProps {
     view: number;
@@ -15,7 +14,6 @@ function AdminUILayout({ view, setView, editPageNumber, setEditPageNumber }: Adm
         <div className="admin-ui-layout">
             {view === 0 && <Dashboard setView={setView} setEditPageNumber={setEditPageNumber} />}
             {view === 1 && <EditPages editPageNumber={editPageNumber} setEditPageNumber={setEditPageNumber} />}
-            {view === 2 && <Images setView={setView} setEditPageNumber={setEditPageNumber} />}
         </div>
     );
 }

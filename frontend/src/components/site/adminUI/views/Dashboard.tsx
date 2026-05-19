@@ -1,7 +1,6 @@
 import './Dashboard.css';
 import DashboardCard from '../DashboardCard';
 import EditIcon from '../../../ui/icons/adminUI/EditIcon';
-import ImageIcon from '../../../ui/icons/adminUI/ImageIcon';
 
 interface DashboardProps {
     setEditPageNumber: React.Dispatch<React.SetStateAction<number>>;
@@ -62,12 +61,22 @@ function Dashboard({ setEditPageNumber, setView }: DashboardProps) {
                     icon={<EditIcon width={62} height={62} strokeWidth={2} />}
                 />
                 <DashboardCard
-                    title="Images"
-                    content="Rearrange or upload new images for your site."
+                    title="Header"
+                    content="Update the site navigation and header."
                     handleClick={() => {
-                        setView(2);
+                        setEditPageNumber(5);
+                        setView(1);
                     }}
-                    icon={<ImageIcon width={62} height={62} strokeWidth={2} />}
+                    icon={<EditIcon width={62} height={62} strokeWidth={2} />}
+                />
+                <DashboardCard
+                    title="Footer"
+                    content="Update footer links and information."
+                    handleClick={() => {
+                        setEditPageNumber(6);
+                        setView(1);
+                    }}
+                    icon={<EditIcon width={62} height={62} strokeWidth={2} />}
                 />
             </div>
         </div>

@@ -7,7 +7,7 @@ export default defineConfig({
   name: 'default',
   title: 'BP IBC Blog',
 
-  projectId: 'w5eew865',
+  projectId: '546di19g',
   dataset: 'production',
 
   plugins: [structureTool(), visionTool()],

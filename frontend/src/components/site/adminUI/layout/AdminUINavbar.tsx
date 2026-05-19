@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../ui/Button';
 import HomeIcon from '../../../ui/icons/adminUI/HomeIcon';
 import EditIcon from '../../../ui/icons/adminUI/EditIcon';
-import ImageIcon from '../../../ui/icons/adminUI/ImageIcon';
 import ibc_logo from '../../../../assets/navigation/logo.svg';
 
 interface AdminUINavbarProps {
@@ -43,9 +42,6 @@ function AdminUINavbar({ view, setView, collapsed = false }: AdminUINavbarProps)
             </Button>
             <Button handleClick={() => setView(1)} variance="tertiary" active={view === 1} icon={<EditIcon />}>
               Edit Pages
-            </Button>
-            <Button handleClick={() => setView(2)} variance="tertiary" active={view === 2} icon={<ImageIcon />}>
-              Images
             </Button>
           </div>
           <div className="signout-button-container">
