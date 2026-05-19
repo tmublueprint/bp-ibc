@@ -88,6 +88,12 @@
     justify-content: space-between;
     height: 100%;
 }
+
+.signout-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .navbar-button-container {
     display: flex;
     flex-direction: column;
@@ -95,8 +101,3 @@
     margin-top: 24px;
 }
 
-.signout-button-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}

@@ -18,7 +18,7 @@ function AdminUINavbar({ view, setView, collapsed = false }: AdminUINavbarProps)
 
   const handleSignOut = () => {
     navigate('/edit/signin');
-  }
+  };
 
 	return (
 		<div className={`editor-navbar${collapsed ? ' editor-navbar--collapsed' : ''}`}>
