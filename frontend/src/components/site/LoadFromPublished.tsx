@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { applyEditableTags } from '../../utils/applyEditableTags';
+import { applyEditableTags, isSharedComponent } from '../../utils/applyEditableTags';
 import { UIContext } from '../../context/UIContext';
 
 type PageSnapshot = Array<{ id: string; text: string; stylingUpdates: string }>;
@@ -14,6 +14,7 @@ function applySnapshot(content: PageSnapshot) {
     content.forEach((item) => {
         const el = document.querySelector(`[data-editable-id="${item.id}"]`) as HTMLElement | null;
         if (!el) return;
+        if (isSharedComponent(el)) return;
         el.innerHTML = item.text;
         if (item.stylingUpdates) {
             el.setAttribute('data-styling-updates', item.stylingUpdates);
