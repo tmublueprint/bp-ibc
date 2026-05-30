@@ -133,7 +133,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    
+
     min-height: clamp(460px, 34vw, 720px);
     background-color: #3b4d3f;
     display: flex;

@@ -112,4 +112,4 @@ public/uploads/
 bp-i-4d7b8-firebase-adminsdk-fbsvc-5a1cfe595e.json
 
 # Firebase CLI cache
-.firebase/
+.firebase/.claude/worktrees/

@@ -2,7 +2,6 @@ import './HomePage.css';
 import { useNavigate } from 'react-router-dom';
 import WhiteArrow from '../../../assets/shared/whiteArrow.svg';
 import BabyAnimal from '../../../assets/home/babyAnimal.jpg';
-
 function FoundAnimalSection(){
     const navigate = useNavigate();
 

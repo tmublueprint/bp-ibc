@@ -66,10 +66,10 @@
     height: fit-content;
     padding: 40px 20px 40px 20px;
     background-color: #3B4D3F;
-    background-image: url('../../../assets/shared/greenBackground.svg');
-    background-repeat: no-repeat;
+    background-image: url('../../../assets/shared/Rectangle.svg');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     box-sizing: border-box;
 }
 
@@ -413,14 +413,13 @@
 }
 
 #home-page-section.homepage-help-section {
-    background-image: url('../../../assets/shared/greenBackground.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
     width: 100%;
     min-height: 1100px;
     background-color: #3b4d3f;
-    position: relative;
+    background-image: url('../../../assets/shared/Rectangle.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     box-sizing: border-box;
 }
 
