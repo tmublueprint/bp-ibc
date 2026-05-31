@@ -16,12 +16,13 @@ type PublishResponse = {
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001/api';
 
 async function getAuthToken() {
+  await auth.authStateReady();
   const currentUser = auth.currentUser;
   if (!currentUser) {
     throw new Error('You must sign in before publishing.');
   }
 
-  return currentUser.getIdToken();
+  return currentUser.getIdToken(/* forceRefresh */ true);
 }
 
 function getMessageFromResponse(payload: unknown, fallback: string) {

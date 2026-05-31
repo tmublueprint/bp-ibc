@@ -1,9 +1,11 @@
 import './AdminUINavbar.css';
 import { useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
 import { Button } from '../../../ui/Button';
 import HomeIcon from '../../../ui/icons/adminUI/HomeIcon';
 import EditIcon from '../../../ui/icons/adminUI/EditIcon';
 import ibc_logo from '../../../../assets/navigation/logo.svg';
+import auth from '../../../../features/firebase/firebaseApp';
 
 interface AdminUINavbarProps {
   view: number;
@@ -16,7 +18,8 @@ interface AdminUINavbarProps {
 function AdminUINavbar({ view, setView, collapsed = false }: AdminUINavbarProps) {
   const navigate = useNavigate();
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
+    await signOut(auth);
     navigate('/edit/signin');
   };
 

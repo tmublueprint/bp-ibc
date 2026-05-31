@@ -14,11 +14,10 @@ const SHARED_PAGE_NUMBER = -1;
 const PAGE_NAMES = ['Home', 'About', 'Education', 'Volunteer', 'Contact', 'Header'];
 
 async function getToken(): Promise<string> {
-  // authStateReady() resolves once Firebase has finished restoring any persisted session
   await auth.authStateReady();
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
-  return user.getIdToken();
+  return user.getIdToken(/* forceRefresh */ true);
 }
 
 async function getOrCreateActiveDraft(token: string): Promise<DraftDoc | null> {

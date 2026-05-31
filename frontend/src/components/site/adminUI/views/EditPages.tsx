@@ -43,6 +43,13 @@ function EditPages({ editPageNumber, setEditPageNumber }: EditPagesProps) {
     const storageKey = `bp-ibc:autosave:page-${editPageNumber}`;
     const sharedStorageKey = 'bp-ibc:autosave:shared';
 
+    // Clear stale autosave cache on editor open so the DB is always the source of truth on a fresh session
+    useEffect(() => {
+        Object.keys(localStorage)
+            .filter(k => k.startsWith('bp-ibc:autosave:'))
+            .forEach(k => localStorage.removeItem(k));
+    }, []);
+
     useLocalAutoSave(storageKey, sharedStorageKey, frameRef);
 
     // On page switch: seed localStorage from DB if no local draft exists

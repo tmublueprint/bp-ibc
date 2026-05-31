@@ -16,7 +16,6 @@ import { applyEditableTags, disableEditorLinks } from '../utils/applyEditableTag
 import AdminUINavbar from '../components/site/adminUI/layout/AdminUINavbar';
 import AdminUIHeader from '../components/site/adminUI/layout/AdminUIHeader';
 import AdminUILayout from '../components/site/adminUI/layout/AdminUILayout';
-import { ComputerIcon } from '../components/ui/icons/adminUI/ComputerIcon';
 import UIContextProvider from '../context/UIContext';
 
 function EditorPage() {
@@ -36,20 +35,9 @@ function EditorPage() {
   const [editPageNumber, setEditPageNumber] = useState(0); // 0 = home | 1 = about | 2 = education | 3 = volunteer | 4 = contact | 5 = header
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  const [isWindowTooSmall, setIsWindowTooSmall] = useState(window.innerWidth < 1400);
-
   useEffect(() => {
     document.title = 'IBC Admin';
     return () => { document.title = 'Itty Bitty Critters'; };
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsWindowTooSmall(window.innerWidth < 1400);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // useLocalAutoSave(storageKey, sharedStorageKey, frameRef);
@@ -129,15 +117,6 @@ function EditorPage() {
       observer?.disconnect();
     };
   }, [pageOption.id]);
-
-  if (isWindowTooSmall) {
-    return (
-      <div className="editor-page" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '20px', textAlign: 'center', color: '#1E2E5E' }}>
-        <ComputerIcon />
-        <h2>The screen is too small to view the editor content.<br/><br/>Please view on a window wider than 1400px.</h2>
-      </div>
-    );
-  }
 
   return (
     <UIContextProvider>

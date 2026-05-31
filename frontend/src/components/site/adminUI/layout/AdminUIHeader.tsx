@@ -17,26 +17,39 @@ interface AdminUIHeaderProps {
 function AdminUIHeader({ view, sidebarCollapsed, onToggleSidebar }: AdminUIHeaderProps) {
     const [saving, setSaving] = useState(false);
     const [deploying, setDeploying] = useState(false);
+    const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+
+    const showStatus = (ok: boolean, msg: string) => {
+        setStatus({ ok, msg });
+        setTimeout(() => setStatus(null), 3500);
+    };
 
     const handleApplyChanges = async () => {
         setSaving(true);
         try {
             await saveAllPagesToDatabase();
+            showStatus(true, 'Changes saved.');
         } catch (err) {
             console.error('[AdminUIHeader] Save failed:', err);
+            showStatus(false, err instanceof Error ? err.message : 'Save failed.');
         } finally {
             setSaving(false);
         }
     };
 
     const handlePreview = async () => {
+        // Open the tab synchronously so the browser doesn't block it as a popup
+        const tab = window.open('', '_blank');
         setDeploying(true);
         try {
             await saveAllPagesToDatabase();
             await publishActiveDraft(SITE_ID);
-            window.open('/home', '_blank');
+            if (tab) tab.location.href = '/home';
+            showStatus(true, 'Published. Opening preview…');
         } catch (err) {
             console.error('[AdminUIHeader] Deploy failed:', err);
+            if (tab) tab.close();
+            showStatus(false, err instanceof Error ? err.message : 'Publish failed.');
         } finally {
             setDeploying(false);
         }
@@ -62,6 +75,11 @@ function AdminUIHeader({ view, sidebarCollapsed, onToggleSidebar }: AdminUIHeade
                     <Button handleClick={handleApplyChanges} variance="secondary" icon={<CheckIcon />} disabled={saving}>
                         {saving ? 'Saving…' : 'Apply Changes'}
                     </Button>
+                    {status && (
+                        <span style={{ fontSize: 16, fontWeight: 500, color: status.ok ? '#166534' : '#b91c1c' }}>
+                            {status.msg}
+                        </span>
+                    )}
                 </div>
             }
         </div>
