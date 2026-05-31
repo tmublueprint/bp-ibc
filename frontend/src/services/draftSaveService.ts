@@ -30,23 +30,15 @@ async function getOrCreateActiveDraft(token: string): Promise<DraftDoc | null> {
   }
   const drafts: DraftDoc[] = await listRes.json();
   const existing = drafts.find(d => d.is_active);
-  if (existing) {
-    console.log('[Save] Found active draft:', existing.id);
-    return existing;
-  }
+  if (existing) return existing;
 
-  console.log('[Save] No active draft, creating one...');
   const createRes = await fetch(`${API_BASE_URL}/sites/${SITE_ID}/drafts`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ site_id: SITE_ID, version: 1, is_active: true }),
   });
-  if (!createRes.ok) {
-    console.error('[Save] POST draft failed:', createRes.status, await createRes.text());
-    return null;
-  }
+  if (!createRes.ok) return null;
   const created: DraftDoc = await createRes.json();
-  console.log('[Save] Created draft:', created.id);
   return created;
 }
 
@@ -117,7 +109,6 @@ export async function saveAllPagesToDatabase(): Promise<void> {
   }
 
   await Promise.all(saves);
-  console.log(`[Save] Done — saved ${saves.length} page(s) to DB`);
 }
 
 export async function loadPageFromDatabase(pageNumber: number): Promise<PageSnapshot | null> {

@@ -49,38 +49,40 @@ function SignInPage() {
                 </div>
 
                 {/* Input fields */}
-                <div className="input-field-container">
+                <form className="input-field-container" onSubmit={(e) => { e.preventDefault(); handleSignIn(); }}>
                     <div className="input-container">
-                        <p>Username:</p>
+                        <label htmlFor="signin-username">Username:</label>
                         <input
+                            id="signin-username"
                             type="text"
                             className={error ? 'input-error' : ''}
                             onChange={(e) => { setUsername(e.target.value); setError(null); }}
-                            onKeyDown={handleKeyDown}
+                            autoComplete="username"
                         />
                     </div>
                     <div className="input-container">
-                        <p>Password:</p>
+                        <label htmlFor="signin-password">Password:</label>
                         <input
+                            id="signin-password"
                             type="password"
                             className={error ? 'input-error' : ''}
                             onChange={(e) => { setPassword(e.target.value); setError(null); }}
-                            onKeyDown={handleKeyDown}
+                            autoComplete="current-password"
                         />
                     </div>
-                </div>
 
-                {/* error + sign in button */}
-                <div className="signin-button-container">
-                    {error && (
-                        <div className="signin-error">
-                            <span>⚠</span> {error}
-                        </div>
-                    )}
-                    <Button handleClick={handleSignIn} variance="primary" borderRadius="27px" disabled={loading}>
-                        {loading ? 'Signing in…' : 'Sign In'}
-                    </Button>
-                </div>
+                    {/* error + sign in button */}
+                    <div className="signin-button-container">
+                        {error && (
+                            <div className="signin-error" role="alert">
+                                <span aria-hidden="true">⚠</span> {error}
+                            </div>
+                        )}
+                        <Button handleClick={handleSignIn} variance="primary" borderRadius="27px" disabled={loading}>
+                            {loading ? 'Signing in…' : 'Sign In'}
+                        </Button>
+                    </div>
+                </form>
             </div>
         </div>
     )

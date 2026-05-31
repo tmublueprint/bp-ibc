@@ -40,15 +40,19 @@ function AdminUIHeader({ view, sidebarCollapsed, onToggleSidebar }: AdminUIHeade
     const handlePreview = async () => {
         // Open the tab synchronously so the browser doesn't block it as a popup
         const tab = window.open('', '_blank');
+        if (!tab) {
+            showStatus(false, 'Popup blocked — please allow popups for this site.');
+            return;
+        }
         setDeploying(true);
         try {
             await saveAllPagesToDatabase();
             await publishActiveDraft(SITE_ID);
-            if (tab) tab.location.href = '/home';
+            tab.location.href = '/home';
             showStatus(true, 'Published. Opening preview…');
         } catch (err) {
             console.error('[AdminUIHeader] Deploy failed:', err);
-            if (tab) tab.close();
+            tab.close();
             showStatus(false, err instanceof Error ? err.message : 'Publish failed.');
         } finally {
             setDeploying(false);

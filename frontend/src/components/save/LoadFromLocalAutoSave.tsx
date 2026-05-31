@@ -35,12 +35,7 @@ function LoadFromLocalAutoSave({
 
     const applySnapshot = (targetKey: string, selector: string, isShared = false) => {
       const rawSaved = localStorage.getItem(targetKey);
-      if (!rawSaved) {
-        if (isShared) {
-          console.log('[Autosave] No shared components saved yet');
-        }
-        return;
-      }
+      if (!rawSaved) return;
 
       let savedElements: Array<{ id: string; text: string; stylingUpdates: string }> = [];
       let legacyElements: string[] = [];
@@ -94,21 +89,9 @@ function LoadFromLocalAutoSave({
           .filter(([key]) => key)
       );
 
-      if (isShared) {
-        console.log(`[Autosave] Shared - Found ${editableElements.length} editable elements in DOM`);
-        console.log(`[Autosave] Shared - Trying to restore ${savedElements.length} saved elements`);
-        const matched = savedElements.filter(v => editableMap.has(v.id)).length;
-        console.log(`[Autosave] Shared - ${matched} elements matched by ID`);
-      }
-
       const shouldApply = savedElements.some((value) => {
         const target = editableMap.get(value.id);
-        if (!target) {
-          if (isShared) {
-            console.log(`[Autosave] Shared - Cannot find element with ID: ${value.id}`);
-          }
-          return false;
-        }
+        if (!target) return false;
 
         return value.text !== ((target as HTMLElement).innerHTML ?? '') || value.stylingUpdates !== (target.getAttribute("data-styling-updates") ?? '');
       });
@@ -129,36 +112,23 @@ function LoadFromLocalAutoSave({
         }
       });
       
-      if (isShared) {
-        console.log(`[Autosave] Shared - Applied ${appliedCount} changes`);
-      }
-
       return appliedCount;
     };
 
     const timeouts: Array<ReturnType<typeof setTimeout>> = [];
 
     // Apply page-specific snapshot with retry
-    const pageApplied = applySnapshot(storageKey, '[data-editable][data-editable-leaf="true"]', false);
-    console.log(`[Autosave] Page - Applied ${pageApplied} changes on initial load`);
-    
-    // Retry page-specific after short delay if not all elements loaded
+    applySnapshot(storageKey, '[data-editable][data-editable-leaf="true"]', false);
+
     const pageRetryTimeout = setTimeout(() => {
-      const retryCount = applySnapshot(storageKey, '[data-editable][data-editable-leaf="true"]', false);
-      if (retryCount && retryCount > 0) {
-        console.log(`[Autosave] Page - Applied ${retryCount} additional changes on retry`);
-      }
+      applySnapshot(storageKey, '[data-editable][data-editable-leaf="true"]', false);
     }, 100);
     timeouts.push(pageRetryTimeout);
-    
-    // Apply shared components snapshot with retry
+
     if (sharedStorageKey) {
-      // Try immediately first
       applySnapshot(sharedStorageKey, '[data-editable][data-editable-leaf="true"]', true);
-      
-      // Also retry after a short delay in case elements weren't ready
+
       const sharedRetryTimeout = setTimeout(() => {
-        console.log('[Autosave] Retrying shared component restore...');
         applySnapshot(sharedStorageKey, '[data-editable][data-editable-leaf="true"]', true);
       }, 100);
       timeouts.push(sharedRetryTimeout);

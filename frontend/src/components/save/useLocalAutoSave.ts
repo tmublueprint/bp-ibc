@@ -48,17 +48,6 @@ function useLocalAutoSave(
       localStorage.setItem(storageKey, JSON.stringify(pageSnapshot));
       localStorage.setItem(sharedStorageKey, JSON.stringify(sharedSnapshot));
 
-      if (sharedSnapshot.length > 0) {
-        console.log(
-          `[Autosave] Saved ${sharedSnapshot.length} shared component elements:`,
-          sharedSnapshot.map(s => ({
-            id: s.id,
-            text: s.text.substring(0, 30),
-            stylingUpdates: s.stylingUpdates.substring(0, 30),
-          }))
-        );
-      }
-
       Object.keys(localStorage)
         .filter(key => key.startsWith(legacyKeyPrefix))
         .forEach(key => localStorage.removeItem(key));

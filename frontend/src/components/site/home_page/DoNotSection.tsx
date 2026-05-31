@@ -1,4 +1,5 @@
 import './HomePage.css';
+import { Link } from 'react-router-dom';
 import GreenArrow from '../../../assets/shared/greenArrowThin.svg';
 import ProhibitSign from '../../../assets/home/prohibitSign.svg';
 
@@ -18,7 +19,7 @@ function DoNotSection(){
                             <li>Moving animals can separate them from their parents.</li>
                         </ul>
                         <div id="link-green">
-                            <a href="/education">Learn if the animal needs help</a>
+                            <Link to="/education">Learn if the animal needs help</Link>
                             <img src={GreenArrow} alt="arrow-right"/>
                         </div>
                     </div>

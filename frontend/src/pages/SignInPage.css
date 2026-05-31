@@ -82,17 +82,20 @@
     outline-offset: 2px;
 }
 
-.input-container p {
+.input-container label {
     margin: 0;
     width: 60%;
     text-align: left;
     font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    font-size: inherit;
 }
 
 .signin-button-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    align-self: center;
     gap: 16px;
     width: 60%;
 }
@@ -117,25 +120,4 @@
     outline: 2px solid #fca5a5;
     outline-offset: 2px;
 }
-/* .signin-button {
-    background-color: #1E2E5E;
-    border-radius: 27px;
-    font-size: 40px;
-    font-weight: 700;
-    color: white;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    width: 50%;
-    transition: background-color 300ms ease-in-out;
-}
-
-.signin-button:hover {
-    cursor: pointer;
-    background-color: #0f1a38;
-}
-
-.signin-button:focus-visible {
-    outline: 2px solid #1E2E5E;
-    outline-offset: 2px;
-} */
 

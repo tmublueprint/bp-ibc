@@ -24,7 +24,7 @@ export default function AppRoutes() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/edit">
                 <Route index element={<Navigate to="/edit/signin" replace />} />
-                <Route path="signin" element={<SignInPage />} />
+                <Route path="signin" element={<ProtectedRoute requireAuth={false}><SignInPage /></ProtectedRoute>} />
                 <Route path=":id" element={<ProtectedRoute><EditorPage /></ProtectedRoute>} />
             </Route>
             <Route path="/blog" element={<BlogPage />} />
