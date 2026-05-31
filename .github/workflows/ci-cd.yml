@@ -96,6 +96,9 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci --prefix frontend
 
+      - name: Install backend dependencies
+        run: npm ci --prefix backend
+
       - name: Build frontend
         run: npm run build --prefix frontend
 
