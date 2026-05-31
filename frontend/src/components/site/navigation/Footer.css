@@ -3,32 +3,44 @@ footer {
     flex-direction: column;
     align-items: center;
     background: #25374D;
-    /* width: 100%; */
-    padding: 16px 8px;
-    white-space: nowrap;
+    width: 100%;
+    padding: clamp(24px, 4vw, 50px) clamp(16px, 4vw, 40px);
+    text-align: center;
+    box-sizing: border-box;
 }
 
 .footerDesc1 {
     font-weight: 500;
-    font-size: 42px;
+    font-size: clamp(16px, 2vw + 8px, 42px);
     color: #DCDACD;
+    white-space: normal;
+    word-break: break-word;
 }
 
 .footerDesc2 {
     font-weight: 300;
-    font-size: 32px;
+    font-size: clamp(14px, 1.5vw + 7px, 32px);
     color: #DCDACD;
+    white-space: normal;
+    word-break: break-word;
 }
 
 footer p {
     color: #FFFFFF;
 }
 
+footer > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
 .facebook {
-    padding-left: 20px;
+    padding-left: clamp(8px, 1.5vw, 20px);
     font-weight: 500;
-    font-size: 27px;
-    padding-right: 40px;
+    font-size: clamp(14px, 1.2vw + 6px, 27px);
+    padding-right: clamp(16px, 2vw, 40px);
 }
 
 footer div a {
@@ -37,6 +49,6 @@ footer div a {
 
 .ibc {
     font-weight: 400;
-    font-size: 27px;
-    padding-left: 40px;
+    font-size: clamp(14px, 1.2vw + 6px, 27px);
+    padding-left: clamp(16px, 2vw, 40px);
 }

@@ -80,6 +80,7 @@
 
 #contact-info-section {
     width: 100%;
+    flex-grow: 1;
     background-color: #3b4d3f;
     background-image: url('../../../assets/shared/Rectangle.svg');
     background-size: cover;

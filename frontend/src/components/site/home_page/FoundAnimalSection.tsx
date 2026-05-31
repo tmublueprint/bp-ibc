@@ -1,5 +1,6 @@
 import './HomePage.css';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import WhiteArrow from '../../../assets/shared/whiteArrow.svg';
 import BabyAnimal from '../../../assets/home/babyAnimal.jpg';
 function FoundAnimalSection(){
@@ -17,7 +18,7 @@ function FoundAnimalSection(){
                         Learn What To Do First
                     </button>
                     <div id="link-white">
-                        <a href="/volunteer">I want to help in other ways</a>
+                        <Link to="/volunteer">I want to help in other ways</Link>
                         <img src={WhiteArrow} alt="arrow-right"/>
                     </div>
                 </div>

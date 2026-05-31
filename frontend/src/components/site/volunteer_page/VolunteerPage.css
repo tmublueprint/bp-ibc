@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
 .header {
-    font-size: 60px;
+    font-size: clamp(22px, 2.5vw + 12px, 60px);
     color:rgba(50, 68, 54, 1);
     font-weight: 500;
 }
@@ -15,7 +15,7 @@
 }
 
 .help_info_container h2 {
-    font-size: 37px;
+    font-size: clamp(18px, 2.5vw + 8px, 37px);
     margin: 0;
     text-align: center;
     width: 100%;
@@ -23,28 +23,42 @@
 }
 
 .help_info_container p {
-    font-size: 30px;
+    font-size: clamp(15px, 1.5vw + 8px, 30px);
     margin: 0;
     line-height: 1.5;
     text-align: center;
-    max-width: 24em;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
+    max-width: min(24em, 100%);
 }
 
 .help_info_containers {
     display: grid;
     grid-template-columns: auto auto auto;
     justify-content: center;
+    width: 100%;
 }
 
 @media (max-width: 1800px) {
     .help_info_containers {
-        grid-template-columns: auto;
+        grid-template-columns: minmax(0, 400px);
     }
 
     .help_info_container {
         padding: 48px clamp(28px, 6vw, 56px);
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .help_info_containers {
+        grid-template-columns: 1fr;
+        padding: 0 12px;
+    }
+
+    .help_info_container {
+        margin: 8px 0;
+        max-width: 100%;
+        width: 100%;
     }
 }
 
@@ -68,9 +82,9 @@
 }
 
 .volunteer_attributes {
-    font-size: 36px;
+    font-size: clamp(16px, 2vw + 8px, 36px);
     display: flex;
-    margin-bottom: 100px;
+    margin-bottom: clamp(40px, 6vw, 100px);
     justify-content: center;
 }
 
@@ -121,6 +135,8 @@
         gap: 32px;
         max-width: min(750px, 100%);
         margin: 0 auto;
+        padding-left: clamp(24px, 4vw, 48px);
+        padding-right: clamp(16px, 4vw, 48px);
     }
 }
 
@@ -209,10 +225,6 @@
 }
 
 @media (max-width: 1600px) {
-    #get-involved {
-        background-size: auto;
-    }
-
     #get-involved h1 {
         text-align: center;
     }
@@ -222,35 +234,41 @@
     }
 }
 
+@media (max-width: 768px) {
+    #volunteer-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    #volunteer-container {
+        width: 92%;
+    }
+}
+
 .headerTwo {
-    font-size: 50px;
-    font-weight: 500; 
-    font-family: "DM Sans", sans-serif; 
-    margin: 0; 
+    font-size: clamp(22px, 2.5vw + 10px, 50px);
+    font-weight: 500;
+    font-family: "DM Sans", sans-serif;
+    margin: 0;
 }
 .bodyText {
-    font-size: 24px;
-    font-family: "DM Sans", sans-serif; 
+    font-size: clamp(15px, 1vw + 10px, 24px);
+    font-family: "DM Sans", sans-serif;
     font-weight: normal;
     line-height: 1.5;
 }
 .cardTitleText {
-    font-weight: 500; 
-    font-size: 20px;
-    font-family: "DM Sans", sans-serif; 
+    font-weight: 500;
+    font-size: clamp(14px, 0.8vw + 9px, 20px);
+    font-family: "DM Sans", sans-serif;
 }
 
 .headerOne {
-    font-size: 64px;
-    font-weight: 600; 
-    margin: 0; 
-    font-family: "DM Sans", sans-serif; 
-}
-.bodyText {
-    font-size: 24px; 
-    font-family: "DM Sans", sans-serif; 
-    font-weight: normal;
-    line-height: 1.5;
+    font-size: clamp(26px, 3vw + 14px, 64px);
+    font-weight: 600;
+    margin: 0;
+    font-family: "DM Sans", sans-serif;
 }
 
 #volunteer-with-us * {
@@ -371,15 +389,3 @@
     }
 }
 
-.headerTwo {
-    font-size: 50px;
-    font-weight: 500;
-    font-family: "DM Sans", sans-serif;
-    margin: 0;
-}
-.bodyText {
-    font-size: 24px; 
-    font-family: "DM Sans", sans-serif;
-    font-weight: normal;
-    line-height: 1.5;
-}

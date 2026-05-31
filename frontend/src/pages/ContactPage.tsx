@@ -5,7 +5,7 @@ import ContactInfo from '../components/site/contact_page/ContactInfoSection';
 
 function ContactPage() {
     return (
-        <div data-id="5">
+        <div data-id="5" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Navbar />
             <ContactHero />
             <ContactInfo />

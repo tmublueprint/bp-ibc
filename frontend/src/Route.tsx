@@ -9,9 +9,12 @@ import BlogPostPage from './pages/BlogPostPage';
 import EditorPage from './pages/EditorPage';
 import ContactPage from './pages/ContactPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import ScrollToTop from './components/ScrollToTop';
 
 export default function AppRoutes() {
     return (
+        <>
+        <ScrollToTop />
         <Routes>
             <Route path="/" element={<Navigate to="/home" replace />} />
             <Route path="/home" element={<HomePage />} />
@@ -28,5 +31,6 @@ export default function AppRoutes() {
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="*" element={<div>Page not found</div>} />
         </Routes>
+        </>
     );
 }

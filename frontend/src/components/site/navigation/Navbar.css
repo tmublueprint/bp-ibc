@@ -8,29 +8,29 @@ nav {
     padding: 0 clamp(16px, 4vw, 100px);
     box-sizing: border-box;
     white-space: nowrap;
-
-
+    position: relative;
+    z-index: 100;
+    background: #ffffff;
 }
 
 .logo h1 {
     color: #1E2E5E;
     font-weight: 700;
     font-style: bold;
-    font-size: clamp(22px, 44vw, 36px);
+    font-size: clamp(16px, 2vw, 36px);
     line-height: 100%;
     letter-spacing: 0%;
-
 }
 
 .logo img {
-    height: clamp(96px, 4vw, 126px);
+    height: clamp(56px, 6vw, 126px);
     width: auto;
 }
 
 .logo div {
     display: flex;
     flex-direction: column;
-    margin-left: clamp(12px, 1.8vw, 30px);
+    margin-left: clamp(8px, 1.8vw, 30px);
     justify-content: center;
     margin-right: clamp(16px, 3.5vw, 100px);
 }
@@ -43,14 +43,13 @@ nav {
     display: flex;
     align-items: center;
     width: fit-content;
-    gap: clamp(16px, 3vw, 50px); 
+    gap: clamp(16px, 3vw, 50px);
 }
 
 .navlinks a {
     text-decoration: none;
     font-weight: 500;
-    font-style: medium; 
-    font-size: clamp(6px, 2vw, 18px);
+    font-size: clamp(12px, 1.2vw, 18px);
     letter-spacing: 0%;
     color: #1E2E5E;
 }
@@ -66,4 +65,69 @@ nav {
     padding: 6px 20px;
     background-color: #DCDACD;
     border-radius: 40px;
+}
+
+/* Hamburger button — hidden on desktop */
+.nav-hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    nav {
+        height: 72px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .logo img {
+        height: 44px;
+    }
+
+    .logo div {
+        margin-right: 0;
+    }
+
+    .nav-hamburger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+    }
+
+    .navlinks {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        padding: 8px 0 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        z-index: 99;
+        white-space: normal;
+    }
+
+    .navlinks--open {
+        display: flex;
+    }
+
+    .navlinks a {
+        font-size: 16px;
+        width: 100%;
+        padding: 14px 24px;
+        border-bottom: 1px solid rgba(30, 46, 94, 0.08);
+    }
+
+    .navlinks a.active {
+        border-bottom: 1px solid rgba(30, 46, 94, 0.08);
+        font-weight: 700;
+    }
 }

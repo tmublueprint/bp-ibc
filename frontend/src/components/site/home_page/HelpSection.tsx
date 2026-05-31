@@ -44,7 +44,7 @@ function HelpSection(){
                     <button onClick={() => navigate('/volunteer')} id="page-button">
                         Volunteer With Us
                     </button>
-                    <button onClick={() => navigate('/updates')} id="page-button"> {/*Placeholder used*/}
+                    <button onClick={() => navigate('/blog')} id="page-button">
                         Follow Our Updates
                         <img src={GreenArrow} alt="arrow-right"/>
                     </button>

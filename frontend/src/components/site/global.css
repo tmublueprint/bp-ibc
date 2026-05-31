@@ -2,37 +2,37 @@
 
 h1 {
     color: #324436;
-    font-family: 'DM Sans', sans-serif; 
-    font-size: 90px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(28px, 4vw + 16px, 90px);
     font-weight: 700;
 }
 
 h2 {
-    font-family: 'DM Sans', sans-serif; 
-    font-size: 70px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(24px, 3vw + 14px, 70px);
     font-weight: 500;
 }
 
 h3 {
-    font-family: 'DM Sans', sans-serif; 
-    font-size: 60px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(22px, 2.5vw + 12px, 60px);
     font-weight: 500;
 }
 
 .body_text {
-    font-family: 'DM Sans', sans-serif; 
-    font-size: 38px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(16px, 1.5vw + 10px, 38px);
     font-weight: 400;
 }
 
 .card_title_text {
-    font-family: 'DM Sans', sans-serif; 
-    font-size: 37px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(16px, 1.5vw + 8px, 37px);
     font-weight: 600;
 }
 
 .header_text {
-    font-family: 'DM Sans', sans-serif; 
-    font-size: 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(14px, 1vw + 10px, 30px);
     font-weight: 500;
 }
