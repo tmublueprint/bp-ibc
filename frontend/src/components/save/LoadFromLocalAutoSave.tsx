@@ -121,7 +121,7 @@ function LoadFromLocalAutoSave({
     applySnapshot(storageKey, '[data-editable][data-editable-leaf="true"]');
 
     const pageRetryTimeout = setTimeout(() => {
-      applySnapshot(storageKey, '[data-editable][data-editable-leaf="true"]', false);
+        applySnapshot(storageKey, '[data-editable][data-editable-leaf="true"]');
     }, 100);
     timeouts.push(pageRetryTimeout);
 
