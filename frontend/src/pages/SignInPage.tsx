@@ -15,6 +15,10 @@ function SignInPage() {
     const [loading, setLoading] = useState(false);
 
     const handleSignIn = async () => {
+        if (!username || !password) {
+            setError('Please enter your username and password.');
+            return;
+        }
         setError(null);
         setLoading(true);
         try {
@@ -26,6 +30,10 @@ function SignInPage() {
             setLoading(false);
         }
     }
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') handleSignIn();
+    };
 
     return (
         <div className="signin-page">
@@ -39,24 +47,36 @@ function SignInPage() {
                         <h2 className="signin-admin-label">Admin Panel</h2>
                     </div>
                 </div>
+
                 {/* Input fields */}
                 <div className="input-field-container">
-                    {/* username */}
                     <div className="input-container">
                         <p>Username:</p>
-                        <input type="text" onChange={(e) => setUsername(e.target.value)}></input>
+                        <input
+                            type="text"
+                            className={error ? 'input-error' : ''}
+                            onChange={(e) => { setUsername(e.target.value); setError(null); }}
+                            onKeyDown={handleKeyDown}
+                        />
                     </div>
-
-                    {/* password */}
                     <div className="input-container">
                         <p>Password:</p>
-                        <input type="password" onChange={(e) => setPassword(e.target.value)}></input>
+                        <input
+                            type="password"
+                            className={error ? 'input-error' : ''}
+                            onChange={(e) => { setPassword(e.target.value); setError(null); }}
+                            onKeyDown={handleKeyDown}
+                        />
                     </div>
                 </div>
 
-                {/* sign in button */}
+                {/* error + sign in button */}
                 <div className="signin-button-container">
-                    {error && <p className="signin-error">{error}</p>}
+                    {error && (
+                        <div className="signin-error">
+                            <span>⚠</span> {error}
+                        </div>
+                    )}
                     <Button handleClick={handleSignIn} variance="primary" borderRadius="27px" disabled={loading}>
                         {loading ? 'Signing in…' : 'Sign In'}
                     </Button>
