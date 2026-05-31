@@ -5,7 +5,7 @@ import whiteArrow from '../../../assets/shared/whiteArrow.svg';
 function VolunteerGetInvolved() {
 
     const navPage = () => {
-        window.location.href = '/home';
+        window.location.href = '/contact';
     }
 
     return (

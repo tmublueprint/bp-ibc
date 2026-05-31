@@ -10,6 +10,7 @@ import HomePage from '../../../../pages/HomePage';
 import AboutPage from '../../../../pages/AboutPage';
 import EducationPage from '../../../../pages/EducationPage';
 import VolunteerPage from '../../../../pages/VolunteerPage';
+import ContactPage from '../../../../pages/ContactPage';
 import Navbar from '../../../../components/site/navigation/Navbar';
 import Footer from '../../../../components/site/navigation/Footer';
 import { loadPageFromDatabase, loadSharedFromDatabase } from '../../../../services/draftSaveService';
@@ -19,15 +20,7 @@ interface EditPagesProps {
     setEditPageNumber: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const PAGE_COMPONENTS = [HomePage, AboutPage, EducationPage, VolunteerPage];
-
-function ContactPlaceholder() {
-    return (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '400px', fontFamily: 'DM Sans, sans-serif', color: '#9EA8C4', fontSize: '28px' }}>
-            Contact Page — coming soon
-        </div>
-    );
-}
+const PAGE_COMPONENTS = [HomePage, AboutPage, EducationPage, VolunteerPage, ContactPage];
 
 function EditPages({ editPageNumber, setEditPageNumber }: EditPagesProps) {
     const navContext = useContext(UNSAFE_NavigationContext);
@@ -114,8 +107,7 @@ function EditPages({ editPageNumber, setEditPageNumber }: EditPagesProps) {
     }, [editPageNumber]);
 
     const PageComponent =
-        editPageNumber === 4 ? ContactPlaceholder
-        : editPageNumber === 5 ? Navbar
+        editPageNumber === 5 ? Navbar
         : editPageNumber === 6 ? Footer
         : PAGE_COMPONENTS[editPageNumber] ?? HomePage;
 
