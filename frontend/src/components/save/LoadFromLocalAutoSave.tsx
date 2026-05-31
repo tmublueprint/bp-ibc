@@ -33,7 +33,7 @@ function LoadFromLocalAutoSave({
 
     const root = rootRef?.current ?? document.body;
 
-    const applySnapshot = (targetKey: string, selector: string, isShared = false) => {
+    const applySnapshot = (targetKey: string, selector: string) => {
       const rawSaved = localStorage.getItem(targetKey);
       if (!rawSaved) return;
 
@@ -118,7 +118,7 @@ function LoadFromLocalAutoSave({
     const timeouts: Array<ReturnType<typeof setTimeout>> = [];
 
     // Apply page-specific snapshot with retry
-    applySnapshot(storageKey, '[data-editable][data-editable-leaf="true"]', false);
+    applySnapshot(storageKey, '[data-editable][data-editable-leaf="true"]');
 
     const pageRetryTimeout = setTimeout(() => {
       applySnapshot(storageKey, '[data-editable][data-editable-leaf="true"]', false);
@@ -126,10 +126,10 @@ function LoadFromLocalAutoSave({
     timeouts.push(pageRetryTimeout);
 
     if (sharedStorageKey) {
-      applySnapshot(sharedStorageKey, '[data-editable][data-editable-leaf="true"]', true);
+      applySnapshot(sharedStorageKey, '[data-editable][data-editable-leaf="true"]');
 
       const sharedRetryTimeout = setTimeout(() => {
-        applySnapshot(sharedStorageKey, '[data-editable][data-editable-leaf="true"]', true);
+        applySnapshot(sharedStorageKey, '[data-editable][data-editable-leaf="true"]');
       }, 100);
       timeouts.push(sharedRetryTimeout);
     }

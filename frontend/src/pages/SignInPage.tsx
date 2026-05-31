@@ -31,9 +31,7 @@ function SignInPage() {
         }
     }
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') handleSignIn();
-    };
+    // Enter key submit is handled by the form's onSubmit
 
     return (
         <div className="signin-page">
