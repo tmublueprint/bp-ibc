@@ -73,13 +73,19 @@ function useLocalAutoSave(
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') localAutoSave();
     };
+    // Fired by AdminUIHeader before reading localStorage for a DB save, so that
+    // format-only changes (alignment, font) applied while an element is still
+    // focused are flushed to localStorage before saveAllPagesToDatabase reads it.
+    const handleForceSave = () => localAutoSave(true);
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('bp-ibc:force-autosave', handleForceSave);
     const intervalId = setInterval(localAutoSave, autoSaveInterval * 1000);
 
     return () => {
       clearInterval(intervalId);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('bp-ibc:force-autosave', handleForceSave);
     };
   }, [localAutoSave]);
 }

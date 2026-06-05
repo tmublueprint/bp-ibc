@@ -27,6 +27,7 @@ function AdminUIHeader({ view, sidebarCollapsed, onToggleSidebar }: AdminUIHeade
     const handleApplyChanges = async () => {
         setSaving(true);
         try {
+            window.dispatchEvent(new Event('bp-ibc:force-autosave'));
             await saveAllPagesToDatabase();
             showStatus(true, 'Changes saved.');
         } catch (err) {
@@ -46,6 +47,7 @@ function AdminUIHeader({ view, sidebarCollapsed, onToggleSidebar }: AdminUIHeade
         }
         setDeploying(true);
         try {
+            window.dispatchEvent(new Event('bp-ibc:force-autosave'));
             await saveAllPagesToDatabase();
             await publishActiveDraft(SITE_ID);
             tab.location.href = '/home';
