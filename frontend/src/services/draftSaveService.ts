@@ -1,6 +1,6 @@
 import auth from '../features/firebase/firebaseApp';
 
-export type PageSnapshot = Array<{ id: string; text: string; stylingUpdates: string }>;
+export type PageSnapshot = Array<{ id: string; text: string; stylingUpdates: string; elementStyle?: string }>;
 
 type DraftDoc = { id: string; site_id: string; version: number; is_active: boolean };
 type PageDoc = { id: string; draft_id: string | null; page_number: number; page_name: string; content: PageSnapshot | null };

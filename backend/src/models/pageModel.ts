@@ -1,4 +1,4 @@
-export type PageSnapshot = Array<{ id: string; text: string; stylingUpdates: string }>;
+export type PageSnapshot = Array<{ id: string; text: string; stylingUpdates: string; elementStyle?: string }>;
 
 export interface PageGetModel {
     id: string;
