@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { applyEditableTags, isSharedComponent } from '../../utils/applyEditableTags';
 import { UIContext } from '../../context/UIContext';
 
-type PageSnapshot = Array<{ id: string; text: string; stylingUpdates: string }>;
+type PageSnapshot = Array<{ id: string; text: string; stylingUpdates: string; elementStyle?: string }>;
 type PageDoc = { page_number: number; content: PageSnapshot | null };
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api-grwpwm6rea-uc.a.run.app/api';
@@ -19,6 +19,10 @@ function applySnapshot(content: PageSnapshot) {
         if (item.stylingUpdates) {
             el.setAttribute('data-styling-updates', item.stylingUpdates);
         }
+        if (item.elementStyle) {
+            const match = item.elementStyle.match(/text-align:\s*([^;]+)/);
+            if (match) el.style.textAlign = match[1].trim();
+        }
     });
 }
 
@@ -32,7 +36,10 @@ function applyPages(pages: PageDoc[], pageNumber: number, root: HTMLElement) {
     if (shared?.content) applySnapshot(shared.content);
 
     root.querySelectorAll('[data-editable]').forEach(el => {
-        el.removeAttribute('data-editable');
+        // Set to "false" rather than removing — keeps [data-editable] CSS selectors
+        // (list styles, etc.) active in production while disabling editor-only
+        // [data-editable="true"] rules (cursor, hover border, inline-block display).
+        el.setAttribute('data-editable', 'false');
         el.removeAttribute('data-editable-leaf');
     });
 }

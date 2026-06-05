@@ -37,7 +37,7 @@ function LoadFromLocalAutoSave({
       const rawSaved = localStorage.getItem(targetKey);
       if (!rawSaved) return;
 
-      let savedElements: Array<{ id: string; text: string; stylingUpdates: string }> = [];
+      let savedElements: Array<{ id: string; text: string; stylingUpdates: string; elementStyle?: string }> = [];
       let legacyElements: string[] = [];
 
       try {
@@ -107,6 +107,10 @@ function LoadFromLocalAutoSave({
           target.innerHTML = value.text;
           if (value.stylingUpdates) {
             target.setAttribute("data-styling-updates", value.stylingUpdates);
+          }
+          if (value.elementStyle) {
+            const match = value.elementStyle.match(/text-align:\s*([^;]+)/);
+            if (match) (target as HTMLElement).style.textAlign = match[1].trim();
           }
           appliedCount++;
         }

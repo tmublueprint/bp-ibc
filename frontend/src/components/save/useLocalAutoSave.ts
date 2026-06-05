@@ -22,8 +22,8 @@ function useLocalAutoSave(
 
     if (!pageElements.length) return;
 
-    const pageSnapshot: Array<{ id: string; text: string; stylingUpdates: string }> = [];
-    const sharedSnapshot: Array<{ id: string; text: string; stylingUpdates: string }> = [];
+    const pageSnapshot: Array<{ id: string; text: string; stylingUpdates: string; elementStyle?: string }> = [];
+    const sharedSnapshot: Array<{ id: string; text: string; stylingUpdates: string; elementStyle?: string }> = [];
 
     pageElements.forEach((editableElement) => {
       const el = editableElement as HTMLElement;
@@ -34,6 +34,7 @@ function useLocalAutoSave(
         id: el.getAttribute('data-editable-id') ?? '',
         text: el.innerHTML,
         stylingUpdates: el.getAttribute('data-styling-updates') ?? '',
+        elementStyle: el.style.textAlign ? `text-align: ${el.style.textAlign}` : '',
       };
 
       const isShared = editableElement.closest('nav') || editableElement.closest('footer');
