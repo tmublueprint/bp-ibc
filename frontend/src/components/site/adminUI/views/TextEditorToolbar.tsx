@@ -52,7 +52,15 @@ function TextEditorToolbar() {
             ? (anchor as HTMLElement)
             : anchor.parentElement
         )?.closest('[data-editable="true"]') as HTMLElement | null;
-        el?.focus({ preventScroll: true });
+        if (!el) return;
+        // In production, relatedTarget can be null even when focus moves to a
+        // toolbar button, so the blur guard in UIContext may have already set
+        // contentEditable='false'. Re-enable it here before every command so
+        // execCommand always has a valid editable target.
+        if (el.contentEditable !== 'true') {
+            el.contentEditable = 'true';
+        }
+        el.focus({ preventScroll: true });
         const sel = window.getSelection();
         if (sel) { sel.removeAllRanges(); sel.addRange(range); }
     }, []);
