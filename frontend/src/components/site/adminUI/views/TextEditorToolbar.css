@@ -3,15 +3,15 @@
     background-color: #F5EDEA;
     padding: 14px 24px;
     flex-shrink: 0;
-    overflow-x: auto;
 }
 
 /* the white rounded card */
 .text-editor-toolbar {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: flex-start;   /* labels all top-aligned */
-    gap: 0;
+    gap: 12px 0;
     padding: 14px 20px;
     background-color: white;
     border-radius: 14px;
