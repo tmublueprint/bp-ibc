@@ -360,6 +360,20 @@ function TextEditorToolbar() {
                             <ChevronDown />
                         </button>
                         <input ref={colorInputRef} type="color" className="toolbar-color-input"
+                            onFocus={() => {
+                                // OS color dialog steals focus, blurring the editable element and
+                                // setting contentEditable='false'. Re-focus it so the color applies.
+                                const range = savedRangeRef.current;
+                                if (!range) return;
+                                const anchor = range.commonAncestorContainer;
+                                const el = (anchor.nodeType === Node.ELEMENT_NODE
+                                    ? (anchor as HTMLElement)
+                                    : anchor.parentElement
+                                )?.closest('[data-editable="true"]') as HTMLElement | null;
+                                if (el && el.contentEditable !== 'true') {
+                                    el.contentEditable = 'true';
+                                }
+                            }}
                             onChange={e => cmd('foreColor', e.target.value)} />
                     </div>
                 </div>

@@ -68,11 +68,16 @@ body {
 }
 
 [data-editable="true"] {
-  display: inline-block;
   min-width: 12px;
   min-height: 1em;
   cursor: pointer;
   overflow: visible;
+}
+
+/* Inline elements need inline-block so min-width/min-height apply and outlines show */
+span[data-editable="true"],
+a[data-editable="true"] {
+  display: inline-block;
 }
 
 /* List styles inside editable elements — uses [data-editable] so styles
