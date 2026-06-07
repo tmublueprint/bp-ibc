@@ -62,7 +62,21 @@ function TextEditorToolbar() {
         }
         el.focus({ preventScroll: true });
         const sel = window.getSelection();
-        if (sel) { sel.removeAllRanges(); sel.addRange(range); }
+        if (!sel) return;
+        sel.removeAllRanges();
+        // After execCommand rewrites the DOM (e.g. bold wraps text in a span),
+        // the saved range's containers become detached. Chrome recovers silently;
+        // Firefox throws. Check isConnected before using and fall back if stale.
+        if (range.startContainer.isConnected) {
+            try { sel.addRange(range); } catch { /* fall through to fallback */ }
+        }
+        if (sel.rangeCount === 0) {
+            const fallback = document.createRange();
+            fallback.selectNodeContents(el);
+            fallback.collapse(false);
+            sel.addRange(fallback);
+            savedRangeRef.current = fallback.cloneRange();
+        }
     }, []);
 
     const cmd = useCallback((command: string, value?: string) => {
