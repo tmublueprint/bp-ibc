@@ -20,7 +20,9 @@ const FONTS = ['DM Sans', 'Arial', 'Georgia', 'Times New Roman', 'Verdana', 'Cou
 
 type Alignment = 'Left' | 'Center' | 'Right' | 'Full';
 
-const noSteal = (e: React.MouseEvent) => e.preventDefault();
+// Execute action in mousedown so the editable element's selection is still
+// intact (Firefox moves focus before click fires, losing the selection).
+const act = (fn: () => void) => (e: React.MouseEvent) => { e.preventDefault(); fn(); };
 
 function TextEditorToolbar() {
     const [isBold,           setIsBold]           = useState(false);
@@ -335,17 +337,16 @@ function TextEditorToolbar() {
                     <div className="toolbar-size-row">
                         <div
                             className={`toolbar-size-input${sizeEditMode ? ' toolbar-size-input--active' : ''}`}
-                            onMouseDown={noSteal}
-                            onClick={handleSizeDivClick}
+                            onMouseDown={(e) => { e.preventDefault(); handleSizeDivClick(); }}
                             title="Click, type a size, then press Enter"
                         >
                             {sizeEditMode ? pendingSizeStr : fontSize}
                         </div>
                         <div className="toolbar-size-arrows">
-                            <button className="toolbar-btn toolbar-arrow-btn" onMouseDown={noSteal} onClick={handleSizeUp}   title="Increase">
+                            <button className="toolbar-btn toolbar-arrow-btn" onMouseDown={act(handleSizeUp)}   title="Increase">
                                 <img src={arrowUpIcon}   className="toolbar-arrow-icon" alt="" />
                             </button>
-                            <button className="toolbar-btn toolbar-arrow-btn" onMouseDown={noSteal} onClick={handleSizeDown} title="Decrease">
+                            <button className="toolbar-btn toolbar-arrow-btn" onMouseDown={act(handleSizeDown)} title="Decrease">
                                 <img src={arrowDownIcon} className="toolbar-arrow-icon" alt="" />
                             </button>
                         </div>
@@ -358,13 +359,13 @@ function TextEditorToolbar() {
                 <div className="toolbar-group">
                     <span className="toolbar-label">Style</span>
                     <div className="toolbar-row">
-                        <button className={`toolbar-btn${isBold      ? ' toolbar-btn--active' : ''}`} onMouseDown={noSteal} onClick={handleBold}      title="Bold">
+                        <button className={`toolbar-btn${isBold      ? ' toolbar-btn--active' : ''}`} onMouseDown={act(handleBold)}      title="Bold">
                             <img src={boldIcon}      className="toolbar-icon" alt="Bold" />
                         </button>
-                        <button className={`toolbar-btn${isItalic    ? ' toolbar-btn--active' : ''}`} onMouseDown={noSteal} onClick={handleItalic}    title="Italic">
+                        <button className={`toolbar-btn${isItalic    ? ' toolbar-btn--active' : ''}`} onMouseDown={act(handleItalic)}    title="Italic">
                             <img src={italicIcon}    className="toolbar-icon" alt="Italic" />
                         </button>
-                        <button className={`toolbar-btn${isUnderline ? ' toolbar-btn--active' : ''}`} onMouseDown={noSteal} onClick={handleUnderline} title="Underline">
+                        <button className={`toolbar-btn${isUnderline ? ' toolbar-btn--active' : ''}`} onMouseDown={act(handleUnderline)} title="Underline">
                             <img src={underlineIcon} className="toolbar-icon" alt="Underline" />
                         </button>
                     </div>
@@ -379,13 +380,12 @@ function TextEditorToolbar() {
                         {PRESET_COLORS.map(c => (
                             <button key={c.value} className="toolbar-color-swatch"
                                 style={{ backgroundColor: c.value }}
-                                onMouseDown={noSteal}
-                                onClick={() => cmd('foreColor', c.value)}
+                                onMouseDown={act(() => cmd('foreColor', c.value))}
                                 title={c.label}
                             />
                         ))}
                         <button className="toolbar-color-custom" title="Custom colour"
-                            onMouseDown={noSteal}
+                            onMouseDown={(e) => e.preventDefault()}
                             onClick={() => colorInputRef.current?.click()}
                         >
                             <ChevronDown />
@@ -418,8 +418,7 @@ function TextEditorToolbar() {
                         {(['Left', 'Center', 'Right', 'Full'] as Alignment[]).map(a => (
                             <button key={a}
                                 className={`toolbar-btn${align === a ? ' toolbar-btn--active' : ''}`}
-                                onMouseDown={noSteal}
-                                onClick={() => handleAlign(a)}
+                                onMouseDown={act(() => handleAlign(a))}
                                 title={`Align ${a}`}
                             >
                                 <AlignIcon type={a} />
@@ -434,10 +433,10 @@ function TextEditorToolbar() {
                 <div className="toolbar-group">
                     <span className="toolbar-label">Lists</span>
                     <div className="toolbar-row">
-                        <button className={`toolbar-btn${isUnorderedList ? ' toolbar-btn--active' : ''}`} onMouseDown={noSteal} onClick={() => cmdList('insertUnorderedList')} title="Bullet list">
+                        <button className={`toolbar-btn${isUnorderedList ? ' toolbar-btn--active' : ''}`} onMouseDown={act(() => cmdList('insertUnorderedList'))} title="Bullet list">
                             <img src={listIcon}         className="toolbar-icon" alt="Bullet list" />
                         </button>
-                        <button className={`toolbar-btn${isOrderedList ? ' toolbar-btn--active' : ''}`} onMouseDown={noSteal} onClick={() => cmdList('insertOrderedList')}   title="Numbered list">
+                        <button className={`toolbar-btn${isOrderedList ? ' toolbar-btn--active' : ''}`} onMouseDown={act(() => cmdList('insertOrderedList'))}   title="Numbered list">
                             <img src={numberedListIcon} className="toolbar-icon" alt="Numbered list" />
                         </button>
                     </div>
@@ -449,7 +448,7 @@ function TextEditorToolbar() {
                 <div className="toolbar-group">
                     <span className="toolbar-label">Undo</span>
                     <div className="toolbar-row">
-                        <button className="toolbar-btn" onMouseDown={noSteal} onClick={handleUndo} title="Undo">
+                        <button className="toolbar-btn" onMouseDown={act(handleUndo)} title="Undo">
                             <img src={undoIcon} className="toolbar-icon" alt="Undo" />
                         </button>
                     </div>
