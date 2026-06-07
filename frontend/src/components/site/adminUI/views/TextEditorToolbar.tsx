@@ -218,10 +218,11 @@ function TextEditorToolbar() {
             setIsUnorderedList(!!el.closest('ul'));
             setIsOrderedList(!!el.closest('ol'));
 
-            if      (document.queryCommandState('justifyCenter')) setAlign('Center');
-            else if (document.queryCommandState('justifyRight'))  setAlign('Right');
-            else if (document.queryCommandState('justifyFull'))   setAlign('Full');
-            else                                                   setAlign('Left');
+            const ta = el.style.textAlign || window.getComputedStyle(el).textAlign;
+            if      (ta === 'center')  setAlign('Center');
+            else if (ta === 'right')   setAlign('Right');
+            else if (ta === 'justify') setAlign('Full');
+            else                       setAlign('Left');
 
             const size = parseFloat(window.getComputedStyle(el).fontSize);
             if (!isNaN(size)) {
@@ -295,11 +296,19 @@ function TextEditorToolbar() {
     const handleUnderline = () => { cmd('underline'); setIsUnderline(u => !u); };
 
     const handleAlign = (a: Alignment) => {
-        const cmds: Record<Alignment, string> = {
-            Left: 'justifyLeft', Center: 'justifyCenter',
-            Right: 'justifyRight', Full: 'justifyFull',
-        };
-        cmd(cmds[a]);
+        restoreSelection();
+        const sel = window.getSelection();
+        const anchor = sel?.anchorNode;
+        const el = (anchor?.nodeType === Node.ELEMENT_NODE
+            ? anchor as HTMLElement
+            : (anchor as Text | null)?.parentElement
+        )?.closest('[data-editable="true"]') as HTMLElement | null;
+        if (el) {
+            const alignMap: Record<Alignment, string> = {
+                Left: '', Center: 'center', Right: 'right', Full: 'justify',
+            };
+            el.style.textAlign = alignMap[a];
+        }
         setAlign(a);
     };
 
