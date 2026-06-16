@@ -187,7 +187,7 @@
 
 @media (max-width: 1280px) {
     #education #grid-1 {
-        grid-template-columns: repeat(2, minmax(220px, 1fr));
+        grid-template-columns: repeat(3, minmax(220px, 1fr));
     }
 
     #education #grid-2 {

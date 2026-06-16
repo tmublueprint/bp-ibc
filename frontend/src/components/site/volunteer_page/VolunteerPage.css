@@ -187,7 +187,7 @@
 
 #volunteer-info {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1.25rem;
     color: #e8e6dc;
     background: transparent;
