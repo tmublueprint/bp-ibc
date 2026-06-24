@@ -65,7 +65,17 @@ function LoadFromPublished({ pageNumber }: { pageNumber: number }) {
         (async () => {
             try {
                 const res = await fetch(`${API_BASE_URL}/public/sites/${SITE_ID}/content`);
-                if (!res.ok) return;
+                if (!res.ok) {
+                    if (res.status === 404) {
+                        // Nothing is published — drop any stale cache so we fall back to
+                        // the default template instead of showing previously-cached content.
+                        // (Other errors, e.g. 500, keep the cache so a transient outage
+                        // doesn't blank the site.)
+                        localStorage.removeItem(CACHE_KEY);
+                        if (cached) window.location.reload();
+                    }
+                    return;
+                }
                 const { pages }: { pages: PageDoc[] } = await res.json();
                 localStorage.setItem(CACHE_KEY, JSON.stringify(pages));
                 applyPages(pages, pageNumber, root);
