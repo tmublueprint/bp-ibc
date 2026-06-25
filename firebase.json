@@ -8,12 +8,12 @@
     ],
     "redirects": [
       { "source": "/",             "destination": "https://bp-ibc.web.app/edit/signin", "type": 302 },
-      { "source": "/home",         "destination": "https://bp-ibc.vercel.app/home",      "type": 302 },
-      { "source": "/about",        "destination": "https://bp-ibc.vercel.app/about",     "type": 302 },
-      { "source": "/education",    "destination": "https://bp-ibc.vercel.app/education", "type": 302 },
-      { "source": "/volunteer",    "destination": "https://bp-ibc.vercel.app/volunteer", "type": 302 },
-      { "source": "/blog",         "destination": "https://bp-ibc.vercel.app/blog",      "type": 302 },
-      { "source": "/blog/:slug",   "destination": "https://bp-ibc.vercel.app/blog/:slug","type": 302 }
+      { "source": "/home",         "destination": "https://bp-ibc-2.vercel.app/home",      "type": 302 },
+      { "source": "/about",        "destination": "https://bp-ibc-2.vercel.app/about",     "type": 302 },
+      { "source": "/education",    "destination": "https://bp-ibc-2.vercel.app/education", "type": 302 },
+      { "source": "/volunteer",    "destination": "https://bp-ibc-2.vercel.app/volunteer", "type": 302 },
+      { "source": "/blog",         "destination": "https://bp-ibc-2.vercel.app/blog",      "type": 302 },
+      { "source": "/blog/:slug",   "destination": "https://bp-ibc-2.vercel.app/blog/:slug","type": 302 }
     ],
     "rewrites": [
       {
